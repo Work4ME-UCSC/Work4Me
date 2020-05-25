@@ -1,4 +1,5 @@
 import React from "react";
+import { Feather } from "@expo/vector-icons";
 
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -62,11 +63,48 @@ const BottomTab = createBottomTabNavigator();
 const App = () => {
   return (
     <NavigationContainer>
-      <BottomTab.Navigator>
-        <BottomTab.Screen name="Home" component={HomeStackScreen} />
-        <BottomTab.Screen name="Favourite" component={FavouriteStackScreen} />
-        <BottomTab.Screen name="Jobs" component={JobTopScreen} />
-        <BottomTab.Screen name="Account" component={AccountStackScreen} />
+      <BottomTab.Navigator
+        initialRouteName="Home"
+        tabBarOptions={{
+          activeTintColor: "#f08a1d",
+        }}
+      >
+        <BottomTab.Screen
+          name="Home"
+          component={HomeStackScreen}
+          options={{
+            tabBarIcon: ({ color, size }) => (
+              <Feather name="home" size={size} color={color} />
+            ),
+          }}
+        />
+        <BottomTab.Screen
+          name="Favourite"
+          component={FavouriteStackScreen}
+          options={{
+            tabBarIcon: ({ color, size }) => (
+              <Feather name="heart" size={size} color={color} />
+            ),
+          }}
+        />
+        <BottomTab.Screen
+          name="Jobs"
+          component={JobTopScreen}
+          options={{
+            tabBarIcon: ({ color, size }) => (
+              <Feather name="list" size={size} color={color} />
+            ),
+          }}
+        />
+        <BottomTab.Screen
+          name="Account"
+          component={AccountStackScreen}
+          options={{
+            tabBarIcon: ({ color, size }) => (
+              <Feather name="user" size={size} color={color} />
+            ),
+          }}
+        />
       </BottomTab.Navigator>
     </NavigationContainer>
   );
