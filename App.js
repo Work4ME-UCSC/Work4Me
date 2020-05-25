@@ -19,82 +19,76 @@ import ScreenSelect from "./src/screens/ScreenSelect";
 import Home from "./src/screens/Employer/Home";
 import AddJobs from "./src/screens/Employer/AddJobs";
 
-//Authentication Navigation: Stack Navigation
-const SignStack = createStackNavigator();
+//Navigators
+const Stack = createStackNavigator();
+const Top = createMaterialTopTabNavigator();
+const Bottom = createBottomTabNavigator();
 
+//Authentication Navigation: Stack Navigation
 const SignStackScreen = () => {
   return (
-    <SignStack.Navigator>
-      <SignStack.Screen name="Signin" component={SigninScreen} />
-      <SignStack.Screen name="Signup" component={SignupScreen} />
-    </SignStack.Navigator>
+    <Stack.Navigator>
+      <Stack.Screen name="Signin" component={SigninScreen} />
+      <Stack.Screen name="Signup" component={SignupScreen} />
+    </Stack.Navigator>
   );
 };
-//Account setting navigation: Stack Navigation
-const AccountStack = createStackNavigator();
 
+//Account setting navigation: Stack Navigation
 const AccountStackScreen = () => {
   return (
-    <AccountStack.Navigator>
-      <AccountStack.Screen name="Account" component={AccountScreen} />
-    </AccountStack.Navigator>
+    <Stack.Navigator>
+      <Stack.Screen name="Account" component={AccountScreen} />
+    </Stack.Navigator>
   );
 };
 
 //Employee navigation properties
-//Home Screen: Stack Naviagation
-const HomeEmployeeStack = createStackNavigator();
 
+//Home Screen: Stack Naviagation
 const HomeEmployeeStackScreen = () => {
   return (
-    <HomeEmployeeStack.Navigator>
-      <HomeEmployeeStack.Screen name="Home" component={HomeScreen} />
-      <HomeEmployeeStack.Screen
-        name="JobDescription"
-        component={JobDescription}
-      />
-    </HomeEmployeeStack.Navigator>
+    <Stack.Navigator>
+      <Stack.Screen name="Home" component={HomeScreen} />
+      <Stack.Screen name="JobDescription" component={JobDescription} />
+    </Stack.Navigator>
   );
 };
 
 //Favourite Screen: Stack Navigation
-const FavouriteStack = createStackNavigator();
-
 const FavouriteStackScreen = () => {
   return (
-    <FavouriteStack.Navigator>
-      <FavouriteStack.Screen name="Favourite" component={FavouriteScreen} />
-      <FavouriteStack.Screen name="JobDescription" component={JobDescription} />
-    </FavouriteStack.Navigator>
+    <Stack.Navigator>
+      <Stack.Screen name="Favourite" component={FavouriteScreen} />
+      <Stack.Screen name="JobDescription" component={JobDescription} />
+    </Stack.Navigator>
   );
 };
 
 //Job Screen: Top bar navigation
-const JobTop = createMaterialTopTabNavigator();
-
 const JobTopScreen = () => {
   return (
-    <JobTop.Navigator>
-      <JobTop.Screen name="CurrentJobs" component={CurrentJobScreen} />
-      <JobTop.Screen name="PastJobs" component={PastJobScreen} />
-      <JobTop.Screen name="Pending" component={PendingRequestScreen} />
-    </JobTop.Navigator>
+    <Top.Navigator>
+      <Top.Screen name="CurrentJobs" component={CurrentJobScreen} />
+      <Top.Screen name="PastJobs" component={PastJobScreen} />
+      <Top.Screen name="Pending" component={PendingRequestScreen} />
+    </Top.Navigator>
   );
 };
+
 //End of Employee properties
 
 //Employee Screen Bottom navigation
-const EmployeeBottomTab = createBottomTabNavigator();
 
 const EmployeeScreen = () => {
   return (
-    <EmployeeBottomTab.Navigator
+    <Bottom.Navigator
       initialRouteName="Home"
       tabBarOptions={{
         activeTintColor: "#f08a1d",
       }}
     >
-      <EmployeeBottomTab.Screen
+      <Bottom.Screen
         name="Home"
         component={HomeEmployeeStackScreen}
         options={{
@@ -103,7 +97,7 @@ const EmployeeScreen = () => {
           ),
         }}
       />
-      <EmployeeBottomTab.Screen
+      <Bottom.Screen
         name="Favourite"
         component={FavouriteStackScreen}
         options={{
@@ -112,7 +106,7 @@ const EmployeeScreen = () => {
           ),
         }}
       />
-      <EmployeeBottomTab.Screen
+      <Bottom.Screen
         name="Jobs"
         component={JobTopScreen}
         options={{
@@ -121,7 +115,7 @@ const EmployeeScreen = () => {
           ),
         }}
       />
-      <EmployeeBottomTab.Screen
+      <Bottom.Screen
         name="Account"
         component={AccountStackScreen}
         options={{
@@ -130,57 +124,51 @@ const EmployeeScreen = () => {
           ),
         }}
       />
-    </EmployeeBottomTab.Navigator>
+    </Bottom.Navigator>
   );
 };
 // End of Employee bottom naviagation
 
 //Employer properties
-
-const HomeEmployerStack = createStackNavigator();
-
-const HomeEmployerStackScreen = () => {
+const HomeEmployerBottomScreen = () => {
   return (
-    <HomeEmployerStack.Navigator>
-      <HomeEmployerStack.Screen name="Home" component={Home} />
-    </HomeEmployerStack.Navigator>
+    <Stack.Navigator>
+      <Stack.Screen name="Home" component={Home} />
+    </Stack.Navigator>
   );
 };
 
 //Add jobs screen: Stack Navigation
-const AddJobStack = createStackNavigator();
-
 const AddJobScreen = () => {
   return (
-    <AddJobStack.Navigator>
-      <AddJobStack.Screen name="Add" component={AddJobs} />
-    </AddJobStack.Navigator>
+    <Stack.Navigator>
+      <Stack.Screen name="Add" component={AddJobs} />
+    </Stack.Navigator>
   );
 };
 
-//End of Emplyer properties
+//End of Employer properties
 
 //Employer Screen bottom navigation
-const EmployerStack = createBottomTabNavigator();
 
 const EmployerScreen = () => {
   return (
-    <EmployerStack.Navigator
+    <Bottom.Navigator
       initialRouteName="Home"
       tabBarOptions={{
         activeTintColor: "#f08a1d",
       }}
     >
-      <EmployerStack.Screen
+      <Bottom.Screen
         name="Home"
-        component={HomeEmployerStackScreen}
+        component={HomeEmployerBottomScreen}
         options={{
           tabBarIcon: ({ color, size }) => (
             <Feather name="home" size={size} color={color} />
           ),
         }}
       />
-      <EmployerStack.Screen
+      <Bottom.Screen
         name="Add"
         component={AddJobScreen}
         options={{
@@ -189,7 +177,7 @@ const EmployerScreen = () => {
           ),
         }}
       />
-      <EmployerStack.Screen
+      <Bottom.Screen
         name="Account"
         component={AccountStackScreen}
         options={{
@@ -198,21 +186,21 @@ const EmployerScreen = () => {
           ),
         }}
       />
-    </EmployerStack.Navigator>
+    </Bottom.Navigator>
   );
 };
 
-const Main = createStackNavigator();
+//End Employer bottom navigation
 
 const App = () => {
   return (
     <NavigationContainer>
-      <Main.Navigator screenOptions={{ headerShown: false }}>
-        <Main.Screen name="main" component={ScreenSelect} />
-        <Main.Screen name="Sign" component={SignStackScreen} />
-        <Main.Screen name="Employee" component={EmployeeScreen} />
-        <Main.Screen name="Employer" component={EmployerScreen} />
-      </Main.Navigator>
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="main" component={ScreenSelect} />
+        <Stack.Screen name="Sign" component={SignStackScreen} />
+        <Stack.Screen name="Employee" component={EmployeeScreen} />
+        <Stack.Screen name="Employer" component={EmployerScreen} />
+      </Stack.Navigator>
     </NavigationContainer>
   );
 };
