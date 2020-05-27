@@ -1,32 +1,65 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 
 import SignInput from "../components/SignInput";
 
+// const checkPassword = (password) => {
+//   return password.length < 6 ? true : false;
+// };
+
 const SigninScreen = ({ navigation }) => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+
   return (
     <View style={styles.container}>
       <Text style={styles.heading}>Sign in</Text>
+
       <SignInput
         name="Email Address"
         icon="email"
         keyboardType="email-address"
+        value={email}
+        onChangeText={setEmail}
+        onEndEditing={() => console.log(email)}
       />
-      <SignInput name="Password" icon="lock" secureTextEntry={true} />
 
-      <TouchableOpacity style={styles.login}>
-        <Text style={{ fontSize: 25 }}>Login</Text>
+      <SignInput
+        name="Password"
+        icon="lock"
+        secureTextEntry={true}
+        value={password}
+        onChangeText={setPassword}
+        onEndEditing={() => setPasswordError("Password must be 6 characters")}
+      />
+      {passwordError != "" && password.length < 6 ? (
+        <Text style={styles.error}>{passwordError}</Text>
+      ) : null}
+      <TouchableOpacity
+        style={styles.forgotPassword}
+        onPress={() => navigation.navigate("ForgotPassword")}
+      >
+        <Text
+          style={{
+            color: "#ff8400",
+            fontWeight: "bold",
+          }}
+        >
+          FORGOT PASSWORD?
+        </Text>
       </TouchableOpacity>
 
-      <TouchableOpacity>
-        <Text style={{ fontSize: 20, color: "#ff8400" }}>Forgot password?</Text>
+      <TouchableOpacity style={styles.loginButton}>
+        <Text style={styles.loginText}>LOGIN</Text>
       </TouchableOpacity>
 
-      <View style={{ flexDirection: "row", marginTop: 10 }}>
-        <Text>Don't have an account? </Text>
+      <View style={{ flexDirection: "row", marginTop: 25 }}>
+        <Text style={{ fontSize: 16 }}>Don't have an account? </Text>
 
         <TouchableOpacity onPress={() => navigation.navigate("Signup")}>
-          <Text style={{ color: "#ff8400" }}>Signup</Text>
+          <Text style={styles.signUp}>SIGN UP</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -38,22 +71,49 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    marginBottom: 50,
+    marginBottom: 60,
   },
 
   heading: {
     fontSize: 30,
-    marginBottom: 30,
+    fontWeight: "bold",
+    alignSelf: "flex-start",
+    marginLeft: 20,
   },
 
-  login: {
-    width: 250,
+  loginButton: {
+    width: "90%",
     height: 40,
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#ff8400",
     borderRadius: 10,
-    marginBottom: 15,
+    marginTop: 15,
+  },
+
+  loginText: {
+    fontSize: 22,
+    fontWeight: "bold",
+    color: "white",
+  },
+
+  forgotPassword: {
+    alignSelf: "flex-start",
+    marginLeft: 20,
+    marginTop: 15,
+  },
+
+  signUp: {
+    color: "#ff8400",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+
+  error: {
+    alignSelf: "flex-start",
+    marginLeft: 20,
+    color: "red",
+    marginTop: 3,
   },
 });
 

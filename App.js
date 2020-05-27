@@ -18,15 +18,17 @@ import AccountScreen from "./src/screens/Employee/AccountScreen";
 import ScreenSelect from "./src/screens/ScreenSelect";
 import Home from "./src/screens/Employer/Home";
 import AddJobs from "./src/screens/Employer/AddJobs";
+import ForgotPassword from "./src/screens/ForgotPassword";
 
 //Authentication Navigation: Stack Navigation
 const SignStack = createStackNavigator();
 
 const SignStackScreen = () => {
   return (
-    <SignStack.Navigator>
+    <SignStack.Navigator headerMode="none">
       <SignStack.Screen name="Signin" component={SigninScreen} />
       <SignStack.Screen name="Signup" component={SignupScreen} />
+      <SignStack.Screen name="ForgotPassword" component={ForgotPassword} />
     </SignStack.Navigator>
   );
 };

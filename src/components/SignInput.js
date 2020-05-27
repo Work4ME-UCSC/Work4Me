@@ -3,30 +3,64 @@ import { View, StyleSheet, TextInput, TouchableOpacity } from "react-native";
 
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
-const SignInput = ({ name, icon, keyboardType, secureTextEntry }) => {
+const SignInput = ({
+  name,
+  icon = "",
+  keyboardType = "default",
+  secureTextEntry = false,
+  value,
+  onChangeText,
+  onEndEditing,
+}) => {
   const [bottomColor, setBottomColor] = useState("black");
+  const [placeholder, setPlaceholder] = useState(name);
+  const [visible, setVisible] = useState(keyboardType);
+  const [eye, setEye] = useState("eye-off");
 
   return (
     <View style={[styles.container, { borderBottomColor: bottomColor }]}>
-      <MaterialCommunityIcons
-        name={icon}
-        style={styles.iconStyle}
-        color={bottomColor}
-      />
+      {icon ? (
+        <MaterialCommunityIcons
+          name={icon}
+          style={styles.iconStyle}
+          color={bottomColor}
+        />
+      ) : null}
+
       <TextInput
         style={styles.inputStyle}
         autoCapitalize="none"
-        placeholder={name}
+        placeholder={placeholder}
         autoCorrect={false}
-        keyboardType={keyboardType}
+        keyboardType={visible}
         secureTextEntry={secureTextEntry}
-        onFocus={() => setBottomColor("#ff8400")}
-        onBlur={() => setBottomColor("black")}
+        onFocus={() => {
+          setBottomColor("#ff8400");
+          setPlaceholder("");
+        }}
+        onBlur={() => {
+          setBottomColor("black");
+          setPlaceholder(name);
+        }}
+        value={value}
+        onChangeText={onChangeText}
+        onEndEditing={onEndEditing}
       />
 
       {name == "Password" ? (
-        <TouchableOpacity style={{ justifyContent: "center" }}>
-          <MaterialCommunityIcons name="eye" style={styles.eye} />
+        <TouchableOpacity
+          style={{ justifyContent: "center" }}
+          onPress={() => {
+            if (visible == "visible-password") {
+              setEye("eye-off");
+              setVisible("default");
+            } else {
+              setEye("eye");
+              setVisible("visible-password");
+            }
+          }}
+        >
+          <MaterialCommunityIcons name={eye} style={styles.eye} />
         </TouchableOpacity>
       ) : null}
     </View>
@@ -39,7 +73,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     height: 40,
     marginHorizontal: 20,
-    marginBottom: 30,
+    marginTop: 30,
   },
 
   inputStyle: {
