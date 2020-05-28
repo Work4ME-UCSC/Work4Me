@@ -2,16 +2,16 @@ import React, { useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 
 import SignInput from "../components/SignInput";
-
-// const checkPassword = (password) => {
-//   return password.length < 6 ? true : false;
-// };
+import epValidator from "../hooks/epValidator";
 
 const SigninScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [emailError, setEmailError] = useState("");
-  const [passwordError, setPasswordError] = useState("");
+
+  const [passwordEnd, setPasswordEnd] = useState(false);
+  const [emailEnd, setEmailEnd] = useState(false);
+
+  const [checkEmail, checkPassword, emailError, passwordError] = epValidator();
 
   return (
     <View style={styles.container}>
@@ -22,21 +22,37 @@ const SigninScreen = ({ navigation }) => {
         icon="email"
         keyboardType="email-address"
         value={email}
-        onChangeText={setEmail}
-        onEndEditing={() => console.log(email)}
+        onChangeText={(mail) => {
+          setEmail(mail);
+          if (emailEnd) checkEmail(mail);
+        }}
+        onEndEditing={() => {
+          setEmailEnd(true);
+          checkEmail(email);
+        }}
       />
+
+      {emailError != "" ? <Text style={styles.error}>{emailError}</Text> : null}
 
       <SignInput
         name="Password"
         icon="lock"
         secureTextEntry={true}
         value={password}
-        onChangeText={setPassword}
-        onEndEditing={() => setPasswordError("Password must be 6 characters")}
+        onChangeText={(pass) => {
+          setPassword(pass);
+          if (passwordEnd) checkPassword(pass);
+        }}
+        onEndEditing={() => {
+          setPasswordEnd(true);
+          checkPassword(password);
+        }}
       />
-      {passwordError != "" && password.length < 6 ? (
+
+      {passwordError != "" ? (
         <Text style={styles.error}>{passwordError}</Text>
       ) : null}
+
       <TouchableOpacity
         style={styles.forgotPassword}
         onPress={() => navigation.navigate("ForgotPassword")}
@@ -87,7 +103,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#ff8400",
-    borderRadius: 10,
+    borderRadius: 5,
     marginTop: 15,
   },
 
@@ -112,8 +128,10 @@ const styles = StyleSheet.create({
   error: {
     alignSelf: "flex-start",
     marginLeft: 20,
-    color: "red",
-    marginTop: 3,
+    color: "#ff0000",
+    fontSize: 12,
+    fontWeight: "bold",
+    margin: 1,
   },
 });
 

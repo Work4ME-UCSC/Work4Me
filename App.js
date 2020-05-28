@@ -25,10 +25,22 @@ const SignStack = createStackNavigator();
 
 const SignStackScreen = () => {
   return (
-    <SignStack.Navigator headerMode="none">
-      <SignStack.Screen name="Signin" component={SigninScreen} />
-      <SignStack.Screen name="Signup" component={SignupScreen} />
-      <SignStack.Screen name="ForgotPassword" component={ForgotPassword} />
+    <SignStack.Navigator>
+      <SignStack.Screen
+        name="Signin"
+        component={SigninScreen}
+        options={{ headerShown: false }}
+      />
+      <SignStack.Screen
+        name="Signup"
+        component={SignupScreen}
+        options={{ headerShown: false }}
+      />
+      <SignStack.Screen
+        name="ForgotPassword"
+        component={ForgotPassword}
+        options={{ title: "Forgot Password" }}
+      />
     </SignStack.Navigator>
   );
 };
@@ -94,6 +106,7 @@ const EmployeeScreen = () => {
       initialRouteName="Home"
       tabBarOptions={{
         activeTintColor: "#f08a1d",
+        inactiveTintColor: "#303030",
       }}
     >
       <EmployeeBottomTab.Screen
