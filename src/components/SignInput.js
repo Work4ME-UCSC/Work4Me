@@ -13,7 +13,6 @@ const SignInput = ({
   onEndEditing,
 }) => {
   const [bottomColor, setBottomColor] = useState("black");
-  const [placeholder, setPlaceholder] = useState(name);
   const [visible, setVisible] = useState(keyboardType);
   const [eye, setEye] = useState("eye-off");
 
@@ -30,17 +29,15 @@ const SignInput = ({
       <TextInput
         style={styles.inputStyle}
         autoCapitalize="none"
-        placeholder={placeholder}
+        placeholder={name}
         autoCorrect={false}
         keyboardType={visible}
         secureTextEntry={secureTextEntry}
         onFocus={() => {
           setBottomColor("#ff8400");
-          setPlaceholder("");
         }}
         onBlur={() => {
           setBottomColor("black");
-          setPlaceholder(name);
         }}
         value={value}
         onChangeText={onChangeText}

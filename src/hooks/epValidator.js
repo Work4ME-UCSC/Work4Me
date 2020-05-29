@@ -1,16 +1,19 @@
 import { useState } from "react";
 
 export default () => {
-  const [emailError, setEmailError] = useState("");
-  const [passwordError, setPasswordError] = useState("");
+  const [emailError, setEmailError] = useState("initial");
+  const [passwordError, setPasswordError] = useState("initial");
 
   const checkPassword = (password) => {
     let length = password.length;
-    if (length == 0) return setPasswordError("Please enter a password");
-    if (length < 6)
-      return setPasswordError(
-        "Please enter a password with at least 6 characters"
-      );
+    if (length == 0) {
+      setPasswordError("Please enter a password");
+      return passwordError;
+    }
+    if (length < 6) {
+      setPasswordError("Please enter a password with at least 6 characters");
+      return passwordError;
+    }
     return setPasswordError("");
   };
 
@@ -18,10 +21,9 @@ export default () => {
     const reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     if (email.length == 0)
       return setEmailError("Please enter your email address");
-    if (reg.test(email) === false)
-      return setEmailError("Email adress is not valid");
+    if (!reg.test(email)) return setEmailError("Email adress is not valid");
 
     return setEmailError("");
   };
-  return [checkEmail, checkPassword, emailError, passwordError];
+  return { checkEmail, checkPassword, emailError, passwordError };
 };

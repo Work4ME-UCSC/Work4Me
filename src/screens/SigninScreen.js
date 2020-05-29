@@ -4,6 +4,8 @@ import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import SignInput from "../components/SignInput";
 import epValidator from "../hooks/epValidator";
 
+const color = "#ff8400";
+
 const SigninScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -11,7 +13,23 @@ const SigninScreen = ({ navigation }) => {
   const [passwordEnd, setPasswordEnd] = useState(false);
   const [emailEnd, setEmailEnd] = useState(false);
 
-  const [checkEmail, checkPassword, emailError, passwordError] = epValidator();
+  const {
+    checkEmail,
+    checkPassword,
+    emailError,
+    passwordError,
+  } = epValidator();
+
+  const onClickLogin = (email, password) => {
+    setEmailEnd(true);
+    setPasswordEnd(true);
+    checkEmail(email);
+    checkPassword(password);
+
+    if (!emailError && !passwordError) {
+      console.log("Email and password are in correct format5");
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -32,7 +50,9 @@ const SigninScreen = ({ navigation }) => {
         }}
       />
 
-      {emailError != "" ? <Text style={styles.error}>{emailError}</Text> : null}
+      {emailError && emailError != "initial" ? (
+        <Text style={styles.error}>{emailError}</Text>
+      ) : null}
 
       <SignInput
         name="Password"
@@ -46,20 +66,21 @@ const SigninScreen = ({ navigation }) => {
         onEndEditing={() => {
           setPasswordEnd(true);
           checkPassword(password);
+          onClickLogin(email, password);
         }}
       />
 
-      {passwordError != "" ? (
+      {passwordError && passwordError != "initial" ? (
         <Text style={styles.error}>{passwordError}</Text>
       ) : null}
 
       <TouchableOpacity
         style={styles.forgotPassword}
-        onPress={() => navigation.navigate("ForgotPassword")}
+        onPress={() => navigation.navigate("ForgotPassword", { mail: email })}
       >
         <Text
           style={{
-            color: "#ff8400",
+            color,
             fontWeight: "bold",
           }}
         >
@@ -67,7 +88,10 @@ const SigninScreen = ({ navigation }) => {
         </Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.loginButton}>
+      <TouchableOpacity
+        style={styles.loginButton}
+        onPress={() => onClickLogin(email, password)}
+      >
         <Text style={styles.loginText}>LOGIN</Text>
       </TouchableOpacity>
 
@@ -102,7 +126,7 @@ const styles = StyleSheet.create({
     height: 40,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#ff8400",
+    backgroundColor: color,
     borderRadius: 5,
     marginTop: 15,
   },
@@ -120,7 +144,7 @@ const styles = StyleSheet.create({
   },
 
   signUp: {
-    color: "#ff8400",
+    color: color,
     fontSize: 16,
     fontWeight: "bold",
   },

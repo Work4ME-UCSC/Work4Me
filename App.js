@@ -25,7 +25,7 @@ const SignStack = createStackNavigator();
 
 const SignStackScreen = () => {
   return (
-    <SignStack.Navigator>
+    <SignStack.Navigator initialRouteName="Signin">
       <SignStack.Screen
         name="Signin"
         component={SigninScreen}
