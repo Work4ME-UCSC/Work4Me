@@ -10,6 +10,7 @@ import {
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 import epValidator from "../hooks/epValidator";
+import Submit from "../components/SubmitButton";
 
 const color = "#ff8400";
 
@@ -44,7 +45,15 @@ const ForgotPassword = ({ navigation, route }) => {
         Email <Text style={{ color }}>*</Text>
       </Text>
 
-      <View style={styles.inputContainer}>
+      <View
+        style={[
+          styles.inputContainer,
+          {
+            borderColor:
+              emailError && emailError != "initial" ? "red" : "black",
+          },
+        ]}
+      >
         <TextInput
           style={styles.inputStyle}
           placeholder="Enter your email"
@@ -67,9 +76,10 @@ const ForgotPassword = ({ navigation, route }) => {
         <Text style={styles.error}>{emailError}</Text>
       ) : null}
 
-      <TouchableOpacity style={styles.button}>
-        <Text style={styles.buttonText}>Find account</Text>
-      </TouchableOpacity>
+      <Submit
+        title="Find account"
+        onClick={() => navigation.navigate("ForgotVerify")}
+      />
     </View>
   );
 };
@@ -101,24 +111,10 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
 
-  button: {
-    marginTop: 20,
-    alignItems: "center",
-    justifyContent: "center",
-    height: 35,
-    backgroundColor: color,
-    borderRadius: 5,
-  },
-
-  buttonText: {
-    fontSize: 16,
-    fontWeight: "bold",
-    color: "white",
-  },
-
   error: {
     fontWeight: "bold",
     color: "red",
+    marginRight: 20,
   },
 
   icon: {

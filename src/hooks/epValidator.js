@@ -10,8 +10,8 @@ export default () => {
       setPasswordError("Please enter a password");
       return passwordError;
     }
-    if (length < 6) {
-      setPasswordError("Please enter a password with at least 6 characters");
+    if (length < 8) {
+      setPasswordError("Please enter a password with at least 8 characters");
       return passwordError;
     }
     return setPasswordError("");

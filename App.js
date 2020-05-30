@@ -19,6 +19,8 @@ import ScreenSelect from "./src/screens/ScreenSelect";
 import Home from "./src/screens/Employer/Home";
 import AddJobs from "./src/screens/Employer/AddJobs";
 import ForgotPassword from "./src/screens/ForgotPassword";
+import ForgotVerificationScreen from "./src/screens/ForgotVerificationScreen";
+import SerNewPassword from "./src/screens/SetNewPassword";
 
 //Authentication Navigation: Stack Navigation
 const SignStack = createStackNavigator();
@@ -40,6 +42,16 @@ const SignStackScreen = () => {
         name="ForgotPassword"
         component={ForgotPassword}
         options={{ title: "Forgot Password" }}
+      />
+      <SignStack.Screen
+        name="ForgotVerify"
+        component={ForgotVerificationScreen}
+        options={{ headerShown: false }}
+      />
+      <SignStack.Screen
+        name="NewPassword"
+        component={SerNewPassword}
+        options={{ headerShown: false }}
       />
     </SignStack.Navigator>
   );

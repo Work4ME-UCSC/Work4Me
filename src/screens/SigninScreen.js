@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 
 import SignInput from "../components/SignInput";
+import Submit from "../components/SubmitButton";
 import epValidator from "../hooks/epValidator";
 
 const color = "#ff8400";
@@ -38,6 +39,7 @@ const SigninScreen = ({ navigation }) => {
       <SignInput
         name="Email Address"
         icon="email"
+        autoCapitalize="none"
         keyboardType="email-address"
         value={email}
         onChangeText={(mail) => {
@@ -58,6 +60,7 @@ const SigninScreen = ({ navigation }) => {
         name="Password"
         icon="lock"
         secureTextEntry={true}
+        autoCapitalize="none"
         value={password}
         onChangeText={(pass) => {
           setPassword(pass);
@@ -88,14 +91,16 @@ const SigninScreen = ({ navigation }) => {
         </Text>
       </TouchableOpacity>
 
-      <TouchableOpacity
+      <Submit title="LOGIN" onClick={() => onClickLogin(email, password)} />
+
+      {/* <TouchableOpacity
         style={styles.loginButton}
         onPress={() => onClickLogin(email, password)}
       >
         <Text style={styles.loginText}>LOGIN</Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
 
-      <View style={{ flexDirection: "row", marginTop: 25 }}>
+      <View style={styles.bottom}>
         <Text style={{ fontSize: 16 }}>Don't have an account? </Text>
 
         <TouchableOpacity onPress={() => navigation.navigate("Signup")}>
@@ -110,19 +115,18 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
-    alignItems: "center",
+    //alignItems: "center",
     marginBottom: 60,
+    marginHorizontal: 20,
   },
 
   heading: {
     fontSize: 30,
     fontWeight: "bold",
-    alignSelf: "flex-start",
-    marginLeft: 20,
   },
 
   loginButton: {
-    width: "90%",
+    width: "100%",
     height: 40,
     justifyContent: "center",
     alignItems: "center",
@@ -139,7 +143,6 @@ const styles = StyleSheet.create({
 
   forgotPassword: {
     alignSelf: "flex-start",
-    marginLeft: 20,
     marginTop: 15,
   },
 
@@ -151,11 +154,16 @@ const styles = StyleSheet.create({
 
   error: {
     alignSelf: "flex-start",
-    marginLeft: 20,
     color: "#ff0000",
     fontSize: 12,
     fontWeight: "bold",
     margin: 1,
+  },
+
+  bottom: {
+    flexDirection: "row",
+    marginTop: 25,
+    alignSelf: "center",
   },
 });
 

@@ -11,6 +11,7 @@ const SignInput = ({
   value,
   onChangeText,
   onEndEditing,
+  autoCapitalize = "sentences",
 }) => {
   const [bottomColor, setBottomColor] = useState("black");
   const [visible, setVisible] = useState(keyboardType);
@@ -28,7 +29,7 @@ const SignInput = ({
 
       <TextInput
         style={styles.inputStyle}
-        autoCapitalize="none"
+        autoCapitalize={autoCapitalize}
         placeholder={name}
         autoCorrect={false}
         keyboardType={visible}
@@ -69,7 +70,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     borderBottomWidth: 1,
     height: 40,
-    marginHorizontal: 20,
+    //marginHorizontal: 20,
     marginTop: 25,
   },
 
