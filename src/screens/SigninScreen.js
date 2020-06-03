@@ -110,9 +110,11 @@ const SigninScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    marginBottom: 60,
+    //justifyContent: "center",
+    //marginBottom: 60,
     marginHorizontal: 20,
+    marginTop: 150,
+    //borderWidth: 2,
   },
 
   heading: {

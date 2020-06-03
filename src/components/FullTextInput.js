@@ -23,6 +23,7 @@ const FullTextInput = ({
         value={value}
         onChangeText={onChangeText}
         onEndEditing={onEndEditing}
+        placeholderTextColor="gray"
       />
     </View>
   );

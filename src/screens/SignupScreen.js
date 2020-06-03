@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 
 import SignInput from "../components/SignInput";
 import SubmitButton from "../components/SubmitButton";
@@ -135,9 +135,10 @@ const SignupScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    marginBottom: 60,
+    //justifyContent: "center",
+    //marginBottom: 60,
     marginHorizontal: 20,
+    marginTop: 150,
   },
 
   heading: {

@@ -43,6 +43,7 @@ const SignInput = ({
         value={value}
         onChangeText={onChangeText}
         onEndEditing={onEndEditing}
+        placeholderTextColor="gray"
       />
 
       {name == "Password" ? (
