@@ -2,7 +2,9 @@ import React, { useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 
 import SignInput from "../components/SignInput";
-import Submit from "../components/SubmitButton";
+import SubmitButton from "../components/SubmitButton";
+import ErrorText from "../components/ErrorText";
+import NavLink from "../components/NavLink";
 import epValidator from "../hooks/epValidator";
 
 const color = "#ff8400";
@@ -28,7 +30,7 @@ const SigninScreen = ({ navigation }) => {
     checkPassword(password);
 
     if (!emailError && !passwordError) {
-      console.log("Email and password are in correct format5");
+      console.log("Email and password are in correct format6");
     }
   };
 
@@ -44,7 +46,7 @@ const SigninScreen = ({ navigation }) => {
         value={email}
         onChangeText={(mail) => {
           setEmail(mail);
-          if (emailEnd) checkEmail(mail);
+          checkEmail(mail);
         }}
         onEndEditing={() => {
           setEmailEnd(true);
@@ -52,8 +54,8 @@ const SigninScreen = ({ navigation }) => {
         }}
       />
 
-      {emailError && emailError != "initial" ? (
-        <Text style={styles.error}>{emailError}</Text>
+      {emailEnd && emailError && emailError != "initial" ? (
+        <ErrorText title={emailError} />
       ) : null}
 
       <SignInput
@@ -64,17 +66,16 @@ const SigninScreen = ({ navigation }) => {
         value={password}
         onChangeText={(pass) => {
           setPassword(pass);
-          if (passwordEnd) checkPassword(pass);
+          checkPassword(pass);
         }}
         onEndEditing={() => {
           setPasswordEnd(true);
           checkPassword(password);
-          onClickLogin(email, password);
         }}
       />
 
-      {passwordError && passwordError != "initial" ? (
-        <Text style={styles.error}>{passwordError}</Text>
+      {passwordEnd && passwordError && passwordError != "initial" ? (
+        <ErrorText title={passwordError} />
       ) : null}
 
       <TouchableOpacity
@@ -91,22 +92,17 @@ const SigninScreen = ({ navigation }) => {
         </Text>
       </TouchableOpacity>
 
-      <Submit title="LOGIN" onClick={() => onClickLogin(email, password)} />
+      <SubmitButton
+        size={40}
+        title="LOGIN"
+        onClick={() => onClickLogin(email, password)}
+      />
 
-      {/* <TouchableOpacity
-        style={styles.loginButton}
-        onPress={() => onClickLogin(email, password)}
-      >
-        <Text style={styles.loginText}>LOGIN</Text>
-      </TouchableOpacity> */}
-
-      <View style={styles.bottom}>
-        <Text style={{ fontSize: 16 }}>Don't have an account? </Text>
-
-        <TouchableOpacity onPress={() => navigation.navigate("Signup")}>
-          <Text style={styles.signUp}>SIGN UP</Text>
-        </TouchableOpacity>
-      </View>
+      <NavLink
+        title="Don't have an account?"
+        button="SIGN UP"
+        onClick={() => navigation.navigate("Signup")}
+      />
     </View>
   );
 };
@@ -115,55 +111,17 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
-    //alignItems: "center",
     marginBottom: 60,
     marginHorizontal: 20,
   },
 
   heading: {
-    fontSize: 30,
+    fontSize: 35,
     fontWeight: "bold",
-  },
-
-  loginButton: {
-    width: "100%",
-    height: 40,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: color,
-    borderRadius: 5,
-    marginTop: 15,
-  },
-
-  loginText: {
-    fontSize: 22,
-    fontWeight: "bold",
-    color: "white",
   },
 
   forgotPassword: {
-    alignSelf: "flex-start",
     marginTop: 15,
-  },
-
-  signUp: {
-    color: color,
-    fontSize: 16,
-    fontWeight: "bold",
-  },
-
-  error: {
-    alignSelf: "flex-start",
-    color: "#ff0000",
-    fontSize: 12,
-    fontWeight: "bold",
-    margin: 1,
-  },
-
-  bottom: {
-    flexDirection: "row",
-    marginTop: 25,
-    alignSelf: "center",
   },
 });
 

@@ -70,7 +70,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     borderBottomWidth: 1,
     height: 40,
-    //marginHorizontal: 20,
     marginTop: 25,
   },
 

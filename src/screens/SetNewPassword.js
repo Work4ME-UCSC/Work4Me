@@ -1,12 +1,27 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, Text, StyleSheet, TextInput } from "react-native";
 
 import FullTextInput from "../components/FullTextInput";
-import Submit from "../components/SubmitButton";
+import SubmitButton from "../components/SubmitButton";
+import epValidator from "../hooks/epValidator";
+import ErrorText from "../components/ErrorText";
 
 const color = "#ff8400";
 
 const SerNewPassword = () => {
+  const [password, setPassword] = useState("");
+  const [retype, setRetype] = useState("");
+  const [passEnd, setPassEnd] = useState(false);
+  const [reEnd, setReEnd] = useState(false);
+  const [reError, setReError] = useState("");
+
+  const { checkPassword, passwordError } = epValidator();
+
+  const checkRetype = (pass, retype) => {
+    if (retype != pass) return setReError("Password does not mismatch");
+    return setReError("");
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.heading}>Finally, choose a new password</Text>
@@ -19,15 +34,47 @@ const SerNewPassword = () => {
         New password <Text style={{ color }}>*</Text>
       </Text>
 
-      <FullTextInput placeholder="New password" />
+      <FullTextInput
+        placeholder="New password"
+        autoCapitalize="none"
+        secureTextEntry={true}
+        value={password}
+        onChangeText={(pass) => {
+          setPassword(pass);
+          checkPassword(pass);
+        }}
+        onEndEditing={() => {
+          setPassEnd(true);
+          checkPassword(password);
+        }}
+      />
+
+      {passEnd && passwordError && passwordError != "initial" ? (
+        <ErrorText title={passwordError} />
+      ) : null}
 
       <Text style={styles.inputTitle}>
         Retype new password <Text style={{ color }}>*</Text>
       </Text>
 
-      <FullTextInput placeholder="Retype new password" />
+      <FullTextInput
+        placeholder="Retype new password"
+        autoCapitalize="none"
+        secureTextEntry={true}
+        value={retype}
+        onChangeText={(re) => {
+          setRetype(re);
+          checkRetype(password, re);
+        }}
+        onEndEditing={() => {
+          setReEnd(true);
+          checkRetype(password, retype);
+        }}
+      />
 
-      <Submit />
+      {reEnd && reError ? <ErrorText title={reError} /> : null}
+
+      <SubmitButton />
     </View>
   );
 };
@@ -37,8 +84,6 @@ const styles = StyleSheet.create({
     flex: 1,
     marginHorizontal: 20,
     marginTop: 60,
-    // justifyContent: "center",
-    // alignItems: "center",
   },
 
   heading: {

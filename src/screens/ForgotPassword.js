@@ -1,16 +1,10 @@
 import React, { useState } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  TextInput,
-  TouchableOpacity,
-} from "react-native";
-
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { View, Text, StyleSheet } from "react-native";
 
 import epValidator from "../hooks/epValidator";
-import Submit from "../components/SubmitButton";
+import SubmitButton from "../components/SubmitButton";
+import ErrorText from "../components/ErrorText";
+import FullTextInput from "../components/FullTextInput";
 
 const color = "#ff8400";
 
@@ -24,19 +18,10 @@ const ForgotPassword = ({ navigation, route }) => {
   return (
     <View style={styles.container}>
       {emailValidation ? (
-        <View
-          style={{
-            flexDirection: "row",
-          }}
-        >
-          <MaterialCommunityIcons
-            name="alert-circle-outline"
-            style={styles.icon}
-          />
-          <Text style={styles.error}>
-            We couldn't find an account associated with {email}
-          </Text>
-        </View>
+        <ErrorText
+          title={`We couldn't find an account associated with ${email}`}
+          icon="alert-circle-outline"
+        />
       ) : null}
 
       <Text style={styles.heading}>First, let's find your account</Text>
@@ -45,38 +30,27 @@ const ForgotPassword = ({ navigation, route }) => {
         Email <Text style={{ color }}>*</Text>
       </Text>
 
-      <View
-        style={[
-          styles.inputContainer,
-          {
-            borderColor:
-              emailError && emailError != "initial" ? "red" : "black",
-          },
-        ]}
-      >
-        <TextInput
-          style={styles.inputStyle}
-          placeholder="Enter your email"
-          autoCapitalize="none"
-          autoCorrect={false}
-          keyboardType="email-address"
-          value={email}
-          onChangeText={(mail) => {
-            setEmail(mail);
-            if (emailEnd) checkEmail(mail);
-          }}
-          onEndEditing={() => {
-            setEmailEnd(true);
-            checkEmail(email);
-          }}
-        />
-      </View>
+      <FullTextInput
+        placeholder="Enter your email"
+        autoCapitalize="none"
+        autoCorrect={false}
+        keyboardType="email-address"
+        value={email}
+        onChangeText={(mail) => {
+          setEmail(mail);
+          checkEmail(mail);
+        }}
+        onEndEditing={() => {
+          setEmailEnd(true);
+          checkEmail(email);
+        }}
+      />
 
-      {emailError && emailError != "initial" ? (
-        <Text style={styles.error}>{emailError}</Text>
+      {emailEnd && emailError && emailError != "initial" ? (
+        <ErrorText title={emailError} />
       ) : null}
 
-      <Submit
+      <SubmitButton
         title="Find account"
         onClick={() => navigation.navigate("ForgotVerify")}
       />
@@ -89,39 +63,11 @@ const styles = StyleSheet.create({
     flex: 1,
     marginHorizontal: 20,
     marginTop: 30,
-    //justifyContent: "center",
-    //alignItems: "center",
   },
 
   heading: {
     fontSize: 22,
-    marginTop: 25,
-  },
-
-  inputContainer: {
-    borderWidth: 1,
-    marginTop: 5,
-    height: 35,
-    justifyContent: "center",
-    borderRadius: 3,
-  },
-
-  inputStyle: {
-    marginLeft: 10,
-    fontSize: 16,
-  },
-
-  error: {
-    fontWeight: "bold",
-    color: "red",
-    marginRight: 20,
-  },
-
-  icon: {
-    fontSize: 16,
-    color: "red",
-    marginRight: 8,
-    marginTop: 2,
+    marginTop: 10,
   },
 });
 
