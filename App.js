@@ -8,7 +8,7 @@ import { createMaterialTopTabNavigator } from "@react-navigation/material-top-ta
 
 import SigninScreen from "./src/screens/SigninScreen";
 import SignupScreen from "./src/screens/SignupScreen";
-import HomeScreen from "./src/screens/Employee/HomeSreen";
+import EmployeeHomeScreen from "./src/screens/Employee/EmployeeHomeSreen";
 import JobDescription from "./src/screens/Employee/JobDescription";
 import FavouriteScreen from "./src/screens/Employee/FavouriteScreen";
 import CurrentJobScreen from "./src/screens/Employee/CurrentJobScreen";
@@ -43,15 +43,21 @@ const AccountStackScreen = () => {
 
 //Employee navigation properties
 //Home Screen: Stack Naviagation
+
 const HomeEmployeeStack = createStackNavigator();
 
 const HomeEmployeeStackScreen = () => {
   return (
-    <HomeEmployeeStack.Navigator>
-      <HomeEmployeeStack.Screen name="Home" component={HomeScreen} />
+    <HomeEmployeeStack.Navigator
+    screenOptions={{
+      headerShown: false
+    }}>
+      
+      <HomeEmployeeStack.Screen name="Home" component={EmployeeHomeScreen} />
       <HomeEmployeeStack.Screen
         name="JobDescription"
         component={JobDescription}
+        
       />
     </HomeEmployeeStack.Navigator>
   );
