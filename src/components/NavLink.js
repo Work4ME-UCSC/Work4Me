@@ -18,18 +18,18 @@ const NavLink = ({ title, button, onClick }) => {
 const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
-    marginTop: 25,
+    marginBottom: 25,
     alignSelf: "center",
   },
 
   title: {
-    fontSize: 16,
+    fontSize: 18,
     marginRight: 6,
   },
 
   nav: {
     color,
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: "bold",
   },
 });

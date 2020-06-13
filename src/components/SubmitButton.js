@@ -1,12 +1,15 @@
 import React from "react";
 import { Text, StyleSheet, TouchableOpacity } from "react-native";
 
-const color = "#ff8400";
-
-const SubmitButton = ({ size = 35, onClick, title = "Submit" }) => {
+const SubmitButton = ({
+  size = 35,
+  onClick,
+  title = "Submit",
+  color = "#ff8400",
+}) => {
   return (
     <TouchableOpacity
-      style={[styles.submitContainer, { height: size }]}
+      style={[styles.submitContainer, { height: size, backgroundColor: color }]}
       onPress={onClick}
     >
       <Text style={styles.submit}>{title}</Text>
@@ -16,7 +19,6 @@ const SubmitButton = ({ size = 35, onClick, title = "Submit" }) => {
 
 const styles = StyleSheet.create({
   submitContainer: {
-    backgroundColor: color,
     justifyContent: "center",
     alignItems: "center",
     marginTop: 25,

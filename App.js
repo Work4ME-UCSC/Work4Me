@@ -21,13 +21,20 @@ import AddJobs from "./src/screens/Employer/AddJobs";
 import ForgotPassword from "./src/screens/ForgotPassword";
 import ForgotVerificationScreen from "./src/screens/ForgotVerificationScreen";
 import SerNewPassword from "./src/screens/SetNewPassword";
+import WelcomeScreen from "./src/screens/WelcomeScreen";
 
 //Authentication Navigation: Stack Navigation
 const SignStack = createStackNavigator();
 
 const SignStackScreen = () => {
   return (
-    <SignStack.Navigator initialRouteName="Signin">
+    <SignStack.Navigator initialRouteName="Welcome">
+      <SignStack.Screen
+        name="Welcome"
+        component={WelcomeScreen}
+        options={{ headerShown: false }}
+      />
+
       <SignStack.Screen
         name="Signin"
         component={SigninScreen}
