@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
 
-import epValidator from "../hooks/epValidator";
-import SubmitButton from "../components/SubmitButton";
-import ErrorText from "../components/ErrorText";
-import FullTextInput from "../components/FullTextInput";
+import epValidator from "../../hooks/epValidator";
+import SubmitButton from "../../components/Authenticate/SubmitButton";
+import ErrorText from "../../components/Authenticate/ErrorText";
+import FullTextInput from "../../components/Authenticate/FullTextInput";
 
 const color = "#ff8400";
 

@@ -6,8 +6,8 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 
-import SigninScreen from "./src/screens/SigninScreen";
-import SignupScreen from "./src/screens/SignupScreen";
+import SigninScreen from "./src/screens/Authenticate/SigninScreen";
+import SignupScreen from "./src/screens/Authenticate/SignupScreen";
 import HomeScreen from "./src/screens/Employee/HomeSreen";
 import JobDescription from "./src/screens/Employee/JobDescription";
 import FavouriteScreen from "./src/screens/Employee/FavouriteScreen";
@@ -18,10 +18,10 @@ import AccountScreen from "./src/screens/Employee/AccountScreen";
 import ScreenSelect from "./src/screens/ScreenSelect";
 import Home from "./src/screens/Employer/Home";
 import AddJobs from "./src/screens/Employer/AddJobs";
-import ForgotPassword from "./src/screens/ForgotPassword";
-import ForgotVerificationScreen from "./src/screens/ForgotVerificationScreen";
-import SerNewPassword from "./src/screens/SetNewPassword";
-import WelcomeScreen from "./src/screens/WelcomeScreen";
+import ForgotPassword from "./src/screens/Authenticate/ForgotPassword";
+import ForgotVerificationScreen from "./src/screens/Authenticate/ForgotVerificationScreen";
+import SerNewPassword from "./src/screens/Authenticate/SetNewPassword";
+import WelcomeScreen from "./src/screens/Authenticate/WelcomeScreen";
 
 //Authentication Navigation: Stack Navigation
 const SignStack = createStackNavigator();

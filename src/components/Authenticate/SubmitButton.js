@@ -10,7 +10,7 @@ const SubmitButton = ({
   return (
     <TouchableOpacity
       style={[styles.submitContainer, { height: size, backgroundColor: color }]}
-      onPress={onClick}
+      onPress={() => onClick()}
     >
       <Text style={styles.submit}>{title}</Text>
     </TouchableOpacity>

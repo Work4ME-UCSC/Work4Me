@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 
-import FullTextInput from "../components/FullTextInput";
-import SubmitButton from "../components/SubmitButton";
-import ErrorText from "../components/ErrorText";
+import FullTextInput from "../../components/Authenticate/FullTextInput";
+import SubmitButton from "../../components/Authenticate/SubmitButton";
+import ErrorText from "../../components/Authenticate/ErrorText";
 
 const color = "#ff8400";
 

@@ -11,6 +11,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 const Input = ({
   name,
+  place,
   icon = "",
   keyboardType = "default",
   secureTextEntry = false,
@@ -20,18 +21,19 @@ const Input = ({
   autoCapitalize = "sentences",
   onSubmitEditing,
   blurOnSubmit,
+  ref,
 }) => {
   const [borderColor, setBorderColor] = useState("black");
   const [titleColor, setTitleColor] = useState("black");
   const [visible, setVisible] = useState(false);
-  const [placeholder, setPlaceholder] = useState(name);
+  const [placeholder, setPlaceholder] = useState(place);
   const [secure, setSecure] = useState(secureTextEntry);
   const [eye, setEye] = useState("eye-off");
 
   return (
     <View style={[styles.container, { borderBottomColor: borderColor }]}>
       {visible ? (
-        <Text style={{ color: titleColor }}>{name}</Text>
+        <Text style={{ color: titleColor }}>{place}</Text>
       ) : (
         <Text></Text>
       )}
@@ -46,7 +48,7 @@ const Input = ({
         <TextInput
           style={styles.inputStyle}
           placeholder={placeholder}
-          placeholderTextColor="#8a8a8a"
+          placeholderTextColor="#666666"
           autoCapitalize={autoCapitalize}
           keyboardType={keyboardType}
           secureTextEntry={secure}
@@ -58,7 +60,7 @@ const Input = ({
           }}
           onBlur={() => {
             setBorderColor("black");
-            setPlaceholder(name);
+            setPlaceholder(place);
             if (value) {
               setTitleColor("black");
               setVisible(true);
@@ -67,6 +69,9 @@ const Input = ({
           value={value}
           onChangeText={onChangeText}
           onEndEditing={onEndEditing}
+          // onSubmitEditing={onSubmitEditing}
+          // blurOnSubmit={blurOnSubmit}
+          // ref={ref}
         />
 
         {name == "Password" ? (
