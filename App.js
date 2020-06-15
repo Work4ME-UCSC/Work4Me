@@ -56,8 +56,7 @@ const HomeEmployeeStackScreen = () => {
       <HomeEmployeeStack.Screen name="Home" component={EmployeeHomeScreen} />
       <HomeEmployeeStack.Screen
         name="JobDescription"
-        component={JobDescription}
-        
+        component={JobDescription} 
       />
     </HomeEmployeeStack.Navigator>
   );
