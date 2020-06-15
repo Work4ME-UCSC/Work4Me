@@ -18,7 +18,7 @@ const NavLink = ({ title, button, onClick }) => {
 const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
-    marginBottom: 25,
+    //marginBottom: 25,
     alignSelf: "center",
   },
 

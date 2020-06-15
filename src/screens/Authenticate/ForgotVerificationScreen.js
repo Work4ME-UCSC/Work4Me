@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { useSafeArea } from "react-native-safe-area-context";
 
 import FullTextInput from "../../components/Authenticate/FullTextInput";
 import SubmitButton from "../../components/Authenticate/SubmitButton";
@@ -11,8 +12,16 @@ const ForgotVerificationScreen = ({ navigation }) => {
   const [code, setCode] = useState("");
   const [error, setError] = useState("");
 
+  const insets = useSafeArea();
+
   return (
-    <View style={styles.container}>
+    <View
+      style={{
+        ...styles.container,
+        paddingTop: insets.top,
+        paddingBottom: insets.bottom,
+      }}
+    >
       {error ? (
         <ErrorText
           icon="alert-circle-outline"
@@ -42,7 +51,10 @@ const ForgotVerificationScreen = ({ navigation }) => {
         </TouchableOpacity>
       </View>
 
-      <SubmitButton onClick={() => navigation.navigate("NewPassword")} />
+      <SubmitButton
+        style={styles.button}
+        onClick={() => navigation.navigate("NewPassword")}
+      />
     </View>
   );
 };
@@ -51,7 +63,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginHorizontal: 20,
-    marginTop: 60,
+    marginTop: 30,
   },
 
   heading: {
@@ -68,6 +80,10 @@ const styles = StyleSheet.create({
   resendContainer: {
     flexDirection: "row",
     marginTop: 15,
+  },
+
+  button: {
+    marginTop: 25,
   },
 
   resend: {

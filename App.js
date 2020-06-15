@@ -5,6 +5,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
 import SigninScreen from "./src/screens/Authenticate/SigninScreen";
 import SignupScreen from "./src/screens/Authenticate/SignupScreen";
@@ -240,6 +241,7 @@ const Main = createStackNavigator();
 
 const App = () => {
   return (
+    // <SafeAreaProvider>
     <NavigationContainer>
       <Main.Navigator screenOptions={{ headerShown: false }}>
         <Main.Screen name="main" component={ScreenSelect} />
@@ -248,6 +250,7 @@ const App = () => {
         <Main.Screen name="Employer" component={EmployerScreen} />
       </Main.Navigator>
     </NavigationContainer>
+    // </SafeAreaProvider>
   );
 };
 

@@ -51,6 +51,7 @@ const ForgotPassword = ({ navigation, route }) => {
       ) : null}
 
       <SubmitButton
+        style={styles.button}
         title="Find account"
         onClick={() => navigation.navigate("ForgotVerify")}
       />
@@ -68,6 +69,10 @@ const styles = StyleSheet.create({
   heading: {
     fontSize: 22,
     marginTop: 10,
+  },
+
+  button: {
+    marginTop: 25,
   },
 });
 

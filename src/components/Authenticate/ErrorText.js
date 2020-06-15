@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
     marginBottom: 10,
-    marginTop: 2,
+    //marginTop: 2,
   },
 
   icon: {

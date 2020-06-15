@@ -8,7 +8,7 @@ import {
   Keyboard,
   Platform,
 } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { useSafeArea } from "react-native-safe-area-context";
 
 import Input from "../../components/Authenticate/Input";
 import ErrorText from "../../components/Authenticate/ErrorText";
@@ -48,13 +48,21 @@ const SignupScreen = ({ navigation }) => {
     }
   };
 
+  const insets = useSafeArea();
+
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS == "ios" ? "padding" : "height"}
-      style={styles.container}
+      style={{ flex: 1 }}
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <SafeAreaView style={styles.container}>
+        <View
+          style={{
+            ...styles.container,
+            paddingTop: insets.top,
+            paddingBottom: insets.bottom,
+          }}
+        >
           <View style={styles.header}>
             <Text style={styles.heading}>Sign up</Text>
           </View>
@@ -157,7 +165,7 @@ const SignupScreen = ({ navigation }) => {
               mystyle={{ flex: 1 }}
             />
           </View>
-        </SafeAreaView>
+        </View>
       </TouchableWithoutFeedback>
     </KeyboardAvoidingView>
   );
@@ -170,14 +178,13 @@ const styles = StyleSheet.create({
   },
 
   header: {
-    flex: 2,
+    //flex: 1,
     justifyContent: "flex-end",
-    paddingHorizontal: 20,
-    paddingBottom: 20,
+    padding: 20,
   },
 
   footer: {
-    flex: 6,
+    flex: 1,
     paddingHorizontal: 20,
     paddingVertical: 30,
     backgroundColor: "#fff",

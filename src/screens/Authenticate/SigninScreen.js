@@ -9,7 +9,7 @@ import {
   Keyboard,
   Platform,
 } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { useSafeArea } from "react-native-safe-area-context";
 
 import Input from "../../components/Authenticate/Input";
 import ErrorText from "../../components/Authenticate/ErrorText";
@@ -57,13 +57,21 @@ const SigninScreen = ({ navigation }) => {
     }
   };
 
+  const insets = useSafeArea();
+
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS == "ios" ? "padding" : "height"}
       style={styles.container}
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <SafeAreaView style={styles.container}>
+        <View
+          style={{
+            ...styles.container,
+            paddingTop: insets.top,
+            paddingBottom: insets.bottom,
+          }}
+        >
           <View style={styles.header}>
             <Text style={styles.heading}>Sign in</Text>
           </View>
@@ -133,7 +141,7 @@ const SigninScreen = ({ navigation }) => {
               navClick={() => navigation.navigate("Signup")}
             />
           </View>
-        </SafeAreaView>
+        </View>
       </TouchableWithoutFeedback>
     </KeyboardAvoidingView>
   );

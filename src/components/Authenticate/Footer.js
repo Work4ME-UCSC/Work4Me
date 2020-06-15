@@ -7,7 +7,11 @@ import NavLink from "./NavLink";
 const Footer = ({ mainBtnTitle, onClick, navTitle, navBtn, navClick }) => {
   return (
     <View style={styles.container}>
-      <SubmitButton size={40} title={mainBtnTitle} onClick={onClick} />
+      <SubmitButton
+        title={mainBtnTitle}
+        onClick={onClick}
+        style={styles.button}
+      />
       <View style={styles.orContainer}>
         <View style={styles.horozontalLine}></View>
         <Text style={{ marginHorizontal: 5 }}>OR</Text>
@@ -27,7 +31,7 @@ const styles = StyleSheet.create({
 
   orContainer: {
     flexDirection: "row",
-    marginVertical: 20,
+    //marginVertical: 20,
   },
 
   horozontalLine: {
@@ -36,6 +40,11 @@ const styles = StyleSheet.create({
     alignSelf: "flex-start",
     flex: 1,
     marginVertical: 10,
+  },
+
+  button: {
+    height: 40,
+    marginTop: 25,
   },
 });
 

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet, TextInput } from "react-native";
+import { useSafeArea } from "react-native-safe-area-context";
 
 import FullTextInput from "../../components/Authenticate/FullTextInput";
 import SubmitButton from "../../components/Authenticate/SubmitButton";
@@ -8,12 +9,14 @@ import ErrorText from "../../components/Authenticate/ErrorText";
 
 const color = "#ff8400";
 
-const SerNewPassword = () => {
+const SetNewPassword = () => {
   const [password, setPassword] = useState("");
   const [retype, setRetype] = useState("");
   const [passEnd, setPassEnd] = useState(false);
   const [reEnd, setReEnd] = useState(false);
   const [reError, setReError] = useState("");
+
+  const insets = useSafeArea();
 
   const { checkPassword, passwordError } = epValidator();
 
@@ -23,7 +26,13 @@ const SerNewPassword = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <View
+      style={{
+        ...styles.container,
+        paddingTop: insets.top,
+        paddingBottom: insets.bottom,
+      }}
+    >
       <Text style={styles.heading}>Finally, choose a new password</Text>
       <Text style={styles.content}>
         Password must include at least 8 characters including at least 1 number
@@ -74,7 +83,7 @@ const SerNewPassword = () => {
 
       {reEnd && reError ? <ErrorText title={reError} /> : null}
 
-      <SubmitButton />
+      <SubmitButton style={styles.button} />
     </View>
   );
 };
@@ -83,7 +92,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginHorizontal: 20,
-    marginTop: 60,
+    marginTop: 30,
   },
 
   heading: {
@@ -99,6 +108,10 @@ const styles = StyleSheet.create({
   inputTitle: {
     marginTop: 20,
   },
+
+  button: {
+    marginTop: 25,
+  },
 });
 
-export default SerNewPassword;
+export default SetNewPassword;
