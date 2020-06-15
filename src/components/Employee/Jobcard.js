@@ -22,37 +22,37 @@ const JobCard = props => {
 
     return (
 
-        <TouchableCmp onPress= {props.onSelect}>
-        <View style={styles.container}>
-            <View style={styles.imageContainer}>
-                <Image source={{ uri: props.img }} style={styles.image} />
-            </View>
+        <TouchableCmp onPress={props.onSelect}>
+            <View style={styles.container}>
+                <View style={styles.imageContainer}>
+                    <Image source={{ uri: props.img }} style={styles.image} />
+                </View>
 
-            <View style={styles.DetailsContainer}>
-                <View style={{ flex: 1, alignSelf: "center" }}>
-                    <Text style={styles.title}>{props.name}</Text>
+                <View style={styles.DetailsContainer}>
+                    <View style={{ flex: 1, alignSelf: "center" }}>
+                        <Text style={styles.title}>{props.name}</Text>
+                    </View>
+                    <View style={styles.item}>
+                        <Feather name="calendar" style={styles.icon} color="black" />
+                        <Text style={{ color: "grey" }}>{props.date}</Text>
+                    </View>
+                    <View style={styles.item}>
+                        <Entypo name="location-pin" style={styles.icon} color="black" />
+                        <Text style={{ color: "grey" }}>{props.location}</Text>
+                    </View>
+                    <View style={styles.item}>
+                        <Feather name="clock" style={styles.icon} color="black" />
+                        <Text style={{ color: "grey" }}>{props.time}</Text>
+                    </View>
                 </View>
-                <View style={styles.item}>
-                    <Feather name="calendar" style={styles.icon} color="black" />
-                    <Text style={{ color: "grey" }}>25 may 2020</Text>
-                </View>
-                <View style={styles.item}>
-                    <Entypo name="location-pin" style={styles.icon} color="black" />
-                    <Text style={{ color: "grey" }}>Colombo 07</Text>
-                </View>
-                <View style={styles.item}>
-                    <Feather name="clock" style={styles.icon} color="black" />
-                    <Text style={{ color: "grey" }}>3pm - 5pm</Text>
-                </View>
-            </View>
 
-            <View style={styles.FavContainer}>
-                <TouchableOpacity style={styles.favoriteButton}>
-                    <Feather name="heart" size={30} color="orange" />
-                </TouchableOpacity>
+                <View style={styles.FavContainer}>
+                    <TouchableOpacity style={styles.favoriteButton}>
+                        <Feather name="heart" size={30} color="orange" />
+                    </TouchableOpacity>
+                </View>
+
             </View>
-            
-        </View>
         </TouchableCmp>
 
     )
@@ -88,9 +88,9 @@ const styles = StyleSheet.create({
         overflow: 'hidden',
         borderTopLeftRadius: 10,
         borderBottomLeftRadius: 10,
-          },
+    },
 
-    DetailsContainer:{
+    DetailsContainer: {
         width: '45%',
         marginBottom: 10,
     },
