@@ -5,10 +5,12 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
-import SigninScreen from "./src/screens/SigninScreen";
-import SignupScreen from "./src/screens/SignupScreen";
 import EmployeeHomeScreen from "./src/screens/Employee/EmployeeHomeSreen";
+import SigninScreen from "./src/screens/Authenticate/SigninScreen";
+import SignupScreen from "./src/screens/Authenticate/SignupScreen";
+
 import JobDescription from "./src/screens/Employee/JobDescription";
 import FavouriteScreen from "./src/screens/Employee/FavouriteScreen";
 import CurrentJobScreen from "./src/screens/Employee/CurrentJobScreen";
@@ -18,15 +20,69 @@ import AccountScreen from "./src/screens/Employee/AccountScreen";
 import ScreenSelect from "./src/screens/ScreenSelect";
 import Home from "./src/screens/Employer/Home";
 import AddJobs from "./src/screens/Employer/AddJobs";
+import ForgotPassword from "./src/screens/Authenticate/ForgotPassword";
+import ForgotVerificationScreen from "./src/screens/Authenticate/ForgotVerificationScreen";
+import SerNewPassword from "./src/screens/Authenticate/SetNewPassword";
+import WelcomeScreen from "./src/screens/Authenticate/WelcomeScreen";
+import NameInfo from "./src/screens/Authenticate/signup/NameInfo";
+import EmailInfo from "./src/screens/Authenticate/signup/EmailInfo";
+import PasswordInfo from "./src/screens/Authenticate/signup/PasswordInfo";
 
 //Authentication Navigation: Stack Navigation
 const SignStack = createStackNavigator();
 
 const SignStackScreen = () => {
   return (
-    <SignStack.Navigator>
-      <SignStack.Screen name="Signin" component={SigninScreen} />
-      <SignStack.Screen name="Signup" component={SignupScreen} />
+    <SignStack.Navigator initialRouteName="Welcome">
+      <SignStack.Screen
+        name="Welcome"
+        component={WelcomeScreen}
+        options={{ headerShown: false }}
+      />
+
+      <SignStack.Screen
+        name="Signin"
+        component={SigninScreen}
+        options={{ headerShown: false }}
+      />
+      <SignStack.Screen
+        name="Signup"
+        component={SignupScreen}
+        options={{ headerShown: false }}
+      />
+      <SignStack.Screen
+        name="ForgotPassword"
+        component={ForgotPassword}
+        options={{ title: "Forgot Password" }}
+      />
+      <SignStack.Screen
+        name="ForgotVerify"
+        component={ForgotVerificationScreen}
+        options={{ headerShown: false }}
+      />
+      <SignStack.Screen
+        name="NewPassword"
+        component={SerNewPassword}
+        options={{ headerShown: false }}
+      />
+
+      <SignStack.Screen
+        name="NameInfo"
+        component={NameInfo}
+        options={{ headerShown: false }}
+      />
+
+      <SignStack.Screen
+        name="Email"
+        component={EmailInfo}
+        options={{ headerShown: false }}
+      />
+
+      <SignStack.Screen
+        name="Password"
+        component={PasswordInfo}
+        options={{ headerShown: false }}
+      />
     </SignStack.Navigator>
   );
 };
@@ -97,6 +153,7 @@ const EmployeeScreen = () => {
       initialRouteName="Home"
       tabBarOptions={{
         activeTintColor: "#f08a1d",
+        inactiveTintColor: "#303030",
       }}
     >
       <EmployeeBottomTab.Screen
@@ -211,6 +268,7 @@ const Main = createStackNavigator();
 
 const App = () => {
   return (
+    // <SafeAreaProvider>
     <NavigationContainer>
       <Main.Navigator screenOptions={{ headerShown: false }}>
         <Main.Screen name="main" component={ScreenSelect} />
@@ -219,6 +277,7 @@ const App = () => {
         <Main.Screen name="Employer" component={EmployerScreen} />
       </Main.Navigator>
     </NavigationContainer>
+    // </SafeAreaProvider>
   );
 };
 
