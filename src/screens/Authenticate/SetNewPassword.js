@@ -21,8 +21,19 @@ const SetNewPassword = () => {
   const { checkPassword, passwordError } = epValidator();
 
   const checkRetype = (pass, retype) => {
-    if (retype != pass) return setReError("Password does not mismatch");
+    if (retype !== pass) return setReError("Password does not mismatch");
     return setReError("");
+  };
+
+  const handleSubmit = () => {
+    if (passwordError || reError) {
+      setPassEnd(true);
+      setReEnd(true);
+      checkPassword(password);
+      checkRetype(password, retype);
+      return;
+    }
+    console.log("Correct");
   };
 
   return (
@@ -35,8 +46,9 @@ const SetNewPassword = () => {
     >
       <Text style={styles.heading}>Finally, choose a new password</Text>
       <Text style={styles.content}>
-        Password must include at least 8 characters including at least 1 number
-        and 1 special character
+        Password must have at least 8 characters, contain at least one uppercase
+        letter, at least one lower letter and at least one number or special
+        character
       </Text>
 
       <Text style={styles.inputTitle}>
@@ -46,7 +58,7 @@ const SetNewPassword = () => {
       <FullTextInput
         placeholder="New password"
         autoCapitalize="none"
-        secureTextEntry={true}
+        secureTextEntry
         value={password}
         onChangeText={(pass) => {
           setPassword(pass);
@@ -83,7 +95,7 @@ const SetNewPassword = () => {
 
       {reEnd && reError ? <ErrorText title={reError} /> : null}
 
-      <SubmitButton style={styles.button} />
+      <SubmitButton style={styles.button} onClick={handleSubmit} />
     </View>
   );
 };

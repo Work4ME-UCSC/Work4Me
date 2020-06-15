@@ -24,6 +24,8 @@ import ForgotVerificationScreen from "./src/screens/Authenticate/ForgotVerificat
 import SerNewPassword from "./src/screens/Authenticate/SetNewPassword";
 import WelcomeScreen from "./src/screens/Authenticate/WelcomeScreen";
 import NameInfo from "./src/screens/Authenticate/signup/NameInfo";
+import EmailInfo from "./src/screens/Authenticate/signup/EmailInfo";
+import PasswordInfo from "./src/screens/Authenticate/signup/PasswordInfo";
 
 //Authentication Navigation: Stack Navigation
 const SignStack = createStackNavigator();
@@ -66,6 +68,18 @@ const SignStackScreen = () => {
       <SignStack.Screen
         name="NameInfo"
         component={NameInfo}
+        options={{ headerShown: false }}
+      />
+
+      <SignStack.Screen
+        name="Email"
+        component={EmailInfo}
+        options={{ headerShown: false }}
+      />
+
+      <SignStack.Screen
+        name="Password"
+        component={PasswordInfo}
         options={{ headerShown: false }}
       />
     </SignStack.Navigator>

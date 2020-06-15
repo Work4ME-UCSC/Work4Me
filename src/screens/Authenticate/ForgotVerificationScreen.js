@@ -11,8 +11,32 @@ const color = "#ff8400";
 const ForgotVerificationScreen = ({ navigation }) => {
   const [code, setCode] = useState("");
   const [error, setError] = useState("");
+  const [inputError, setInputError] = useState(false);
 
   const insets = useSafeArea();
+
+  const handleInput = (code) => {
+    setCode(code.replace(/[^0-9]/g, ""));
+  };
+
+  let errorMessage;
+
+  const handleSubmit = () => {
+    if (code.length !== 4) {
+      setInputError(true);
+      return;
+    }
+    setInputError(false);
+    navigation.navigate("NewPassword");
+  };
+
+  if (inputError)
+    errorMessage = (
+      <ErrorText
+        title="Length of code should be 4 "
+        icon="alert-circle-outline"
+      />
+    );
 
   return (
     <View
@@ -40,8 +64,11 @@ const ForgotVerificationScreen = ({ navigation }) => {
         placeholder="Enter code"
         keyboardType="number-pad"
         value={code}
-        onChangeText={setCode}
+        onChangeText={handleInput}
+        maxLength={4}
       />
+
+      {errorMessage}
 
       <View style={styles.resendContainer}>
         <Text style={{ fontSize: 16 }}>Didn't receive the code? </Text>
@@ -51,10 +78,7 @@ const ForgotVerificationScreen = ({ navigation }) => {
         </TouchableOpacity>
       </View>
 
-      <SubmitButton
-        style={styles.button}
-        onClick={() => navigation.navigate("NewPassword")}
-      />
+      <SubmitButton style={styles.button} onClick={handleSubmit} />
     </View>
   );
 };

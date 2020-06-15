@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
+import validator from "validator";
 
-import epValidator from "../../hooks/epValidator";
 import SubmitButton from "../../components/Authenticate/SubmitButton";
 import ErrorText from "../../components/Authenticate/ErrorText";
 import FullTextInput from "../../components/Authenticate/FullTextInput";
@@ -10,10 +10,31 @@ const color = "#ff8400";
 
 const ForgotPassword = ({ navigation, route }) => {
   const [email, setEmail] = useState(route.params.mail);
-  const [emailEnd, setEmailEnd] = useState(false);
+  const [emailError, setEmailError] = useState(false);
   const [emailValidation, setEmailValidation] = useState("");
 
-  const { checkEmail, emailError } = epValidator();
+  const handleEmailInput = (email) => {
+    setEmail(email);
+  };
+
+  let errorMessage;
+
+  const handleSubmit = () => {
+    if (!validator.isEmail(email)) {
+      setEmailError(true);
+      return;
+    }
+    setEmailError("");
+    navigation.navigate("ForgotVerify");
+  };
+
+  if (emailError)
+    errorMessage = (
+      <ErrorText
+        title="Please enter a valid email address"
+        icon="alert-circle-outline"
+      />
+    );
 
   return (
     <View style={styles.container}>
@@ -36,24 +57,17 @@ const ForgotPassword = ({ navigation, route }) => {
         autoCorrect={false}
         keyboardType="email-address"
         value={email}
-        onChangeText={(mail) => {
-          setEmail(mail);
-          checkEmail(mail);
-        }}
-        onEndEditing={() => {
-          setEmailEnd(true);
-          checkEmail(email);
-        }}
+        onChangeText={handleEmailInput}
       />
 
-      {emailEnd && emailError && emailError != "initial" ? (
-        <ErrorText title={emailError} />
-      ) : null}
+      {errorMessage}
+
+      {/* {emailError ? <ErrorText title="emailError" /> : null} */}
 
       <SubmitButton
         style={styles.button}
         title="Find account"
-        onClick={() => navigation.navigate("ForgotVerify")}
+        onClick={handleSubmit}
       />
     </View>
   );

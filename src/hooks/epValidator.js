@@ -10,8 +10,12 @@ export default () => {
       setPasswordError("Please enter a password");
       return passwordError;
     }
-    if (length < 8) {
-      setPasswordError("Please enter a password with at least 8 characters");
+    if (
+      !password.match(
+        /(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/
+      )
+    ) {
+      setPasswordError("Please enter a valid password ");
       return passwordError;
     }
     return setPasswordError("");

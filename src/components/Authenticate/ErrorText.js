@@ -3,11 +3,11 @@ import { View, Text, StyleSheet } from "react-native";
 
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
-const ErrorText = ({ icon, title }) => {
+const ErrorText = ({ icon, title, style }) => {
   return (
     <View style={styles.container}>
       {icon ? <MaterialCommunityIcons name={icon} style={styles.icon} /> : null}
-      <Text style={styles.error}>{title}</Text>
+      <Text style={{ ...styles.error, ...style }}>{title}</Text>
     </View>
   );
 };

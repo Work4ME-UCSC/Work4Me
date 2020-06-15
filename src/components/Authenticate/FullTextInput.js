@@ -1,28 +1,12 @@
 import React from "react";
 import { View, Text, StyleSheet, TextInput } from "react-native";
 
-const FullTextInput = ({
-  placeholder,
-  autoCapitalize = "sentences",
-  autoCorrect = true,
-  secureTextEntry = false,
-  keyboardType = "default",
-  value,
-  onChangeText,
-  onEndEditing,
-}) => {
+const FullTextInput = (props) => {
   return (
     <View style={styles.container}>
       <TextInput
+        {...props}
         style={styles.inputStyle}
-        placeholder={placeholder}
-        autoCapitalize={autoCapitalize}
-        autoCorrect={autoCorrect}
-        secureTextEntry={secureTextEntry}
-        keyboardType={keyboardType}
-        value={value}
-        onChangeText={onChangeText}
-        onEndEditing={onEndEditing}
         placeholderTextColor="gray"
       />
     </View>
