@@ -28,6 +28,8 @@ import NameInfo from "./src/screens/Authenticate/signup/NameInfo";
 import EmailInfo from "./src/screens/Authenticate/signup/EmailInfo";
 import PasswordInfo from "./src/screens/Authenticate/signup/PasswordInfo";
 
+import Color from "./src/constants/Colors";
+
 //Authentication Navigation: Stack Navigation
 const SignStack = createStackNavigator();
 
@@ -105,14 +107,14 @@ const HomeEmployeeStack = createStackNavigator();
 const HomeEmployeeStackScreen = () => {
   return (
     <HomeEmployeeStack.Navigator
-    screenOptions={{
-      headerShown: false
-    }}>
-      
+      screenOptions={{
+        headerShown: false,
+      }}
+    >
       <HomeEmployeeStack.Screen name="Home" component={EmployeeHomeScreen} />
       <HomeEmployeeStack.Screen
         name="JobDescription"
-        component={JobDescription} 
+        component={JobDescription}
       />
     </HomeEmployeeStack.Navigator>
   );
@@ -215,7 +217,16 @@ const AddJobStack = createStackNavigator();
 const AddJobScreen = () => {
   return (
     <AddJobStack.Navigator>
-      <AddJobStack.Screen name="Add" component={AddJobs} />
+      <AddJobStack.Screen
+        name="Add"
+        component={AddJobs}
+        options={{
+          headerTitle: "Post a Job",
+          headerStyle: {
+            backgroundColor: Color.primaryOrange,
+          },
+        }}
+      />
     </AddJobStack.Navigator>
   );
 };
