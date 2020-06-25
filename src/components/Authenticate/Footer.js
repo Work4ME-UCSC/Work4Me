@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 
-import SubmitButton from "./SubmitButton";
+import SubmitButton from "../SubmitButton";
 import NavLink from "./NavLink";
 
 const Footer = ({ mainBtnTitle, onClick, navTitle, navBtn, navClick }) => {

@@ -3,7 +3,7 @@ import { View, Text, TouchableWithoutFeedback, Keyboard } from "react-native";
 import { useSafeArea } from "react-native-safe-area-context";
 
 import PasswordInput from "../../../components/Authenticate/PasswordInput";
-import SubmitButton from "../../../components/Authenticate/SubmitButton";
+import SubmitButton from "../../../components/SubmitButton";
 import ErrorText from "../../../components/Authenticate/ErrorText";
 
 import myStyles from "./myStyles";

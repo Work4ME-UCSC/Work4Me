@@ -4,7 +4,7 @@ import { useSafeArea } from "react-native-safe-area-context";
 import validator from "validator";
 
 import SimpleInput from "../../../components/Authenticate/SimpleInput";
-import SubmitButton from "../../../components/Authenticate/SubmitButton";
+import SubmitButton from "../../../components/SubmitButton";
 import ErrorText from "../../../components/Authenticate/ErrorText";
 
 import myStyles from "./myStyles";

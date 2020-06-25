@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import validator from "validator";
 
-import SubmitButton from "../../components/Authenticate/SubmitButton";
+import SubmitButton from "../../components/SubmitButton";
 import ErrorText from "../../components/Authenticate/ErrorText";
 import FullTextInput from "../../components/Authenticate/FullTextInput";
 

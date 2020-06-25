@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, TextInput } from "react-native";
 import { useSafeArea } from "react-native-safe-area-context";
 
 import FullTextInput from "../../components/Authenticate/FullTextInput";
-import SubmitButton from "../../components/Authenticate/SubmitButton";
+import SubmitButton from "../../components/SubmitButton";
 import epValidator from "../../hooks/epValidator";
 import ErrorText from "../../components/Authenticate/ErrorText";
 

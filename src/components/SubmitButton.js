@@ -1,7 +1,7 @@
 import React from "react";
 import { Text, StyleSheet, TouchableOpacity } from "react-native";
 
-const color = "#ff8400";
+import Color from "../constants/Colors";
 
 const SubmitButton = ({ onClick, title = "Submit", style }) => {
   return (
@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderRadius: 5,
     height: 35,
-    backgroundColor: color,
+    backgroundColor: Color.primaryOrange,
   },
 
   submit: {
