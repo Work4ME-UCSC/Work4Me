@@ -3,39 +3,35 @@ import {
   View,
   StyleSheet,
   ScrollView,
-  Button,
   KeyboardAvoidingView,
 } from "react-native";
-
-import { useSafeArea } from "react-native-safe-area-context";
 
 import JobInput from "../../components/Employer/JobInput";
 import Dropdown from "../../components/Employer/Dropdown";
 import Radiobutton from "../../components/Employer/Radiobutton";
 import Time from "../../components/Employer/Time";
-import { LOCATION, CATEGORIES } from "../../data/addJobData";
+import { LOCATION, CATEGORIES, DAYS, SEX } from "../../data/addJobData";
 import SubmitButton from "../../components/SubmitButton";
 
 const AddJobs = () => {
   const [category, setCategory] = useState(null);
   const [location, setLocation] = useState(null);
+  const [day, setDay] = useState(null);
   const [sex, setSex] = useState("Any");
   const [fromDate, setFromDate] = useState(new Date(2020, 0));
   const [toDate, setToDate] = useState(new Date(2020, 0));
 
-  const insets = useSafeArea();
-
   return (
-    <KeyboardAvoidingView
-      style={{ flex: 1, paddingTop: insets.top, paddingBottom: insets.bottom }}
-    >
+    <KeyboardAvoidingView style={{ flex: 1 }}>
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
-        <JobInput
-          label="Job Title"
-          icon="pencil"
-          placeholder="Enter Job title"
-          autoCorrect={false}
-        />
+        <View style={styles.title}>
+          <JobInput
+            label="Job Title"
+            icon="pencil"
+            placeholder="Enter Job title"
+            autoCorrect={false}
+          />
+        </View>
 
         <JobInput
           label="Job Description"
@@ -60,7 +56,6 @@ const AddJobs = () => {
             setCategory({ category: item });
           }}
         />
-        {/* {console.log(category)} */}
 
         <Dropdown
           title="Location"
@@ -72,8 +67,6 @@ const AddJobs = () => {
             setLocation({ location: item.value });
           }}
         />
-
-        {/* {console.log(location)} */}
 
         <JobInput
           label="Address (Optional)"
@@ -87,6 +80,17 @@ const AddJobs = () => {
           icon="cash"
           keyboardType="decimal-pad"
           placeholder="Enter Salary"
+        />
+
+        <Dropdown
+          title="Working Day"
+          items={DAYS}
+          multiple={true}
+          multipleText="Selected %d"
+          placeholder="Select Day"
+          onChangeItem={(item) => {
+            setDay({ day: item });
+          }}
         />
 
         <View style={styles.timeContainer}>
@@ -103,11 +107,7 @@ const AddJobs = () => {
 
         <Radiobutton
           title="Applicant Sex"
-          radio_props={[
-            { label: "Male", value: "Male" },
-            { label: "Female", value: "Female" },
-            { label: "Any", value: "Any" },
-          ]}
+          radio_props={SEX}
           onPress={(value) => setSex(value)}
           initial={2}
           formHorizontal={true}
@@ -123,6 +123,10 @@ const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 20,
     flex: 1,
+  },
+
+  title: {
+    marginTop: 20,
   },
 
   description: {

@@ -24,3 +24,21 @@ export const CATEGORIES = [
   { label: "Shop keeper", value: "Shop keeper" },
   { label: "Cashier", value: "Cashier" },
 ];
+
+export const DAYS = [
+  { label: "Not applicable", value: "Not applicable" },
+  { label: "Negotiable", value: "Negotiable" },
+  { label: "Monday", value: "Monday" },
+  { label: "Tuesday", value: "Tuesday" },
+  { label: "Wednesday", value: "Wednesday" },
+  { label: "Thursday", value: "Thursday" },
+  { label: "Friday", value: "Friday" },
+  { label: "Saturday", value: "Saturday" },
+  { label: "Sunday", value: "Sunday" },
+];
+
+export const SEX = [
+  { label: "Male", value: "Male" },
+  { label: "Female", value: "Female" },
+  { label: "Any", value: "Any" },
+];
