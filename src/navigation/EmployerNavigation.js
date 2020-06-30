@@ -1,10 +1,38 @@
 import React from "react";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { HeaderButtons, Item } from "react-navigation-header-buttons";
 
-import { createStackNavigator } from "@react-navigation/stack";
+import { createStackNavigator, HeaderTitle } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createDrawerNavigator } from "@react-navigation/drawer";
 
 import Color from "../constants/Colors";
+import HeaderButton from "../components/HeaderButton";
+import { DrawerContent } from "../components/DrawerContent";
+import MessageScreen from "../screens/MessageScreen";
+import SettingScreen from "../screens/SettingScreen";
+import HelpScreen from "../screens/HelpScreen";
+
+const defaultHeaderOptions = {
+  headerStyle: {
+    backgroundColor: Platform.OS === "android" ? Color.primaryOrange : "",
+  },
+  headerTintColor: Platform.OS === "android" ? "black" : Color.primaryOrange,
+};
+
+const screenOptions = ({ navigation }) => ({
+  headerLeft: () => (
+    <HeaderButtons HeaderButtonComponent={HeaderButton}>
+      <Item
+        title="Menu"
+        iconName={Platform.OS === "android" ? "md-menu" : "ios-menu"}
+        onPress={() => {
+          navigation.toggleDrawer();
+        }}
+      />
+    </HeaderButtons>
+  ),
+});
 
 //screens
 import Home from "../screens/Employer/Home";
@@ -13,13 +41,17 @@ import AccountScreen from "../screens/Employee/AccountScreen";
 
 //Employer properties
 
-const HomeEmployerStack = createStackNavigator();
+const HomeBottomTabNavigator = createStackNavigator();
 
-const HomeEmployerStackScreen = () => {
+const HomeBottomTabNavigatorScreen = () => {
   return (
-    <HomeEmployerStack.Navigator>
-      <HomeEmployerStack.Screen name="Home" component={Home} />
-    </HomeEmployerStack.Navigator>
+    <HomeBottomTabNavigator.Navigator screenOptions={defaultHeaderOptions}>
+      <HomeBottomTabNavigator.Screen
+        name="Home"
+        component={Home}
+        options={screenOptions}
+      />
+    </HomeBottomTabNavigator.Navigator>
   );
 };
 
@@ -28,18 +60,27 @@ const AddJobStack = createStackNavigator();
 
 const AddJobScreen = () => {
   return (
-    <AddJobStack.Navigator>
+    <AddJobStack.Navigator screenOptions={defaultHeaderOptions}>
       <AddJobStack.Screen
         name="Add"
         component={AddJobs}
-        options={{
-          headerTitle: "Post a Job",
-          headerStyle: {
-            backgroundColor: Color.primaryOrange,
-          },
-        }}
+        options={screenOptions}
       />
     </AddJobStack.Navigator>
+  );
+};
+
+const MessageStack = createStackNavigator();
+
+const MessageScreenStack = () => {
+  return (
+    <MessageStack.Navigator screenOptions={defaultHeaderOptions}>
+      <MessageStack.Screen
+        name="Message"
+        component={MessageScreen}
+        options={screenOptions}
+      />
+    </MessageStack.Navigator>
   );
 };
 
@@ -48,34 +89,66 @@ const AccountStack = createStackNavigator();
 
 const AccountStackScreen = () => {
   return (
-    <AccountStack.Navigator>
-      <AccountStack.Screen name="Account" component={AccountScreen} />
+    <AccountStack.Navigator screenOptions={defaultHeaderOptions}>
+      <AccountStack.Screen
+        name="Account"
+        component={AccountScreen}
+        options={screenOptions}
+      />
     </AccountStack.Navigator>
   );
 };
 
-//Employer Screen bottom navigation
-const EmployerStack = createBottomTabNavigator();
+const SettingStack = createStackNavigator();
 
-const EmployerNavigation = () => {
+const SettingScreenStack = () => {
   return (
-    <EmployerStack.Navigator
+    <SettingStack.Navigator screenOptions={defaultHeaderOptions}>
+      <SettingStack.Screen
+        name="Settings"
+        component={SettingScreen}
+        options={screenOptions}
+      />
+    </SettingStack.Navigator>
+  );
+};
+
+const HelpStack = createStackNavigator();
+
+const HelpScreenStack = () => {
+  return (
+    <HelpStack.Navigator screenOptions={defaultHeaderOptions}>
+      <HelpStack.Screen
+        name="Help"
+        component={HelpScreen}
+        options={screenOptions}
+      />
+    </HelpStack.Navigator>
+  );
+};
+
+//Employer Screen bottom navigation
+const BottomTabNavigator = createBottomTabNavigator();
+
+const BottomNavigation = () => {
+  return (
+    <BottomTabNavigator.Navigator
       initialRouteName="Home"
       tabBarOptions={{
         activeTintColor: Color.primaryOrange,
         inactiveTintColor: Color.black,
       }}
     >
-      <EmployerStack.Screen
+      <BottomTabNavigator.Screen
         name="Home"
-        component={HomeEmployerStackScreen}
+        component={HomeBottomTabNavigatorScreen}
         options={{
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="home" size={size} color={color} />
           ),
         }}
       />
-      <EmployerStack.Screen
+      <BottomTabNavigator.Screen
         name="Add"
         component={AddJobScreen}
         options={{
@@ -84,16 +157,33 @@ const EmployerNavigation = () => {
           ),
         }}
       />
-      <EmployerStack.Screen
-        name="Account"
-        component={AccountStackScreen}
+      <BottomTabNavigator.Screen
+        name="Messages"
+        component={MessageScreenStack}
         options={{
           tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="account" size={size} color={color} />
+            <MaterialCommunityIcons
+              name={Platform.OS === "android" ? "android-messages" : "message"}
+              size={size}
+              color={color}
+            />
           ),
         }}
       />
-    </EmployerStack.Navigator>
+    </BottomTabNavigator.Navigator>
+  );
+};
+
+const Drawer = createDrawerNavigator();
+
+const EmployerNavigation = () => {
+  return (
+    <Drawer.Navigator drawerContent={(props) => <DrawerContent {...props} />}>
+      <Drawer.Screen name="HomeDrawer" component={BottomNavigation} />
+      <Drawer.Screen name="Profile" component={AccountStackScreen} />
+      <Drawer.Screen name="Setting" component={SettingScreenStack} />
+      <Drawer.Screen name="Help" component={HelpScreenStack} />
+    </Drawer.Navigator>
   );
 };
 

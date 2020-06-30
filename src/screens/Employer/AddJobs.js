@@ -13,13 +13,20 @@ import Time from "../../components/Employer/Time";
 import { LOCATION, CATEGORIES, DAYS, SEX } from "../../data/addJobData";
 import SubmitButton from "../../components/SubmitButton";
 
-const AddJobs = () => {
+const AddJobs = ({ navigation }) => {
   const [category, setCategory] = useState(null);
   const [location, setLocation] = useState(null);
   const [day, setDay] = useState(null);
   const [sex, setSex] = useState("Any");
   const [fromDate, setFromDate] = useState(new Date(2020, 0));
   const [toDate, setToDate] = useState(new Date(2020, 0));
+
+  //Need to check
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerTitle: "Post a Job",
+    });
+  }, [navigation]);
 
   return (
     <KeyboardAvoidingView style={{ flex: 1 }}>

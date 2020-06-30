@@ -1,4 +1,5 @@
 import React from "react";
+import { Platform } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 
@@ -9,6 +10,7 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 
 import Color from "../constants/Colors";
 import HeaderButton from "../components/HeaderButton";
+import { DrawerContent } from "../components/DrawerContent";
 
 //screens
 import EmployeeHomeScreen from "../screens/Employee/EmployeeHomeSreen";
@@ -18,7 +20,9 @@ import CurrentJobScreen from "../screens/Employee/CurrentJobScreen";
 import PastJobScreen from "../screens/Employee/PastJobScreen";
 import PendingRequestScreen from "../screens/Employee/PendingRequestScreen";
 import AccountScreen from "../screens/Employee/AccountScreen";
-import { Platform } from "react-native";
+import MessageScreen from "../screens/MessageScreen";
+import SettingScreen from "../screens/SettingScreen";
+import HelpScreen from "../screens/HelpScreen";
 
 const defaultHeaderOptions = {
   headerStyle: {
@@ -27,28 +31,30 @@ const defaultHeaderOptions = {
   headerTintColor: Platform.OS === "android" ? "black" : Color.primaryOrange,
 };
 
+const screenOptions = ({ navigation }) => ({
+  headerLeft: () => (
+    <HeaderButtons HeaderButtonComponent={HeaderButton}>
+      <Item
+        title="Menu"
+        iconName={Platform.OS === "android" ? "md-menu" : "ios-menu"}
+        onPress={() => {
+          navigation.toggleDrawer();
+        }}
+      />
+    </HeaderButtons>
+  ),
+});
+
 //Home Screen: Stack Naviagation
 const HomeEmployeeStack = createStackNavigator();
 
-const HomeEmployeeStackScreen = ({ navigation }) => {
+const HomeEmployeeStackScreen = () => {
   return (
     <HomeEmployeeStack.Navigator screenOptions={defaultHeaderOptions}>
       <HomeEmployeeStack.Screen
         name="Home"
         component={EmployeeHomeScreen}
-        options={{
-          headerLeft: () => (
-            <HeaderButtons HeaderButtonComponent={HeaderButton}>
-              <Item
-                title="Menu"
-                iconName={Platform.OS === "android" ? "md-menu" : "ios-menu"}
-                onPress={() => {
-                  navigation.toggleDrawer();
-                }}
-              />
-            </HeaderButtons>
-          ),
-        }}
+        options={screenOptions}
       />
       <HomeEmployeeStack.Screen
         name="JobDescription"
@@ -64,7 +70,11 @@ const FavouriteStack = createStackNavigator();
 const FavouriteStackScreen = () => {
   return (
     <FavouriteStack.Navigator screenOptions={defaultHeaderOptions}>
-      <FavouriteStack.Screen name="Favourite" component={FavouriteScreen} />
+      <FavouriteStack.Screen
+        name="Favourite"
+        component={FavouriteScreen}
+        options={screenOptions}
+      />
       <FavouriteStack.Screen name="JobDescription" component={JobDescription} />
     </FavouriteStack.Navigator>
   );
@@ -88,8 +98,54 @@ const AccountStack = createStackNavigator();
 const AccountStackScreen = () => {
   return (
     <AccountStack.Navigator screenOptions={defaultHeaderOptions}>
-      <AccountStack.Screen name="Account" component={AccountScreen} />
+      <AccountStack.Screen
+        name="Account"
+        component={AccountScreen}
+        options={screenOptions}
+      />
     </AccountStack.Navigator>
+  );
+};
+
+const MessageStack = createStackNavigator();
+
+const MessageScreenStack = () => {
+  return (
+    <MessageStack.Navigator screenOptions={defaultHeaderOptions}>
+      <MessageStack.Screen
+        name="Message"
+        component={MessageScreen}
+        options={screenOptions}
+      />
+    </MessageStack.Navigator>
+  );
+};
+
+const SettingStack = createStackNavigator();
+
+const SettingScreenStack = () => {
+  return (
+    <SettingStack.Navigator screenOptions={defaultHeaderOptions}>
+      <SettingStack.Screen
+        name="Settings"
+        component={SettingScreen}
+        options={screenOptions}
+      />
+    </SettingStack.Navigator>
+  );
+};
+
+const HelpStack = createStackNavigator();
+
+const HelpScreenStack = () => {
+  return (
+    <HelpStack.Navigator screenOptions={defaultHeaderOptions}>
+      <HelpStack.Screen
+        name="Help"
+        component={HelpScreen}
+        options={screenOptions}
+      />
+    </HelpStack.Navigator>
   );
 };
 
@@ -137,11 +193,15 @@ const BottomNavigation = () => {
         }}
       />
       <BottomTabNavigator.Screen
-        name="Account"
-        component={AccountStackScreen}
+        name="Messages"
+        component={MessageScreenStack}
         options={{
           tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="account" size={size} color={color} />
+            <MaterialCommunityIcons
+              name={Platform.OS === "android" ? "android-messages" : "message"}
+              size={size}
+              color={color}
+            />
           ),
         }}
       />
@@ -153,9 +213,11 @@ const Drawer = createDrawerNavigator();
 
 const EmployeeNavigation = () => {
   return (
-    <Drawer.Navigator>
-      <Drawer.Screen name="Home" component={BottomNavigation} />
-      <Drawer.Screen name="Fav" component={FavouriteStackScreen} />
+    <Drawer.Navigator drawerContent={(props) => <DrawerContent {...props} />}>
+      <Drawer.Screen name="HomeDrawer" component={BottomNavigation} />
+      <Drawer.Screen name="Profile" component={AccountStackScreen} />
+      <Drawer.Screen name="Setting" component={SettingScreenStack} />
+      <Drawer.Screen name="Help" component={HelpScreenStack} />
     </Drawer.Navigator>
   );
 };
