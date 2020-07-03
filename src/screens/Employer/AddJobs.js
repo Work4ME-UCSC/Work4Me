@@ -13,22 +13,21 @@ import Time from "../../components/Employer/Time";
 import { LOCATION, CATEGORIES, DAYS, SEX } from "../../data/addJobData";
 import SubmitButton from "../../components/SubmitButton";
 import { render } from "react-dom";
-import axios from "axios";
+import workApi from "../../api/workApi";
 
 class AddJobs extends Component {
-
   constructor() {
     super();
     this.state = {
-      JobTitle: '',
-      JobDescribtion: '',
-      JobCategory: '',
-      JobLocation: '',
-      JobAddress: '',
-      JobSalary: '',
-      JobDay: '',
-      Sex: ''
-    }
+      JobTitle: "",
+      JobDescribtion: "",
+      JobCategory: "",
+      JobLocation: "",
+      JobAddress: "",
+      JobSalary: "",
+      JobDay: "",
+      Sex: "",
+    };
   }
 
   // const [JobTitle, setJobTitle] = useState(null);
@@ -49,7 +48,6 @@ class AddJobs extends Component {
   //   });
   // }, [navigation]);
 
-
   handleSubmit = () => {
     // e.preventDefault();
 
@@ -61,29 +59,28 @@ class AddJobs extends Component {
       JobAddress: this.state.JobAddress,
       JobSalary: this.state.JobSalary,
       JobDay: this.state.JobDay.value,
-      Sex: this.state.Sex
-    }
+      Sex: this.state.Sex,
+    };
 
-    console.log(obj)
+    console.log(obj);
 
     const headers = {
-      'Content-Type': 'application/json'
-    }
-    
+      "Content-Type": "application/json",
+    };
 
     // axios.post('http://localhost:4000/jobs/add', obj)
     // .then(res => { console.log(res.data) });
 
-    axios
-    .post('http://127.0.0.1:4000/jobs/add',obj)
-    .then(function(response) {
-      // handle success
-      alert(JSON.stringify(response.data));
-    })
-    .catch(function(error) {
-      // handle error
-      alert(error);
-    });
+    workApi
+      .post("/jobs/add", obj)
+      .then(function (response) {
+        // handle success
+        alert(JSON.stringify(response.data));
+      })
+      .catch(function (error) {
+        // handle error
+        alert(error);
+      });
 
     //   fetch('http://localhost:4000/jobs/add',{
     //     method: "POST",
@@ -103,14 +100,15 @@ class AddJobs extends Component {
     //   alert(JSON.stringify(error));
     //   console.error(error);
     // });
-
-  }
-
+  };
 
   render() {
     return (
       <KeyboardAvoidingView style={{ flex: 1 }}>
-        <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+        <ScrollView
+          style={styles.container}
+          showsVerticalScrollIndicator={false}
+        >
           <View style={styles.title}>
             <JobInput
               label="Job Title"
@@ -215,25 +213,27 @@ class AddJobs extends Component {
             initial={2}
             formHorizontal={true}
             onPress={(value) => {
-              this.setState({ Sex: value })
+              this.setState({ Sex: value });
             }}
           />
 
           <SubmitButton
             style={styles.button}
-            onClick={() => { this.handleSubmit() }} />
+            onClick={() => {
+              this.handleSubmit();
+            }}
+          />
         </ScrollView>
       </KeyboardAvoidingView>
     );
   }
-};
-
-
+}
 
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 20,
     flex: 1,
+    zIndex: Platform.OS === "ios" ? 15 : null,
   },
 
   title: {

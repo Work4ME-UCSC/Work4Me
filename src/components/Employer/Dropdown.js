@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
 
   dropContainer: {
     paddingVertical: 10,
-    zIndex : Platform.OS === 'ios' ? 15 : null 
+    //zIndex: Platform.OS === "ios" ? 15 : null,
   },
 
   icon: {
