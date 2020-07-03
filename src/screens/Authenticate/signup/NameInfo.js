@@ -1,15 +1,18 @@
 import React, { useState } from "react";
 import { View, Text, TouchableWithoutFeedback, Keyboard } from "react-native";
 import { useSafeArea } from "react-native-safe-area-context";
+import { useDispatch } from "react-redux";
 
 import SimpleInput from "../../../components/Authenticate/SimpleInput";
 import SubmitButton from "../../../components/SubmitButton";
 import ErrorText from "../../../components/Authenticate/ErrorText";
-import NavLink from "../../../components/Authenticate/NavLink";
 import myStyles from "./myStyles";
+import { setUserName } from "../../../store/actions/signUpData";
 
 const NameInfo = ({ navigation }) => {
   const insets = useSafeArea();
+
+  const dispatch = useDispatch();
 
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -29,7 +32,7 @@ const NameInfo = ({ navigation }) => {
       return;
     }
     setError(false);
-    console.log("Next");
+    dispatch(setUserName(firstName, lastName));
     navigation.navigate("Email");
   };
 
@@ -77,18 +80,12 @@ const NameInfo = ({ navigation }) => {
             value={lastName}
             onChangeText={lastNameInputHandler}
           />
-          <View style={{ justifyContent: "space-between", flex: 1 }}>
-            <SubmitButton
-              title="Next"
-              style={myStyles.button}
-              onClick={handleClickNext}
-            />
-            <NavLink
-              title="Already have an account?"
-              button="Sign in"
-              onClick={() => navigation.navigate("Signin")}
-            />
-          </View>
+
+          <SubmitButton
+            title="Next"
+            style={myStyles.button}
+            onClick={handleClickNext}
+          />
         </View>
       </View>
     </TouchableWithoutFeedback>

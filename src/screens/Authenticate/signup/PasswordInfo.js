@@ -1,15 +1,19 @@
 import React, { useState } from "react";
 import { View, Text, TouchableWithoutFeedback, Keyboard } from "react-native";
 import { useSafeArea } from "react-native-safe-area-context";
+import { useDispatch, useSelector } from "react-redux";
 
 import PasswordInput from "../../../components/Authenticate/PasswordInput";
 import SubmitButton from "../../../components/SubmitButton";
 import ErrorText from "../../../components/Authenticate/ErrorText";
-
 import myStyles from "./myStyles";
+import { setUserPassword } from "../../../store/actions/signUpData";
 
 const PasswordInfo = ({ navigation }) => {
   const insets = useSafeArea();
+
+  const dispatch = useDispatch();
+  const userData = useSelector((state) => state.signUp);
 
   const [password, setPassword] = useState("");
   const [confrimPassword, setConfirmPassword] = useState("");
@@ -26,7 +30,6 @@ const PasswordInfo = ({ navigation }) => {
   };
 
   const handleClickNext = () => {
-    console.log(password, confrimPassword);
     if (
       !password.match(
         /(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/
@@ -46,7 +49,9 @@ const PasswordInfo = ({ navigation }) => {
 
     setError(false);
     setTextColor("black");
-    console.log("Next");
+    dispatch(setUserPassword(password));
+
+    console.log({ ...userData, password });
   };
 
   let errorMessage;
@@ -98,7 +103,7 @@ const PasswordInfo = ({ navigation }) => {
           </Text>
 
           <SubmitButton
-            title="Next"
+            title="Finish"
             style={myStyles.button}
             onClick={handleClickNext}
           />

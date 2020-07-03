@@ -6,6 +6,7 @@ import Color from "../constants/Colors";
 
 import WelcomeScreen from "../screens/Authenticate/WelcomeScreen";
 import SigninScreen from "../screens/Authenticate/SigninScreen";
+import UserSelect from "../screens/Authenticate/signup/UserSelect";
 import NameInfo from "../screens/Authenticate/signup/NameInfo";
 import EmailInfo from "../screens/Authenticate/signup/EmailInfo";
 import PasswordInfo from "../screens/Authenticate/signup/PasswordInfo";
@@ -51,6 +52,12 @@ const AuthenticationNavigation = () => {
       <SignStack.Screen
         name="NewPassword"
         component={SetNewPassword}
+        options={{ headerShown: false }}
+      />
+
+      <SignStack.Screen
+        name="User"
+        component={UserSelect}
         options={{ headerShown: false }}
       />
 

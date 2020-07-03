@@ -2,15 +2,18 @@ import React, { useState } from "react";
 import { View, Text, TouchableWithoutFeedback, Keyboard } from "react-native";
 import { useSafeArea } from "react-native-safe-area-context";
 import validator from "validator";
+import { useDispatch } from "react-redux";
 
 import SimpleInput from "../../../components/Authenticate/SimpleInput";
 import SubmitButton from "../../../components/SubmitButton";
 import ErrorText from "../../../components/Authenticate/ErrorText";
-
 import myStyles from "./myStyles";
+import { setUserEmail } from "../../../store/actions/signUpData";
 
 const EmailInfo = ({ navigation }) => {
   const insets = useSafeArea();
+
+  const dispatch = useDispatch();
 
   const [email, setEmail] = useState("");
   const [error, setError] = useState(false);
@@ -25,7 +28,7 @@ const EmailInfo = ({ navigation }) => {
       return;
     }
     setError(false);
-    console.log("Next");
+    dispatch(setUserEmail(email));
     navigation.navigate("Password");
   };
 
