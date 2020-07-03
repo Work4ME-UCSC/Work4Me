@@ -138,7 +138,7 @@ const SigninScreen = ({ navigation }) => {
               onClick={() => onClickLogin(email, password)}
               navTitle="Don't have an account?"
               navBtn="SIGN UP"
-              navClick={() => navigation.navigate("NameInfo")}
+              navClick={() => navigation.navigate("User")}
             />
           </View>
         </View>
