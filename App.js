@@ -18,6 +18,7 @@ import AccountScreen from "./src/screens/Employee/AccountScreen";
 import ScreenSelect from "./src/screens/ScreenSelect";
 import Home from "./src/screens/Employer/Home";
 import AddJobs from "./src/screens/Employer/AddJobs";
+import ForgotPassword from "./src/screens/ForgotPassword";
 
 //Authentication Navigation: Stack Navigation
 const SignStack = createStackNavigator();
@@ -25,8 +26,21 @@ const SignStack = createStackNavigator();
 const SignStackScreen = () => {
   return (
     <SignStack.Navigator>
-      <SignStack.Screen name="Signin" component={SigninScreen} />
-      <SignStack.Screen name="Signup" component={SignupScreen} />
+      <SignStack.Screen
+        name="Signin"
+        component={SigninScreen}
+        options={{ headerShown: false }}
+      />
+      <SignStack.Screen
+        name="Signup"
+        component={SignupScreen}
+        options={{ headerShown: false }}
+      />
+      <SignStack.Screen
+        name="ForgotPassword"
+        component={ForgotPassword}
+        options={{ title: "Forgot Password" }}
+      />
     </SignStack.Navigator>
   );
 };
@@ -97,6 +111,7 @@ const EmployeeScreen = () => {
       initialRouteName="Home"
       tabBarOptions={{
         activeTintColor: "#f08a1d",
+        inactiveTintColor: "#303030",
       }}
     >
       <EmployeeBottomTab.Screen
