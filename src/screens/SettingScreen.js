@@ -1,10 +1,26 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Button } from "react-native";
+import { useDispatch } from "react-redux";
+
+import * as authActions from "../store/actions/auth";
 
 const SettingScreen = () => {
+  const dispatch = useDispatch();
+
   return (
     <View style={styles.screen}>
-      <Text>Settings</Text>
+      <Button
+        color="red"
+        title="Log out"
+        onPress={() => dispatch(authActions.logout())}
+      />
+      <View style={{ marginTop: 20 }}>
+        <Button
+          color="red"
+          title="Delete my account"
+          onPress={() => dispatch(authActions.deleteAccount())}
+        />
+      </View>
     </View>
   );
 };
@@ -12,8 +28,9 @@ const SettingScreen = () => {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
+    //alignItems: "center",
+    justifyContent: "flex-end",
+    margin: 20,
   },
 });
 
