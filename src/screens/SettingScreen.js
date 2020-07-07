@@ -1,5 +1,12 @@
 import React from "react";
-import { View, Text, StyleSheet, Button } from "react-native";
+import {
+  View,
+  TouchableOpacity,
+  Text,
+  StyleSheet,
+  Button,
+  Alert,
+} from "react-native";
 import { useDispatch } from "react-redux";
 
 import * as authActions from "../store/actions/auth";
@@ -7,18 +14,37 @@ import * as authActions from "../store/actions/auth";
 const SettingScreen = () => {
   const dispatch = useDispatch();
 
+  const logoutHandler = () => {
+    Alert.alert("Are you sure", "Do you want to sign out?", [
+      { text: "No", style: "default" },
+      {
+        text: "yes",
+        style: "destructive",
+        onPress: () => dispatch(authActions.logout()),
+      },
+    ]);
+  };
+
+  const deleteHandler = () => {
+    Alert.alert("Are you sure", "Do you really want to delete your account?", [
+      { text: "No", style: "default" },
+      {
+        text: "yes",
+        style: "destructive",
+        onPress: () => dispatch(authActions.deleteAccount()),
+      },
+    ]);
+  };
+
   return (
     <View style={styles.screen}>
-      <Button
-        color="red"
-        title="Log out"
-        onPress={() => dispatch(authActions.logout())}
-      />
+      <Button color="#787878" title="Sign out" onPress={logoutHandler} />
+
       <View style={{ marginTop: 20 }}>
         <Button
-          color="red"
+          color="#cc0e00"
           title="Delete my account"
-          onPress={() => dispatch(authActions.deleteAccount())}
+          onPress={deleteHandler}
         />
       </View>
     </View>

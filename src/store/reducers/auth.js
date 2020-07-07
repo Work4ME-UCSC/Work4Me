@@ -3,6 +3,8 @@ import { LOGIN, SIGNUP, LOGOUT, DELETE_ACCOUNT } from "../actions/auth";
 const initialState = {
   token: null,
   userType: "",
+  firstName: "",
+  lastName: "",
 };
 
 export default (state = initialState, action) => {
@@ -13,6 +15,8 @@ export default (state = initialState, action) => {
       return {
         token: action.token,
         userType: action.userType,
+        firstName: action.firstName,
+        lastName: action.lastName,
       };
 
     case LOGOUT:

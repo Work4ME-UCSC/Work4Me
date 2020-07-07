@@ -15,6 +15,8 @@ export const signup = (data) => {
         type: SIGNUP,
         token: response.data.token,
         userType: response.data.user.userType,
+        firstName: response.data.user.firstName,
+        lastName: response.data.user.lastName,
       });
     } catch (e) {
       console.log(e);
@@ -26,11 +28,13 @@ export const login = ({ email, password }) => {
   return async (dispatch) => {
     try {
       const response = await workApi.post("/users/login", { email, password });
-      console.log(response.data.user);
+      //console.log(response.data.user);
       dispatch({
         type: LOGIN,
         token: response.data.token,
         userType: response.data.user.userType,
+        firstName: response.data.user.firstName,
+        lastName: response.data.user.lastName,
       });
     } catch (e) {
       if (e.response.status === 400) {
