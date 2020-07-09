@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -8,15 +8,19 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   Platform,
+  ActivityIndicator,
+  Alert,
 } from "react-native";
 import { useSafeArea } from "react-native-safe-area-context";
+import { useDispatch } from "react-redux";
 
 import Input from "../../components/Authenticate/Input";
 import ErrorText from "../../components/Authenticate/ErrorText";
 import Footer from "../../components/Authenticate/Footer";
 import epValidator from "../../hooks/epValidator";
+import Color from "../../constants/Colors";
 
-const color = "#ff8400";
+import * as authActions from "../../store/actions/auth";
 
 const SigninScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
@@ -25,6 +29,11 @@ const SigninScreen = ({ navigation }) => {
   const [passwordEnd, setPasswordEnd] = useState(false);
   const [emailEnd, setEmailEnd] = useState(false);
 
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState();
+
+  const dispatch = useDispatch();
+
   const {
     checkEmail,
     checkPassword,
@@ -32,14 +41,22 @@ const SigninScreen = ({ navigation }) => {
     passwordError,
   } = epValidator();
 
-  const onClickLogin = (email, password) => {
+  const onClickLogin = async (email, password) => {
     setEmailEnd(true);
     setPasswordEnd(true);
     checkEmail(email);
     checkPassword(password);
 
     if (!emailError && !passwordError) {
-      console.log("Email and password are in correct format");
+      setIsLoading(true);
+      try {
+        await dispatch(authActions.login({ email, password }));
+      } catch (e) {
+        //console.log(e.message);
+        setError(e.message);
+        setIsLoading(false);
+      }
+      setError(null);
     }
   };
 
@@ -58,6 +75,12 @@ const SigninScreen = ({ navigation }) => {
   };
 
   const insets = useSafeArea();
+
+  useEffect(() => {
+    if (error) {
+      Alert.alert("An Error occured", error, [{ text: "Okay" }]);
+    }
+  }, [error]);
 
   return (
     <KeyboardAvoidingView
@@ -125,13 +148,17 @@ const SigninScreen = ({ navigation }) => {
             >
               <Text
                 style={{
-                  color,
+                  color: Color.primaryOrange,
                   fontWeight: "bold",
                 }}
               >
                 FORGOT PASSWORD?
               </Text>
             </TouchableOpacity>
+
+            {isLoading ? (
+              <ActivityIndicator size="large" color={Color.primaryOrange} />
+            ) : null}
 
             <Footer
               mainBtnTitle="LOGIN"
@@ -150,7 +177,7 @@ const SigninScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: color,
+    backgroundColor: Color.primaryOrange,
   },
 
   header: {

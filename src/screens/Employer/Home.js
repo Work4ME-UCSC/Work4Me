@@ -1,14 +1,45 @@
-import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import React from 'react';
+import {View, StyleSheet, FlatList} from 'react-native';
 
-const Home = () => {
-  return (
-    <View>
-      <Text>Home</Text>
-    </View>
-  );
-};
+import Card from '../../components/Employer/Card';
 
-const styles = StyleSheet.create({});
+import { JOBS } from '../../data/dummy-data';
 
-export default Home;
+export default function Home() {
+    
+    const renderCard = (itemData) => {
+        return <Card
+          name={itemData.item.jobTitle}
+          img={itemData.item.jobImage}
+          date={itemData.item.jobDate}
+          location={itemData.item.jobLocation}
+          time={itemData.item.jobTime}
+        />;
+    };
+
+    return(
+        <View style={styles.container}>
+
+            <View style={styles.card}>
+                <FlatList
+                    keyExtractor={(item, index) => item.jobID}
+                    data={JOBS}
+                    renderItem={renderCard}
+                />
+            </View>
+        </View>
+        
+    )
+}
+
+const styles = StyleSheet.create({
+    container: {
+        width: '100%',
+        flex: 1,
+        padding: 10,
+        backgroundColor: '#dcdcdc',
+    },
+    card: {
+        flex: 1,
+    },
+});

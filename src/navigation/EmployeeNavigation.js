@@ -14,7 +14,9 @@ import { DrawerContent } from "../components/DrawerContent";
 
 //screens
 import EmployeeHomeScreen from "../screens/Employee/EmployeeHomeSreen";
-import JobDescription from "../screens/Employee/JobDescription";
+import JobDescription, {
+  screenOptions as jobDesScreenOptions,
+} from "../screens/Employee/JobDescription";
 import FavouriteScreen from "../screens/Employee/FavouriteScreen";
 import CurrentJobScreen from "../screens/Employee/CurrentJobScreen";
 import PastJobScreen from "../screens/Employee/PastJobScreen";
@@ -49,6 +51,7 @@ const screenOptions = ({ navigation }) => ({
 const HomeEmployeeStack = createStackNavigator();
 
 const HomeEmployeeStackScreen = () => {
+  console.log(jobDesScreenOptions);
   return (
     <HomeEmployeeStack.Navigator screenOptions={defaultHeaderOptions}>
       <HomeEmployeeStack.Screen
@@ -59,6 +62,7 @@ const HomeEmployeeStackScreen = () => {
       <HomeEmployeeStack.Screen
         name="JobDescription"
         component={JobDescription}
+        options={jobDesScreenOptions}
       />
     </HomeEmployeeStack.Navigator>
   );

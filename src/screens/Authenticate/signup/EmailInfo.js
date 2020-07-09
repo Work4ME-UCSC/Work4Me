@@ -1,5 +1,12 @@
-import React, { useState } from "react";
-import { View, Text, TouchableWithoutFeedback, Keyboard } from "react-native";
+import React, { useState, useEffect } from "react";
+import {
+  View,
+  Text,
+  TouchableWithoutFeedback,
+  Keyboard,
+  Alert,
+  ActivityIndicator,
+} from "react-native";
 import { useSafeArea } from "react-native-safe-area-context";
 import validator from "validator";
 import { useDispatch } from "react-redux";
@@ -8,7 +15,10 @@ import SimpleInput from "../../../components/Authenticate/SimpleInput";
 import SubmitButton from "../../../components/SubmitButton";
 import ErrorText from "../../../components/Authenticate/ErrorText";
 import myStyles from "./myStyles";
+import Color from "../../../constants/Colors";
+
 import { setUserEmail } from "../../../store/actions/signUpData";
+import * as authActions from "../../../store/actions/auth";
 
 const EmailInfo = ({ navigation }) => {
   const insets = useSafeArea();
@@ -18,18 +28,30 @@ const EmailInfo = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [error, setError] = useState(false);
 
+  const [isLoading, setIsLoading] = useState(false);
+  const [valError, setValError] = useState();
+
   const emailInputHandler = (email) => {
     setEmail(email);
   };
 
-  const handleClickNext = () => {
+  const handleClickNext = async () => {
     if (!validator.isEmail(email)) {
       setError(true);
       return;
     }
     setError(false);
     dispatch(setUserEmail(email));
-    navigation.navigate("Password");
+    setIsLoading(true);
+    try {
+      await dispatch(authActions.emailCheck({ email }));
+      navigation.navigate("Password");
+    } catch (e) {
+      setValError(e.message);
+      console.log(e.message);
+      setIsLoading(false);
+    }
+    setValError(null);
   };
 
   let errorMessage;
@@ -41,6 +63,12 @@ const EmailInfo = ({ navigation }) => {
         style={myStyles.error}
       />
     );
+
+  useEffect(() => {
+    if (valError) {
+      Alert.alert("An Error occured", valError, [{ text: "Okay" }]);
+    }
+  }, [valError]);
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -69,11 +97,15 @@ const EmailInfo = ({ navigation }) => {
             keyboardType="email-address"
           />
 
-          <SubmitButton
-            title="Next"
-            style={myStyles.button}
-            onClick={handleClickNext}
-          />
+          {isLoading ? (
+            <ActivityIndicator size="large" color={Color.primaryOrange} />
+          ) : (
+            <SubmitButton
+              title="Next"
+              style={myStyles.button}
+              onClick={handleClickNext}
+            />
+          )}
         </View>
       </View>
     </TouchableWithoutFeedback>

@@ -4,8 +4,12 @@ import { Avatar, Title, Caption, Drawer, Text } from "react-native-paper";
 import { DrawerContentScrollView, DrawerItem } from "@react-navigation/drawer";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+import { useSelector } from "react-redux";
 
 export const DrawerContent = (props) => {
+  const firstName = useSelector((state) => state.auth.firstName);
+  const lastName = useSelector((state) => state.auth.lastName);
+
   return (
     <View style={{ flex: 1 }}>
       <DrawerContentScrollView {...props}>
@@ -20,7 +24,7 @@ export const DrawerContent = (props) => {
                 size={70}
               />
               <View style={{ marginLeft: 15 }}>
-                <Title style={styles.title}>Andrew</Title>
+                <Title style={styles.title}>{`${firstName} ${lastName}`}</Title>
                 <View style={{ flexDirection: "row" }}>
                   <Caption style={styles.caption}>5.0</Caption>
                   <MaterialCommunityIcons name="star" style={styles.icon} />

@@ -1,5 +1,12 @@
-import React, { useState } from "react";
-import { View, Text, TouchableWithoutFeedback, Keyboard } from "react-native";
+import React, { useState, useEffect } from "react";
+import {
+  View,
+  Text,
+  TouchableWithoutFeedback,
+  Keyboard,
+  ActivityIndicator,
+  Alert,
+} from "react-native";
 import { useSafeArea } from "react-native-safe-area-context";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -7,7 +14,10 @@ import PasswordInput from "../../../components/Authenticate/PasswordInput";
 import SubmitButton from "../../../components/SubmitButton";
 import ErrorText from "../../../components/Authenticate/ErrorText";
 import myStyles from "./myStyles";
+import Color from "../../../constants/Colors";
+
 import { setUserPassword } from "../../../store/actions/signUpData";
+import * as authActions from "../../../store/actions/auth";
 
 const PasswordInfo = ({ navigation }) => {
   const insets = useSafeArea();
@@ -21,6 +31,9 @@ const PasswordInfo = ({ navigation }) => {
   const [message, setMessage] = useState("");
   const [textColor, setTextColor] = useState("black");
 
+  const [isLoading, setIsLoading] = useState(false);
+  const [valError, setValError] = useState();
+
   const passwordInputHandler = (password) => {
     setPassword(password);
   };
@@ -29,7 +42,7 @@ const PasswordInfo = ({ navigation }) => {
     setConfirmPassword(password);
   };
 
-  const handleClickNext = () => {
+  const handleClickNext = async () => {
     if (
       !password.match(
         /(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/
@@ -49,7 +62,17 @@ const PasswordInfo = ({ navigation }) => {
 
     setError(false);
     setTextColor("black");
-    dispatch(setUserPassword(password));
+    //dispatch(setUserPassword(password));
+    setIsLoading(true);
+    try {
+      await dispatch(authActions.signup({ ...userData, password }));
+      navigation.navigate("Password");
+    } catch (e) {
+      setValError(e.message);
+      console.log(e.message);
+      setIsLoading(false);
+    }
+    setValError(null);
 
     console.log({ ...userData, password });
   };
@@ -63,6 +86,12 @@ const PasswordInfo = ({ navigation }) => {
         style={myStyles.error}
       />
     );
+
+  useEffect(() => {
+    if (valError) {
+      Alert.alert("An Error occured", valError, [{ text: "Okay" }]);
+    }
+  }, [valError]);
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -102,11 +131,15 @@ const PasswordInfo = ({ navigation }) => {
             or special character
           </Text>
 
-          <SubmitButton
-            title="Finish"
-            style={myStyles.button}
-            onClick={handleClickNext}
-          />
+          {isLoading ? (
+            <ActivityIndicator size="large" color={Color.primaryOrange} />
+          ) : (
+            <SubmitButton
+              title="Finish"
+              style={myStyles.button}
+              onClick={handleClickNext}
+            />
+          )}
         </View>
       </View>
     </TouchableWithoutFeedback>
