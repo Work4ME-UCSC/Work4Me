@@ -1,4 +1,4 @@
-import React, { useState, Component } from "react";
+import React, { useReducer } from "react";
 import {
   View,
   StyleSheet,
@@ -12,228 +12,176 @@ import Radiobutton from "../../components/Employer/Radiobutton";
 import Time from "../../components/Employer/Time";
 import { LOCATION, CATEGORIES, DAYS, SEX } from "../../data/addJobData";
 import SubmitButton from "../../components/SubmitButton";
-import { render } from "react-dom";
-import workApi from "../../api/workApi";
 
-class AddJobs extends Component {
-  constructor() {
-    super();
-    this.state = {
-      JobTitle: "",
-      JobDescribtion: "",
-      JobCategory: "",
-      JobLocation: "",
-      JobAddress: "",
-      JobSalary: "",
-      JobDay: "",
-      Sex: "",
+const FORM_INPUT_UPDATE = "FORM_INPUT_UPDATE";
+
+const formReducer = (state, action) => {
+  if (action.type === FORM_INPUT_UPDATE) {
+    const updatedValues = {
+      ...state.inputValues,
+      [action.input]: action.value,
+    };
+
+    const updatedValidities = {
+      ...state.inputValidities,
+      [action.input]: action.isValid,
+    };
+
+    let updatedFormIsValid = true;
+    for (let key in updatedValidities) {
+      updatedFormIsValid = updatedFormIsValid && updatedValidities[key];
+    }
+
+    return {
+      inputValues: updatedValues,
+      inputValidities: updatedValidities,
+      formIsValid: updatedFormIsValid,
     };
   }
 
-  // const [JobTitle, setJobTitle] = useState(null);
-  // const [JobDescribtion, setJobDescribtion] = useState(null);
-  // const [JobCategory, setJobCategory] = useState(null);
-  // const [JobLocation, setJobLocation] = useState(null);
-  // const [JobAddress, setJobAddress] = useState(null);
-  // const [JobSalary, setJobSalary] = useState(null);
-  // const [JobDay, setJobDay] = useState(null);
+  return state;
+};
+
+const AddJobs = ({ navigation }) => {
+  // const [category, setCategory] = useState(null);
+  // const [location, setLocation] = useState(null);
+  // const [day, setDay] = useState(null);
+  // const [sex, setSex] = useState("Any");
   // const [fromDate, setFromDate] = useState(new Date(2020, 0));
   // const [toDate, setToDate] = useState(new Date(2020, 0));
-  // const [Sex, setSex] = useState("Any");
 
-  //Need to check
-  // React.useLayoutEffect(() => {
-  //   navigation.setOptions({
-  //     headerTitle: "Post a Job",
-  //   });
-  // }, [navigation]);
+  const [formState, dispatchFormState] = useReducer(formReducer, {
+    inputValues: {
+      title: "",
+      description: "",
+      category: null,
+      location: null,
+      address: "",
+      salary: "",
+      day: null,
+      fromDate: new Date(2020, 0),
+      toDate: new Date(2020, 0),
+      sex: "any",
+    },
 
-  handleSubmit = () => {
-    // e.preventDefault();
+    inputValidities: {
+      title: false,
+      description: false,
+      category: false,
+      location: false,
+      day: false,
+    },
 
-    const obj = {
-      JobTitle: this.state.JobTitle,
-      JobDescribtion: this.state.JobDescribtion,
-      JobCategory: this.state.JobCategory.value,
-      JobLocation: this.state.JobLocation.value,
-      JobAddress: this.state.JobAddress,
-      JobSalary: this.state.JobSalary,
-      JobDay: this.state.JobDay.value,
-      Sex: this.state.Sex,
-    };
+    formIsValid: false,
+  });
 
-    console.log(obj);
-
-    const headers = {
-      "Content-Type": "application/json",
-    };
-
-    // axios.post('http://localhost:4000/jobs/add', obj)
-    // .then(res => { console.log(res.data) });
-
-    workApi
-      .post("/jobs/add", obj)
-      .then(function (response) {
-        // handle success
-        alert(JSON.stringify(response.data));
-      })
-      .catch(function (error) {
-        // handle error
-        alert(error);
-      });
-
-    //   fetch('http://localhost:4000/jobs/add',{
-    //     method: "POST",
-    //     body : obj,
-    //     headers : {
-    //       'Content-Type': 'application/json'
-    //     },
-    //   })
-    //   .then((response) => response.json())
-    //   //If response is in json then in success
-    //   .then((responseJson) => {
-    //     alert(JSON.stringify(responseJson));
-    //     console.log(responseJson);
-    // })
-    // //If response is not in json then in error
-    // .catch((error) => {
-    //   alert(JSON.stringify(error));
-    //   console.error(error);
-    // });
-  };
-
-  render() {
-    return (
-      <KeyboardAvoidingView style={{ flex: 1 }}>
-        <ScrollView
-          style={styles.container}
-          showsVerticalScrollIndicator={false}
-        >
-          <View style={styles.title}>
-            <JobInput
-              label="Job Title"
-              icon="pencil"
-              placeholder="Enter Job title"
-              autoCorrect={false}
-              onChangeText={(text) => {
-                this.setState({ JobTitle: text });
-              }}
-            />
-          </View>
-
+  return (
+    <KeyboardAvoidingView style={{ flex: 1 }}>
+      <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+        <View style={styles.title}>
           <JobInput
-            label="Job Description"
-            placeholder="Enter Description"
-            multiline
-            textAlignVertical="top"
-            style={styles.description}
-            autoCapitalize="sentences"
-            onChangeText={(text) => {
-              this.setState({ JobDescribtion: text });
-            }}
-          />
-
-          <Dropdown
-            title="Job Category"
-            items={CATEGORIES}
-            // multiple={true}
-            // multipleText="%d items have been selected."
-            // min={0}
-            // max={10}
-            searchable
-            placeholder="Select Categories"
-            searchablePlaceholder="Search for a category"
-            // defaultValue={JobCategory}
-            onChangeItem={(item) => {
-              this.setState({ JobCategory: item });
-            }}
-          />
-
-          <Dropdown
-            title="Location"
-            items={LOCATION}
-            searchable
-            placeholder="Select Location"
-            searchablePlaceholder="Search for a Location"
-            onChangeItem={(item) => {
-              this.setState({ JobLocation: item });
-            }}
-          />
-
-          <JobInput
-            label="Address (Optional)"
+            label="Job Title"
             icon="pencil"
-            placeholder="Enter Working address"
+            placeholder="Enter Job title"
             autoCorrect={false}
-            onChangeText={(text) => {
-              this.setState({ JobAddress: text });
-            }}
           />
+        </View>
 
-          <JobInput
-            label="Salary (Optional)"
-            icon="cash"
-            keyboardType="decimal-pad"
-            placeholder="Enter Salary"
-            onChangeText={(text) => {
-              this.setState({ JobSalary: text });
-            }}
-          />
+        <JobInput
+          label="Job Description"
+          placeholder="Enter Description"
+          multiline
+          textAlignVertical="top"
+          style={styles.description}
+          autoCapitalize="sentences"
+        />
 
-          <Dropdown
-            title="Working Day"
-            items={DAYS}
-            // multiple={true}
-            // multipleText="Selected %d"
-            placeholder="Select Day"
-            onChangeItem={(item) => {
-              this.setState({ JobDay: item });
-            }}
-          />
+        <Dropdown
+          title="Job Category"
+          items={CATEGORIES}
+          multiple={true}
+          multipleText="%d categories have been selected."
+          min={0}
+          max={10}
+          searchable
+          placeholder="Select Categories"
+          searchablePlaceholder="Search for a category"
+          // onChangeItem={(item) => {
+          //   setCategory({ category: item });
+          // }}
+        />
 
-          {/* <View style={styles.timeContainer}>
-            <Time
-              title="Time (Optional)"
-              subTitle="From"
-              mode="time"
-              date={fromDate}
-              setDate={setFromDate}
-            />
-  
-            <Time 
-            subTitle="To" 
+        <Dropdown
+          title="Location"
+          items={LOCATION}
+          searchable
+          placeholder="Select Location"
+          searchablePlaceholder="Search for a Location"
+          // onChangeItem={(item) => {
+          //   setLocation({ location: item.value });
+          // }}
+        />
+
+        <JobInput
+          label="Address (Optional)"
+          icon="pencil"
+          placeholder="Enter Working address"
+          autoCorrect={false}
+        />
+
+        <JobInput
+          label="Salary (Optional)"
+          icon="cash"
+          keyboardType="decimal-pad"
+          placeholder="Enter Salary"
+        />
+
+        <Dropdown
+          title="Working Day"
+          items={DAYS}
+          multiple={true}
+          multipleText="Selected %d"
+          placeholder="Select Day"
+          // onChangeItem={(item) => {
+          //   setDay({ day: item });
+          // }}
+        />
+
+        <View style={styles.timeContainer}>
+          <Time
+            title="Time (Optional)"
+            subTitle="From"
             mode="time"
-            date={toDate} 
-            setDate={setToDate} />
-          </View> */}
-
-          <Radiobutton
-            title="Applicant Sex"
-            radio_props={SEX}
-            initial={2}
-            formHorizontal={true}
-            onPress={(value) => {
-              this.setState({ Sex: value });
-            }}
+            date={formState.inputValues.fromDate}
+            // setDate={setFromDate}
           />
 
-          <SubmitButton
-            style={styles.button}
-            onClick={() => {
-              this.handleSubmit();
-            }}
+          <Time
+            subTitle="To"
+            mode="time"
+            date={formState.inputValues.toDate}
+            //setDate={setToDate}
           />
-        </ScrollView>
-      </KeyboardAvoidingView>
-    );
-  }
-}
+        </View>
+
+        <Radiobutton
+          title="Applicant Sex"
+          radio_props={SEX}
+          //onPress={(value) => setSex(value)}
+          initial={2}
+          formHorizontal={true}
+        />
+
+        <SubmitButton style={styles.button} />
+      </ScrollView>
+    </KeyboardAvoidingView>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 20,
     flex: 1,
-    zIndex: Platform.OS === "ios" ? 15 : null,
   },
 
   title: {
