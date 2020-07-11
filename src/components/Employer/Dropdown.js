@@ -4,6 +4,7 @@ import DropDownPicker from "react-native-dropdown-picker";
 import { Ionicons } from "@expo/vector-icons";
 
 import Color from "../../constants/Colors";
+import ErrorText from "../Authenticate/ErrorText";
 
 const Dropdown = (props) => {
   return (
@@ -23,6 +24,7 @@ const Dropdown = (props) => {
             <Ionicons name="md-checkmark" style={styles.icon} />
           )}
         />
+        {!props.error && <ErrorText title={props.errorMessage} />}
       </View>
     </>
   );
