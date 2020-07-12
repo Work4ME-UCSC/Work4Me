@@ -1,9 +1,11 @@
-import React, { useState, Component } from "react";
+import React, { useReducer, useCallback } from "react";
 import {
   View,
   StyleSheet,
   ScrollView,
   KeyboardAvoidingView,
+  Platform,
+  Alert,
 } from "react-native";
 
 import JobInput from "../../components/Employer/JobInput";
@@ -12,222 +14,225 @@ import Radiobutton from "../../components/Employer/Radiobutton";
 import Time from "../../components/Employer/Time";
 import { LOCATION, CATEGORIES, DAYS, SEX } from "../../data/addJobData";
 import SubmitButton from "../../components/SubmitButton";
-import { render } from "react-dom";
-import workApi from "../../api/workApi";
+import ErrorText from "../../components/Authenticate/ErrorText";
 
-class AddJobs extends Component {
-  constructor() {
-    super();
-    this.state = {
-      JobTitle: "",
-      JobDescribtion: "",
-      JobCategory: "",
-      JobLocation: "",
-      JobAddress: "",
-      JobSalary: "",
-      JobDay: "",
-      Sex: "",
+const FORM_INPUT_UPDATE = "FORM_INPUT_UPDATE";
+
+const formReducer = (state, action) => {
+  if (action.type === FORM_INPUT_UPDATE) {
+    const updatedValues = {
+      ...state.inputValues,
+      [action.input]: action.value,
+    };
+
+    const updatedValidities = {
+      ...state.inputValidities,
+      [action.input]: action.isValid,
+    };
+
+    let updatedFormIsValid = true;
+    for (let key in updatedValidities) {
+      updatedFormIsValid = updatedFormIsValid && updatedValidities[key];
+    }
+
+    return {
+      inputValues: updatedValues,
+      inputValidities: updatedValidities,
+      formIsValid: updatedFormIsValid,
     };
   }
 
-  // const [JobTitle, setJobTitle] = useState(null);
-  // const [JobDescribtion, setJobDescribtion] = useState(null);
-  // const [JobCategory, setJobCategory] = useState(null);
-  // const [JobLocation, setJobLocation] = useState(null);
-  // const [JobAddress, setJobAddress] = useState(null);
-  // const [JobSalary, setJobSalary] = useState(null);
-  // const [JobDay, setJobDay] = useState(null);
+  return state;
+};
+
+const AddJobs = ({ navigation }) => {
+  // const [category, setCategory] = useState(null);
+  // const [location, setLocation] = useState(null);
+  // const [day, setDay] = useState(null);
+  // const [sex, setSex] = useState("Any");
   // const [fromDate, setFromDate] = useState(new Date(2020, 0));
   // const [toDate, setToDate] = useState(new Date(2020, 0));
-  // const [Sex, setSex] = useState("Any");
 
-  //Need to check
-  // React.useLayoutEffect(() => {
-  //   navigation.setOptions({
-  //     headerTitle: "Post a Job",
-  //   });
-  // }, [navigation]);
+  const [formState, dispatchFormState] = useReducer(formReducer, {
+    inputValues: {
+      title: "",
+      description: "",
+      category: null,
+      location: null,
+      address: "",
+      salary: "",
+      day: null,
+      fromDate: new Date(),
+      toDate: new Date(),
+      sex: "any",
+    },
 
-  handleSubmit = () => {
-    // e.preventDefault();
+    inputValidities: {
+      title: false,
+      description: false,
+      category: false,
+      location: false,
+      day: false,
+      sex: true,
+    },
 
-    const obj = {
-      JobTitle: this.state.JobTitle,
-      JobDescribtion: this.state.JobDescribtion,
-      JobCategory: this.state.JobCategory.value,
-      JobLocation: this.state.JobLocation.value,
-      JobAddress: this.state.JobAddress,
-      JobSalary: this.state.JobSalary,
-      JobDay: this.state.JobDay.value,
-      Sex: this.state.Sex,
-    };
+    formIsValid: false,
+  });
 
-    console.log(obj);
+  const inputChangeHandler = (inputIdentifier, text) => {
+    let isValid = true;
 
-    const headers = {
-      "Content-Type": "application/json",
-    };
+    if (text.trim().length === 0) {
+      isValid = false;
+    }
 
-    // axios.post('http://localhost:4000/jobs/add', obj)
-    // .then(res => { console.log(res.data) });
-
-    workApi
-      .post("/jobs/add", obj)
-      .then(function (response) {
-        // handle success
-        alert(JSON.stringify(response.data));
-      })
-      .catch(function (error) {
-        // handle error
-        alert(error);
-      });
-
-    //   fetch('http://localhost:4000/jobs/add',{
-    //     method: "POST",
-    //     body : obj,
-    //     headers : {
-    //       'Content-Type': 'application/json'
-    //     },
-    //   })
-    //   .then((response) => response.json())
-    //   //If response is in json then in success
-    //   .then((responseJson) => {
-    //     alert(JSON.stringify(responseJson));
-    //     console.log(responseJson);
-    // })
-    // //If response is not in json then in error
-    // .catch((error) => {
-    //   alert(JSON.stringify(error));
-    //   console.error(error);
-    // });
+    dispatchFormState({
+      type: FORM_INPUT_UPDATE,
+      value: text,
+      isValid,
+      input: inputIdentifier,
+    });
   };
 
-  render() {
-    return (
-      <KeyboardAvoidingView style={{ flex: 1 }}>
-        <ScrollView
-          style={styles.container}
-          showsVerticalScrollIndicator={false}
-        >
-          <View style={styles.title}>
-            <JobInput
-              label="Job Title"
-              icon="pencil"
-              placeholder="Enter Job title"
-              autoCorrect={false}
-              onChangeText={(text) => {
-                this.setState({ JobTitle: text });
-              }}
-            />
-          </View>
+  const dropDownChangeHandle = (inputIdentifier, item) => {
+    dispatchFormState({
+      type: FORM_INPUT_UPDATE,
+      value: item.value,
+      isValid: true,
+      input: inputIdentifier,
+    });
+  };
 
+  const submitHandler = useCallback(() => {
+    if (!formState.formIsValid) {
+      Alert.alert("Wrong Inputs", "Please check the errors in the form", [
+        { text: "Ok" },
+      ]);
+      return;
+    }
+  });
+
+  console.log(formState);
+
+  return (
+    <KeyboardAvoidingView style={{ flex: 1 }}>
+      <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+        <View style={styles.title}>
           <JobInput
-            label="Job Description"
-            placeholder="Enter Description"
-            multiline
-            textAlignVertical="top"
-            style={styles.description}
-            autoCapitalize="sentences"
-            onChangeText={(text) => {
-              this.setState({ JobDescribtion: text });
-            }}
-          />
-
-          <Dropdown
-            title="Job Category"
-            items={CATEGORIES}
-            // multiple={true}
-            // multipleText="%d items have been selected."
-            // min={0}
-            // max={10}
-            searchable
-            placeholder="Select Categories"
-            searchablePlaceholder="Search for a category"
-            // defaultValue={JobCategory}
-            onChangeItem={(item) => {
-              this.setState({ JobCategory: item });
-            }}
-          />
-
-          <Dropdown
-            title="Location"
-            items={LOCATION}
-            searchable
-            placeholder="Select Location"
-            searchablePlaceholder="Search for a Location"
-            onChangeItem={(item) => {
-              this.setState({ JobLocation: item });
-            }}
-          />
-
-          <JobInput
-            label="Address (Optional)"
+            label="Job Title"
             icon="pencil"
-            placeholder="Enter Working address"
+            placeholder="Enter Job title"
             autoCorrect={false}
-            onChangeText={(text) => {
-              this.setState({ JobAddress: text });
-            }}
+            onChangeText={inputChangeHandler.bind(this, "title")}
+            error={formState.inputValidities.title}
+            errorMessage="Please enter a job title"
           />
+        </View>
 
-          <JobInput
-            label="Salary (Optional)"
-            icon="cash"
-            keyboardType="decimal-pad"
-            placeholder="Enter Salary"
-            onChangeText={(text) => {
-              this.setState({ JobSalary: text });
-            }}
-          />
+        <JobInput
+          label="Job Description"
+          placeholder="Enter Description"
+          multiline
+          textAlignVertical="top"
+          style={styles.description}
+          autoCapitalize="sentences"
+          onChangeText={inputChangeHandler.bind(this, "description")}
+          error={formState.inputValidities.description}
+          errorMessage="Please enter the description"
+        />
 
-          <Dropdown
-            title="Working Day"
-            items={DAYS}
-            // multiple={true}
-            // multipleText="Selected %d"
-            placeholder="Select Day"
-            onChangeItem={(item) => {
-              this.setState({ JobDay: item });
-            }}
-          />
+        <Dropdown
+          title="Job Category"
+          items={CATEGORIES}
+          //multiple={true}
+          //multipleText="%d categories have been selected."
+          //min={0}
+          //max={10}
+          searchable
+          placeholder="Select Categories"
+          searchablePlaceholder="Search for a category"
+          onChangeItem={dropDownChangeHandle.bind(this, "category")}
+          error={formState.inputValidities.category}
+          errorMessage="Please select a category"
+        />
 
-          {/* <View style={styles.timeContainer}>
-            <Time
-              title="Time (Optional)"
-              subTitle="From"
-              mode="time"
-              date={fromDate}
-              setDate={setFromDate}
-            />
-  
-            <Time 
-            subTitle="To" 
+        <Dropdown
+          title="Location"
+          items={LOCATION}
+          searchable
+          placeholder="Select Location"
+          searchablePlaceholder="Search for a Location"
+          onChangeItem={dropDownChangeHandle.bind(this, "location")}
+          error={formState.inputValidities.location}
+          errorMessage="Please select a location"
+        />
+
+        <JobInput
+          label="Address (Optional)"
+          icon="pencil"
+          placeholder="Enter Working address"
+          autoCorrect={false}
+          onChangeText={inputChangeHandler.bind(this, "address")}
+          error={true}
+        />
+
+        <JobInput
+          label="Salary (Optional)"
+          icon="cash"
+          keyboardType="decimal-pad"
+          placeholder="Enter Salary"
+          onChangeText={inputChangeHandler.bind(this, "salary")}
+          error={true}
+        />
+
+        <Dropdown
+          title="Working Day"
+          items={DAYS}
+          //multiple={true}
+          //multipleText="Selected %d"
+          placeholder="Select Day"
+          onChangeItem={dropDownChangeHandle.bind(this, "day")}
+          error={formState.inputValidities.day}
+          errorMessage="Please select a day"
+        />
+
+        {/* <View style={styles.timeContainer}>
+          <Time
+            title="Time (Optional)"
+            subTitle="From"
             mode="time"
-            date={toDate} 
-            setDate={setToDate} />
-          </View> */}
-
-          <Radiobutton
-            title="Applicant Sex"
-            radio_props={SEX}
-            initial={2}
-            formHorizontal={true}
-            onPress={(value) => {
-              this.setState({ Sex: value });
-            }}
+            date={formState.inputValues.fromDate}
+            // setDate={setFromDate}
           />
 
-          <SubmitButton
-            style={styles.button}
-            onClick={() => {
-              this.handleSubmit();
-            }}
+          <Time
+            subTitle="To"
+            mode="time"
+            date={formState.inputValues.toDate}
+            //setDate={setToDate}
           />
-        </ScrollView>
-      </KeyboardAvoidingView>
-    );
-  }
-}
+        </View> */}
+
+        <Radiobutton
+          title="Applicant Sex"
+          radio_props={SEX}
+          onPress={(value) =>
+            dispatchFormState({
+              type: FORM_INPUT_UPDATE,
+              value,
+              isValid: true,
+              input: "sex",
+            })
+          }
+          initial={2}
+          formHorizontal={true}
+        />
+
+        <SubmitButton style={styles.button} onClick={submitHandler} />
+      </ScrollView>
+    </KeyboardAvoidingView>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -241,7 +246,6 @@ const styles = StyleSheet.create({
   },
 
   description: {
-    marginBottom: 20,
     borderWidth: 1,
     borderRadius: 10,
     height: 150,
