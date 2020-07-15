@@ -94,6 +94,18 @@ const JobDescription = (props) => {
   );
 };
 
+export const screenOptions = ({ route }) => {
+  return {
+    headerTitle: route.params.jobTitle,
+
+    headerRight: () => (
+      <HeaderButtons HeaderButtonComponent={HeaderButton}>
+        <Item title="Favourite" iconName="md-heart-empty" onPress={() => {}} />
+      </HeaderButtons>
+    ),
+  };
+};
+
 const styles = StyleSheet.create({
   headerContainer: {
     flexDirection: "row",

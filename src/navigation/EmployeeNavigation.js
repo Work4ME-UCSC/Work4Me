@@ -51,7 +51,6 @@ const screenOptions = ({ navigation }) => ({
 const HomeEmployeeStack = createStackNavigator();
 
 const HomeEmployeeStackScreen = () => {
-  console.log(jobDesScreenOptions);
   return (
     <HomeEmployeeStack.Navigator screenOptions={defaultHeaderOptions}>
       <HomeEmployeeStack.Screen
@@ -79,7 +78,11 @@ const FavouriteStackScreen = () => {
         component={FavouriteScreen}
         options={screenOptions}
       />
-      <FavouriteStack.Screen name="JobDescription" component={JobDescription} />
+      <FavouriteStack.Screen
+        name="JobDescription"
+        component={JobDescription}
+        options={jobDesScreenOptions}
+      />
     </FavouriteStack.Navigator>
   );
 };

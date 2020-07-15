@@ -1,11 +1,38 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, FlatList } from "react-native";
+import { useSelector } from "react-redux";
 
-const FavouriteScreen = () => {
+import JobCard from "../../components/Employee/Jobcard";
+
+const FavouriteScreen = ({ navigation }) => {
+  const favJobs = useSelector((state) => state.jobs.favouriteJobs);
+
+  const renderJobCard = ({ item }) => {
+    return (
+      <JobCard
+        name={item.jobTitle}
+        img={item.jobImage}
+        date={item.jobDate}
+        location={item.jobLocation}
+        time={item.jobTime}
+        onSelect={() => {
+          navigation.navigate("JobDescription", {
+            jobID: item.jobID,
+            jobTitle: item.jobTitle,
+          });
+        }}
+      />
+    );
+  };
+
   return (
-    <View>
-      <Text>FavouriteScreen</Text>
-    </View>
+    <>
+      <FlatList
+        keyExtractor={(item) => item.jobID}
+        data={favJobs}
+        renderItem={renderJobCard}
+      />
+    </>
   );
 };
 
