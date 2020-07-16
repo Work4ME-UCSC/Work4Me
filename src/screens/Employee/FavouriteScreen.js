@@ -10,6 +10,7 @@ const FavouriteScreen = ({ navigation }) => {
   const renderJobCard = ({ item }) => {
     return (
       <JobCard
+        id={item.jobID}
         name={item.jobTitle}
         img={item.jobImage}
         date={item.jobDate}
@@ -25,6 +26,14 @@ const FavouriteScreen = ({ navigation }) => {
     );
   };
 
+  if (favJobs.length === 0) {
+    return (
+      <View style={styles.centered}>
+        <Text>No Jobs Found</Text>
+      </View>
+    );
+  }
+
   return (
     <>
       <FlatList
@@ -36,6 +45,12 @@ const FavouriteScreen = ({ navigation }) => {
   );
 };
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  centered: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+});
 
 export default FavouriteScreen;

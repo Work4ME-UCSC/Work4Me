@@ -11,6 +11,7 @@ const EmployeeHomeScreen = (props) => {
   const renderJobCard = ({ item }) => {
     return (
       <JobCard
+        id={item.jobID}
         name={item.jobTitle}
         img={item.jobImage}
         date={item.jobDate}
