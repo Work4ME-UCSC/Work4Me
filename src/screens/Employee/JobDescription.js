@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useCallback } from "react";
 import {
   View,
   Text,
@@ -8,17 +8,35 @@ import {
   TouchableOpacity,
 } from "react-native";
 
-import Colors from "../../constants/Colors";
-import { JOBS } from "../../data/dummy-data";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import HeaderButton from "../../components/HeaderButton";
+import { useSelector, useDispatch } from "react-redux";
 
-import { Feather, Entypo } from "@expo/vector-icons";
+import Colors from "../../constants/Colors";
+import { toggleFavourite } from "../../store/actions/jobs";
 
 const JobDescription = (props) => {
   const jobID = props.route.params.jobID;
 
-  const selectedJob = JOBS.find((job) => job.jobID === jobID);
+  const isFav = useSelector((state) =>
+    state.jobs.favouriteJobs.some((job) => job.jobID === jobID)
+  );
+
+  const dispatch = useDispatch();
+
+  const { navigation } = props;
+
+  const toggleFavouriteHandler = useCallback(() => {
+    dispatch(toggleFavourite(jobID));
+  }, [dispatch, jobID]);
+
+  useEffect(() => {
+    navigation.setParams({ toggleFav: toggleFavouriteHandler });
+  }, [toggleFavouriteHandler]);
+
+  useEffect(() => {
+    navigation.setParams({ isFav });
+  }, [isFav]);
 
   return (
     <View>
@@ -48,7 +66,7 @@ const JobDescription = (props) => {
             } }/> */}
       {/* </View>
       </View> */}
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
         {/* Describtion */}
         <View style={styles.DescribtionContainer}>
           <Text style={styles.DescribtionTitle}>Job Describtion</Text>
@@ -95,12 +113,18 @@ const JobDescription = (props) => {
 };
 
 export const screenOptions = ({ route }) => {
+  console.log(route);
+  const toggleFav = route.params.toggleFav;
   return {
     headerTitle: route.params.jobTitle,
 
     headerRight: () => (
       <HeaderButtons HeaderButtonComponent={HeaderButton}>
-        <Item title="Favourite" iconName="md-heart-empty" onPress={() => {}} />
+        <Item
+          title="Favourite"
+          iconName={route.params.isFav ? "md-heart" : "md-heart-empty"}
+          onPress={toggleFav}
+        />
       </HeaderButtons>
     ),
   };

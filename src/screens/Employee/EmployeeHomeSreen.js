@@ -33,9 +33,10 @@ const EmployeeHomeScreen = (props) => {
       <SearchBar feather="search" place_holder="search" />
 
       <FlatList
-        keyExtractor={(item, index) => item.jobID}
+        keyExtractor={(item) => item.jobID}
         data={JOBS}
         renderItem={renderJobCard}
+        showsVerticalScrollIndicator={false}
       />
 
       {/* <ScrollView>
