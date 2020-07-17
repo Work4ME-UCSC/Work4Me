@@ -22,6 +22,12 @@ const JobDescription = (props) => {
     state.jobs.favouriteJobs.some((job) => job.jobID === jobID)
   );
 
+  const selectedJob = useSelector((state) =>
+    state.jobs.availableJobs.find((job) => job.jobID === jobID)
+  );
+
+  console.log(selectedJob);
+
   const dispatch = useDispatch();
 
   const { navigation } = props;
@@ -71,13 +77,12 @@ const JobDescription = (props) => {
         <View style={styles.DescribtionContainer}>
           <Text style={styles.DescribtionTitle}>Job Describtion</Text>
           <Text style={styles.DescribtionContent}>
-            Part time Delivery Boy needed to deliver some goods from our main
-            store to branches.
+            {selectedJob.jobDescribtion}
           </Text>
           <Text style={styles.DescribtionContent}>Date : 24 th July 2020</Text>
           <Text style={styles.DescribtionContent}>Time : 4pm - 6pm</Text>
           <Text style={styles.DescribtionContent}>
-            Adress: 34, Park road , Colombo 00700
+            Address: {selectedJob.jobAddress}
           </Text>
         </View>
 
@@ -95,13 +100,10 @@ const JobDescription = (props) => {
         {/* expectations */}
         <View style={styles.DescribtionContainer}>
           <Text style={styles.DescribtionTitle}>Employee Expectations</Text>
+
           <Text style={styles.DescribtionContent}>
-            Should have good ratings and reviews in his profile
+            {selectedJob.jobEmpExpectations}
           </Text>
-          <Text style={styles.DescribtionContent}>
-            Should have a motor bike and private license
-          </Text>
-          <Text style={styles.DescribtionContent}>Flexible and friendly</Text>
         </View>
 
         <View style={styles.button}>
@@ -179,9 +181,10 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     backgroundColor: Colors.lightGrey,
     marginHorizontal: 15,
-    marginTop: 10,
+    marginVertical: 10,
     borderRadius: 10,
-    height: 180,
+    paddingVertical: 10,
+    //height: 180,
   },
   DescribtionTitle: {
     marginHorizontal: 10,

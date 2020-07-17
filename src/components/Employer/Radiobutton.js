@@ -21,7 +21,7 @@ const Radiobutton = (props) => {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 20,
+    //marginTop: 20,
   },
 
   title: {

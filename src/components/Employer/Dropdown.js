@@ -13,7 +13,7 @@ const Dropdown = (props) => {
       <View style={{ ...styles.dropContainer, ...props.style }}>
         <DropDownPicker
           {...props}
-          containerStyle={{ height: 40, marginBottom: 10 }}
+          containerStyle={{ height: 40, marginBottom: 5 }}
           dropDownStyle={{ backgroundColor: "#fafafa", marginTop: 2 }}
           style={{ paddingVertical: 10 }}
           //   itemStyle={{

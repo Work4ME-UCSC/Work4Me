@@ -4,6 +4,7 @@ import { TOGGLE_FAVOURITE } from "../actions/jobs";
 const initialState = {
   availableJobs: JOBS,
   favouriteJobs: [],
+  postedJobs: JOBS.filter((job) => job.EmployerID === "emr01"),
 };
 
 export default (state = initialState, action) => {

@@ -32,12 +32,18 @@ const EmployeeHomeScreen = (props) => {
     <>
       <SearchBar feather="search" place_holder="search" />
 
-      <FlatList
-        keyExtractor={(item) => item.jobID}
-        data={JOBS}
-        renderItem={renderJobCard}
-        showsVerticalScrollIndicator={false}
-      />
+      {JOBS.length === 0 ? (
+        <View style={styles.centered}>
+          <Text>Currently no jobs available</Text>
+        </View>
+      ) : (
+        <FlatList
+          keyExtractor={(item) => item.jobID}
+          data={JOBS}
+          renderItem={renderJobCard}
+          showsVerticalScrollIndicator={false}
+        />
+      )}
 
       {/* <ScrollView>
         <JobCard
@@ -65,6 +71,12 @@ const EmployeeHomeScreen = (props) => {
   );
 };
 
-// const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  centered: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+});
 
 export default EmployeeHomeScreen;
