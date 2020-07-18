@@ -1,47 +1,49 @@
 import React from "react";
 import { View, Text, StyleSheet, ScrollView, FlatList } from "react-native";
+import { useSelector } from "react-redux";
 
-import SearchBar from '../../components/Employee/SearchBar';
-import JobCard from '../../components/Employee/Jobcard';
+import SearchBar from "../../components/Employee/SearchBar";
+import JobCard from "../../components/Employee/Jobcard";
 
+const EmployeeHomeScreen = (props) => {
+  const JOBS = useSelector((state) => state.jobs.availableJobs);
 
-import { JOBS } from '../../data/dummy-data';
-
-
-
-const EmployeeHomeScreen = props => {
-
-
-  const renderJobCard = (itemData) => {
-    return <JobCard
-      name={itemData.item.jobTitle}
-      img={itemData.item.jobImage}
-      date={itemData.item.jobDate}
-      location={itemData.item.jobLocation}
-      time={itemData.item.jobTime}
-      onSelect={() => {
-        console.log("Job Describtion")
-        props.navigation.navigate('JobDescription',{
-          jobID : itemData.item.jobID
-        }
-      );
-      }}
-    />;
+  const renderJobCard = ({ item }) => {
+    return (
+      <JobCard
+        id={item.jobID}
+        name={item.jobTitle}
+        img={item.jobImage}
+        date={item.jobDate}
+        location={item.jobLocation}
+        time={item.jobTime}
+        onSelect={() => {
+          console.log("Job Describtion");
+          props.navigation.navigate("JobDescription", {
+            jobID: item.jobID,
+            jobTitle: item.jobTitle,
+          });
+        }}
+      />
+    );
   };
-
-
-
 
   return (
     <>
-      <SearchBar
-        feather="search"
-        place_holder="search" />
+      <SearchBar feather="search" place_holder="search" />
 
-      <FlatList
-        keyExtractor={(item, index) => item.jobID}
-        data={JOBS}
-        renderItem={renderJobCard} />
+      {JOBS.length === 0 ? (
+        <View style={styles.centered}>
+          <Text>Currently no jobs available</Text>
+        </View>
+      ) : (
+        <FlatList
+          keyExtractor={(item) => item.jobID}
+          data={JOBS}
+          renderItem={renderJobCard}
+          showsVerticalScrollIndicator={false}
+        />
+      )}
 
       {/* <ScrollView>
         <JobCard
@@ -65,13 +67,16 @@ const EmployeeHomeScreen = props => {
         <JobCard name="Wash my car" img="https://www.carcility.com/blog/wp-content/uploads/2018/03/Car-Wash.jpg" />
         <JobCard name="Delivery Boy" img="https://www.searchpng.com/wp-content/uploads/2019/01/Delivery-Boy-Clipart-Png.png" />
       </ScrollView> */}
-
-
-
     </>
   );
 };
 
-// const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  centered: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+});
 
 export default EmployeeHomeScreen;

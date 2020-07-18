@@ -1,3 +1,4 @@
+import "react-native-gesture-handler";
 import React from "react";
 import { createStore, combineReducers, applyMiddleware } from "redux";
 import { Provider } from "react-redux";
@@ -15,10 +16,12 @@ import AppNavigation from "./src/navigation/AppNavigation";
 
 import signUpDataReducer from "./src/store/reducers/signUpData";
 import authReducer from "./src/store/reducers/auth";
+import jobReducer from "./src/store/reducers/jobs";
 
 const rootReducer = combineReducers({
   signUp: signUpDataReducer,
   auth: authReducer,
+  jobs: jobReducer,
 });
 
 const store = createStore(rootReducer, applyMiddleware(ReduxThunk));

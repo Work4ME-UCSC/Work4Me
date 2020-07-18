@@ -2,7 +2,7 @@ import React from "react";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 
-import { createStackNavigator, HeaderTitle } from "@react-navigation/stack";
+import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 
@@ -12,6 +12,13 @@ import { DrawerContent } from "../components/DrawerContent";
 import MessageScreen from "../screens/MessageScreen";
 import SettingScreen from "../screens/SettingScreen";
 import HelpScreen from "../screens/HelpScreen";
+
+//screens
+import Home from "../screens/Employer/Home";
+import AddJobs, {
+  screenOptions as addJobScreenOptions,
+} from "../screens/Employer/AddJobs";
+import AccountScreen from "../screens/Employee/AccountScreen";
 
 const defaultHeaderOptions = {
   headerStyle: {
@@ -33,11 +40,6 @@ const screenOptions = ({ navigation }) => ({
     </HeaderButtons>
   ),
 });
-
-//screens
-import Home from "../screens/Employer/Home";
-import AddJobs from "../screens/Employer/AddJobs";
-import AccountScreen from "../screens/Employee/AccountScreen";
 
 //Employer properties
 
@@ -64,7 +66,7 @@ const AddJobScreen = () => {
       <AddJobStack.Screen
         name="Add"
         component={AddJobs}
-        options={screenOptions}
+        options={addJobScreenOptions}
       />
     </AddJobStack.Navigator>
   );

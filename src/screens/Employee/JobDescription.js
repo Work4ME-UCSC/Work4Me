@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useCallback } from "react";
 import {
   View,
   Text,
@@ -8,17 +8,41 @@ import {
   TouchableOpacity,
 } from "react-native";
 
-import Colors from "../../constants/Colors";
-import { JOBS } from "../../data/dummy-data";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import HeaderButton from "../../components/HeaderButton";
+import { useSelector, useDispatch } from "react-redux";
 
-import { Feather, Entypo } from "@expo/vector-icons";
+import Colors from "../../constants/Colors";
+import { toggleFavourite } from "../../store/actions/jobs";
 
 const JobDescription = (props) => {
   const jobID = props.route.params.jobID;
 
-  const selectedJob = JOBS.find((job) => job.jobID === jobID);
+  const isFav = useSelector((state) =>
+    state.jobs.favouriteJobs.some((job) => job.jobID === jobID)
+  );
+
+  const selectedJob = useSelector((state) =>
+    state.jobs.availableJobs.find((job) => job.jobID === jobID)
+  );
+
+  console.log(selectedJob);
+
+  const dispatch = useDispatch();
+
+  const { navigation } = props;
+
+  const toggleFavouriteHandler = useCallback(() => {
+    dispatch(toggleFavourite(jobID));
+  }, [dispatch, jobID]);
+
+  useEffect(() => {
+    navigation.setParams({ toggleFav: toggleFavouriteHandler });
+  }, [toggleFavouriteHandler]);
+
+  useEffect(() => {
+    navigation.setParams({ isFav });
+  }, [isFav]);
 
   return (
     <View>
@@ -48,18 +72,17 @@ const JobDescription = (props) => {
             } }/> */}
       {/* </View>
       </View> */}
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
         {/* Describtion */}
         <View style={styles.DescribtionContainer}>
           <Text style={styles.DescribtionTitle}>Job Describtion</Text>
           <Text style={styles.DescribtionContent}>
-            Part time Delivery Boy needed to deliver some goods from our main
-            store to branches.
+            {selectedJob.jobDescribtion}
           </Text>
           <Text style={styles.DescribtionContent}>Date : 24 th July 2020</Text>
           <Text style={styles.DescribtionContent}>Time : 4pm - 6pm</Text>
           <Text style={styles.DescribtionContent}>
-            Adress: 34, Park road , Colombo 00700
+            Address: {selectedJob.jobAddress}
           </Text>
         </View>
 
@@ -77,13 +100,10 @@ const JobDescription = (props) => {
         {/* expectations */}
         <View style={styles.DescribtionContainer}>
           <Text style={styles.DescribtionTitle}>Employee Expectations</Text>
+
           <Text style={styles.DescribtionContent}>
-            Should have good ratings and reviews in his profile
+            {selectedJob.jobEmpExpectations}
           </Text>
-          <Text style={styles.DescribtionContent}>
-            Should have a motor bike and private license
-          </Text>
-          <Text style={styles.DescribtionContent}>Flexible and friendly</Text>
         </View>
 
         <View style={styles.button}>
@@ -92,6 +112,24 @@ const JobDescription = (props) => {
       </ScrollView>
     </View>
   );
+};
+
+export const screenOptions = ({ route }) => {
+  console.log(route);
+  const toggleFav = route.params.toggleFav;
+  return {
+    headerTitle: route.params.jobTitle,
+
+    headerRight: () => (
+      <HeaderButtons HeaderButtonComponent={HeaderButton}>
+        <Item
+          title="Favourite"
+          iconName={route.params.isFav ? "md-heart" : "md-heart-empty"}
+          onPress={toggleFav}
+        />
+      </HeaderButtons>
+    ),
+  };
 };
 
 const styles = StyleSheet.create({
@@ -143,9 +181,10 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     backgroundColor: Colors.lightGrey,
     marginHorizontal: 15,
-    marginTop: 10,
+    marginVertical: 10,
     borderRadius: 10,
-    height: 180,
+    paddingVertical: 10,
+    //height: 180,
   },
   DescribtionTitle: {
     marginHorizontal: 10,
