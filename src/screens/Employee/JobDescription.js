@@ -26,7 +26,7 @@ const JobDescription = (props) => {
     state.jobs.availableJobs.find((job) => job.jobID === jobID)
   );
 
-  console.log(selectedJob);
+  // console.log(selectedJob);
 
   const dispatch = useDispatch();
 
