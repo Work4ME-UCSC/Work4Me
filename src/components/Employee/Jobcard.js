@@ -36,7 +36,14 @@ const JobCard = (props) => {
     <TouchableCmp onPress={props.onSelect}>
       <View style={styles.container}>
         <View style={styles.imageContainer}>
-          <Image source={{ uri: props.img }} style={styles.image} />
+          {props.img ? (
+            <Image source={{ uri: props.img }} style={styles.image} />
+          ) : (
+            <Image
+              source={require("../../../assets/noImage.png")}
+              style={styles.image}
+            />
+          )}
         </View>
 
         <View style={styles.DetailsContainer}>

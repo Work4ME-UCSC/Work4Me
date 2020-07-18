@@ -1,5 +1,7 @@
+import Job from "../../models/jobs";
+
 import { JOBS } from "../../data/dummy-data";
-import { TOGGLE_FAVOURITE } from "../actions/jobs";
+import { TOGGLE_FAVOURITE, CREATE_JOB } from "../actions/jobs";
 
 const initialState = {
   availableJobs: JOBS,
@@ -9,6 +11,26 @@ const initialState = {
 
 export default (state = initialState, action) => {
   switch (action.type) {
+    case CREATE_JOB:
+      const newJob = new Job(
+        new Date().toString(),
+        action.data.title,
+        "",
+        action.data.category,
+        action.data.description,
+        "",
+        "",
+        action.data.salary,
+        "",
+        "",
+        action.data.address,
+        action.data.location,
+        new Date(),
+        "emr01"
+      );
+
+      return { ...state, availableJobs: state.availableJobs.concat(newJob) };
+
     case TOGGLE_FAVOURITE:
       const existingIndex = state.favouriteJobs.findIndex(
         (job) => job.jobID === action.jobID
