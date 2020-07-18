@@ -7,6 +7,7 @@ import {
   Platform,
   Alert,
 } from "react-native";
+import { HeaderButtons, Item } from "react-navigation-header-buttons";
 
 import JobInput from "../../components/Employer/JobInput";
 import Dropdown from "../../components/Employer/Dropdown";
@@ -15,6 +16,7 @@ import Time from "../../components/Employer/Time";
 import { LOCATION, CATEGORIES, DAYS, SEX } from "../../data/addJobData";
 import SubmitButton from "../../components/SubmitButton";
 import ErrorText from "../../components/Authenticate/ErrorText";
+import HeaderButton from "../../components/HeaderButton";
 
 const FORM_INPUT_UPDATE = "FORM_INPUT_UPDATE";
 
@@ -112,7 +114,7 @@ const AddJobs = ({ navigation }) => {
     }
   });
 
-  console.log(formState);
+  // console.log(formState);
 
   return (
     <KeyboardAvoidingView style={{ flex: 1 }}>
@@ -232,6 +234,24 @@ const AddJobs = ({ navigation }) => {
       </ScrollView>
     </KeyboardAvoidingView>
   );
+};
+
+export const screenOptions = ({ navigation }) => {
+  return {
+    headerTitle: "Post a Job",
+
+    headerLeft: () => (
+      <HeaderButtons HeaderButtonComponent={HeaderButton}>
+        <Item
+          title="Menu"
+          iconName={Platform.OS === "android" ? "md-menu" : "ios-menu"}
+          onPress={() => {
+            navigation.toggleDrawer();
+          }}
+        />
+      </HeaderButtons>
+    ),
+  };
 };
 
 const styles = StyleSheet.create({
