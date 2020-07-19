@@ -118,7 +118,7 @@ const AddJobs = ({ navigation }) => {
     }
 
     dispatch(
-      jobActions.createPost(
+      jobActions.createJob(
         formState.inputValues.title,
         formState.inputValues.description,
         formState.inputValues.category,

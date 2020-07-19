@@ -13,7 +13,7 @@ export default (state = initialState, action) => {
   switch (action.type) {
     case CREATE_JOB:
       const newJob = new Job(
-        new Date().toString(),
+        action.data.id,
         action.data.title,
         "",
         action.data.category,
@@ -25,9 +25,11 @@ export default (state = initialState, action) => {
         "",
         action.data.address,
         action.data.location,
-        new Date(),
+        action.data.createdDate,
         "emr01"
       );
+
+      // console.log(newJob);
 
       return { ...state, availableJobs: state.availableJobs.concat(newJob) };
 
