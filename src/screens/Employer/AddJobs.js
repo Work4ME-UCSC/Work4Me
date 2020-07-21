@@ -7,6 +7,8 @@ import {
   Platform,
   Alert,
 } from "react-native";
+import { HeaderButtons, Item } from "react-navigation-header-buttons";
+import { useDispatch } from "react-redux";
 
 import JobInput from "../../components/Employer/JobInput";
 import Dropdown from "../../components/Employer/Dropdown";
@@ -15,6 +17,8 @@ import Time from "../../components/Employer/Time";
 import { LOCATION, CATEGORIES, DAYS, SEX } from "../../data/addJobData";
 import SubmitButton from "../../components/SubmitButton";
 import ErrorText from "../../components/Authenticate/ErrorText";
+import HeaderButton from "../../components/HeaderButton";
+import * as jobActions from "../../store/actions/jobs";
 
 const FORM_INPUT_UPDATE = "FORM_INPUT_UPDATE";
 
@@ -52,6 +56,8 @@ const AddJobs = ({ navigation }) => {
   // const [sex, setSex] = useState("Any");
   // const [fromDate, setFromDate] = useState(new Date(2020, 0));
   // const [toDate, setToDate] = useState(new Date(2020, 0));
+
+  const dispatch = useDispatch();
 
   const [formState, dispatchFormState] = useReducer(formReducer, {
     inputValues: {
@@ -110,9 +116,22 @@ const AddJobs = ({ navigation }) => {
       ]);
       return;
     }
+
+    dispatch(
+      jobActions.createPost(
+        formState.inputValues.title,
+        formState.inputValues.description,
+        formState.inputValues.category,
+        formState.inputValues.location,
+        formState.inputValues.address,
+        formState.inputValues.salary,
+        formState.inputValues.day,
+        formState.inputValues.sex
+      )
+    );
   });
 
-  console.log(formState);
+  // console.log(formState);
 
   return (
     <KeyboardAvoidingView style={{ flex: 1 }}>
@@ -196,7 +215,7 @@ const AddJobs = ({ navigation }) => {
           errorMessage="Please select a day"
         />
 
-        {/* <View style={styles.timeContainer}>
+        {/* <View style={styles.timeContainer}>s
           <Time
             title="Time (Optional)"
             subTitle="From"
@@ -232,6 +251,24 @@ const AddJobs = ({ navigation }) => {
       </ScrollView>
     </KeyboardAvoidingView>
   );
+};
+
+export const screenOptions = ({ navigation }) => {
+  return {
+    headerTitle: "Post a Job",
+
+    headerLeft: () => (
+      <HeaderButtons HeaderButtonComponent={HeaderButton}>
+        <Item
+          title="Menu"
+          iconName={Platform.OS === "android" ? "md-menu" : "ios-menu"}
+          onPress={() => {
+            navigation.toggleDrawer();
+          }}
+        />
+      </HeaderButtons>
+    ),
+  };
 };
 
 const styles = StyleSheet.create({

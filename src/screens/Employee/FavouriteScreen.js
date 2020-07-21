@@ -1,14 +1,56 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, FlatList } from "react-native";
+import { useSelector } from "react-redux";
 
-const FavouriteScreen = () => {
+import JobCard from "../../components/Employee/Jobcard";
+
+const FavouriteScreen = ({ navigation }) => {
+  const favJobs = useSelector((state) => state.jobs.favouriteJobs);
+
+  const renderJobCard = ({ item }) => {
+    return (
+      <JobCard
+        id={item.jobID}
+        name={item.jobTitle}
+        img={item.jobImage}
+        date={item.jobDate}
+        location={item.jobLocation}
+        time={item.jobTime}
+        onSelect={() => {
+          navigation.navigate("JobDescription", {
+            jobID: item.jobID,
+            jobTitle: item.jobTitle,
+          });
+        }}
+      />
+    );
+  };
+
+  if (favJobs.length === 0) {
+    return (
+      <View style={styles.centered}>
+        <Text>No Jobs Found</Text>
+      </View>
+    );
+  }
+
   return (
-    <View>
-      <Text>FavouriteScreen</Text>
-    </View>
+    <>
+      <FlatList
+        keyExtractor={(item) => item.jobID}
+        data={favJobs}
+        renderItem={renderJobCard}
+      />
+    </>
   );
 };
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  centered: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+});
 
 export default FavouriteScreen;

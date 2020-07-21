@@ -1,45 +1,45 @@
-import React from 'react';
-import {View, StyleSheet, FlatList} from 'react-native';
+import React from "react";
+import { View, StyleSheet, FlatList } from "react-native";
+import { useSelector } from "react-redux";
 
-import Card from '../../components/Employer/Card';
-
-import { JOBS } from '../../data/dummy-data';
+import Card from "../../components/Employer/Card";
 
 export default function Home() {
-    
-    const renderCard = (itemData) => {
-        return <Card
-          name={itemData.item.jobTitle}
-          img={itemData.item.jobImage}
-          date={itemData.item.jobDate}
-          location={itemData.item.jobLocation}
-          time={itemData.item.jobTime}
-        />;
-    };
+  const JOBS = useSelector((state) => state.jobs.postedJobs);
 
-    return(
-        <View style={styles.container}>
+  const renderCard = ({ item }) => {
+    return (
+      <Card
+        name={item.jobTitle}
+        img={item.jobImage}
+        date={item.jobDate}
+        location={item.jobLocation}
+        time={item.jobTime}
+      />
+    );
+  };
 
-            <View style={styles.card}>
-                <FlatList
-                    keyExtractor={(item, index) => item.jobID}
-                    data={JOBS}
-                    renderItem={renderCard}
-                />
-            </View>
-        </View>
-        
-    )
+  return (
+    <View style={styles.container}>
+      <View style={styles.card}>
+        <FlatList
+          keyExtractor={(item) => item.jobID}
+          data={JOBS}
+          renderItem={renderCard}
+        />
+      </View>
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
-    container: {
-        width: '100%',
-        flex: 1,
-        padding: 10,
-        backgroundColor: '#dcdcdc',
-    },
-    card: {
-        flex: 1,
-    },
+  container: {
+    width: "100%",
+    flex: 1,
+    padding: 10,
+    backgroundColor: "#dcdcdc",
+  },
+  card: {
+    flex: 1,
+  },
 });
