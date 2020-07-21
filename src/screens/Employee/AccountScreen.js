@@ -1,6 +1,15 @@
+//import libraries which want to create component
 import React from "react";
-import { View, Text, StyleSheet, FlatList, Button, TouchableOpacity } from "react-native";
+import { 
+  View,                  //import View to give same affect to a group
+  Text,                  //import Text to return texts
+  StyleSheet,            //import StyleSheet to add styles
+  FlatList,              //import FlatList to insert list 
+  Button,                //import Button to insert a very simple component for showing a button and detecting a press
+  TouchableOpacity       //import TouchableOpacity to insert highly customizable component that can detect a press on just about any kind of element
+} from "react-native";
 
+//Create AccountScreen component
 const AccountScreen = () => {
   const details = [
     { name : 'Name1', key : '0'},
@@ -9,6 +18,7 @@ const AccountScreen = () => {
     { email : 'Email1',key : '3'},
     //can asign a key manualy for every item in the array
   ];
+
   return (
     //<View>
     //  <Text>Profile</Text>
@@ -50,10 +60,12 @@ const AccountScreen = () => {
   );
 };
 
+//create styles
 const styles = StyleSheet.create({
     
 });
 
+//after export AccountScreen can access any place in this project
 export default AccountScreen;
 
 
