@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import Card from "../../components/Employer/Card";
 
 export default function Home() {
-  const JOBS = useSelector((state) => state.jobs.postedJobs);
+  const JOBS = useSelector((state) => state.employer.postedJobs);
 
   const renderCard = ({ item }) => {
     return (

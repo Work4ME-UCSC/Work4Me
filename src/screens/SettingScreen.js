@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   TouchableOpacity,
@@ -6,12 +6,15 @@ import {
   StyleSheet,
   Button,
   Alert,
+  ActivityIndicator,
 } from "react-native";
 import { useDispatch } from "react-redux";
 
+import Colors from "../constants/Colors";
 import * as authActions from "../store/actions/auth";
 
 const SettingScreen = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
 
   const logoutHandler = () => {
@@ -20,7 +23,15 @@ const SettingScreen = () => {
       {
         text: "yes",
         style: "destructive",
-        onPress: () => dispatch(authActions.logout()),
+        onPress: async () => {
+          setIsLoading(true);
+          try {
+            await dispatch(authActions.logout());
+          } catch (e) {
+            console.log(e);
+            setIsLoading(false);
+          }
+        },
       },
     ]);
   };
@@ -35,6 +46,15 @@ const SettingScreen = () => {
       },
     ]);
   };
+
+  if (isLoading) {
+    return (
+      <View style={styles.centered}>
+        <Text>Logging out</Text>
+        <ActivityIndicator size="large" color={Colors.primaryOrange} />
+      </View>
+    );
+  }
 
   return (
     <View style={styles.screen}>
@@ -57,6 +77,12 @@ const styles = StyleSheet.create({
     //alignItems: "center",
     justifyContent: "flex-end",
     margin: 20,
+  },
+
+  centered: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
 

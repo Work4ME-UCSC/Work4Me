@@ -16,12 +16,14 @@ import AppNavigation from "./src/navigation/AppNavigation";
 
 import signUpDataReducer from "./src/store/reducers/signUpData";
 import authReducer from "./src/store/reducers/auth";
-import jobReducer from "./src/store/reducers/jobs";
+import employeeReducer from "./src/store/reducers/employee";
+import employerReducer from "./src/store/reducers/employer";
 
 const rootReducer = combineReducers({
   signUp: signUpDataReducer,
   auth: authReducer,
-  jobs: jobReducer,
+  employee: employeeReducer,
+  employer: employerReducer,
 });
 
 const store = createStore(rootReducer, applyMiddleware(ReduxThunk));

@@ -20,8 +20,9 @@ import { LOCATION, CATEGORIES, DAYS, SEX } from "../../data/addJobData";
 import SubmitButton from "../../components/SubmitButton";
 import ErrorText from "../../components/Authenticate/ErrorText";
 import HeaderButton from "../../components/HeaderButton";
-import * as jobActions from "../../store/actions/jobs";
 import Colors from "../../constants/Colors";
+
+import * as jobActions from "../../store/actions/employer";
 
 const FORM_INPUT_UPDATE = "FORM_INPUT_UPDATE";
 

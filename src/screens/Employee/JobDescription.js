@@ -13,7 +13,7 @@ import HeaderButton from "../../components/HeaderButton";
 import { useSelector, useDispatch } from "react-redux";
 
 import Colors from "../../constants/Colors";
-import { toggleFavourite } from "../../store/actions/jobs";
+import { toggleFavourite } from "../../store/actions/employee";
 
 const JobDescription = (props) => {
   const jobID = props.route.params.jobID;
