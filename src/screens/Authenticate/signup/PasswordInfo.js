@@ -64,15 +64,15 @@ const PasswordInfo = ({ navigation }) => {
     setTextColor("black");
     //dispatch(setUserPassword(password));
     setIsLoading(true);
+    setValError(null);
     try {
       await dispatch(authActions.signup({ ...userData, password }));
-      navigation.navigate("Password");
+      //navigation.navigate("Password");
     } catch (e) {
       setValError(e.message);
       console.log(e.message);
       setIsLoading(false);
     }
-    setValError(null);
 
     console.log({ ...userData, password });
   };

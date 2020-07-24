@@ -31,15 +31,15 @@ const Main = createStackNavigator();
 const App = () => {
   return (
     <Provider store={store}>
-      {/* <AppNavigation /> */}
-      <NavigationContainer>
+      <AppNavigation />
+      {/* <NavigationContainer>
         <Main.Navigator screenOptions={{ headerShown: false }}>
           <Main.Screen name="main" component={ScreenSelect} />
           <Main.Screen name="Sign" component={AuthenticationNavigation} />
           <Main.Screen name="Employee" component={EmployeeNavigation} />
           <Main.Screen name="Employer" component={EmployerNavigation} />
         </Main.Navigator>
-      </NavigationContainer>
+      </NavigationContainer> */}
     </Provider>
   );
 };

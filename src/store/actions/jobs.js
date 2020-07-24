@@ -43,7 +43,9 @@ export const createJob = (
         },
       });
     } catch (err) {
-      console.log(err);
+      let message = "Something went wrong";
+      console.log(err.response);
+      throw new Error(message);
     }
   };
 };
