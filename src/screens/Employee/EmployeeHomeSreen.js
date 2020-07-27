@@ -18,7 +18,6 @@ const EmployeeHomeScreen = (props) => {
         location={item.jobLocation}
         time={item.jobTime}
         onSelect={() => {
-          console.log("Job Describtion");
           props.navigation.navigate("JobDescription", {
             jobID: item.jobID,
             jobTitle: item.jobTitle,
