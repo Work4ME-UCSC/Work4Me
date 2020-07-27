@@ -3,7 +3,7 @@ import { View, StyleSheet } from "react-native";
 import { Avatar, Title, Caption, Drawer, Text } from "react-native-paper";
 import { DrawerContentScrollView, DrawerItem } from "@react-navigation/drawer";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
-import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+
 import { useSelector } from "react-redux";
 
 export const DrawerContent = (props) => {
@@ -27,7 +27,7 @@ export const DrawerContent = (props) => {
                 <Title style={styles.title}>{`${firstName} ${lastName}`}</Title>
                 <View style={{ flexDirection: "row" }}>
                   <Caption style={styles.caption}>5.0</Caption>
-                  <MaterialCommunityIcons name="star" style={styles.icon} />
+                  <Icon name="star" style={styles.icon} />
                 </View>
               </View>
             </View>

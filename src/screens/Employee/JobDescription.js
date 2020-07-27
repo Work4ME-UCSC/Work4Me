@@ -19,11 +19,11 @@ const JobDescription = (props) => {
   const jobID = props.route.params.jobID;
 
   const isFav = useSelector((state) =>
-    state.jobs.favouriteJobs.some((job) => job.jobID === jobID)
+    state.employee.favouriteJobs.some((job) => job.jobID === jobID)
   );
 
   const selectedJob = useSelector((state) =>
-    state.jobs.availableJobs.find((job) => job.jobID === jobID)
+    state.employee.availableJobs.find((job) => job.jobID === jobID)
   );
 
   // console.log(selectedJob);
