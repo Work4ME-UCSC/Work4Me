@@ -2,6 +2,7 @@ import React from "react";
 import { Platform } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
+import { useSafeArea } from "react-native-safe-area-context";
 
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -23,6 +24,7 @@ import AccountScreen from "../screens/Employee/AccountScreen";
 import MessageScreen from "../screens/MessageScreen";
 import SettingScreen from "../screens/SettingScreen";
 import HelpScreen from "../screens/HelpScreen";
+import DeleteAccountScreen from "../screens/DeleteAccountScreen";
 
 const defaultHeaderOptions = {
   headerStyle: {
@@ -84,11 +86,28 @@ const FavouriteStackScreen = () => {
 const TopNavigator = createMaterialTopTabNavigator();
 
 const TopNavigatorScreen = () => {
+  const insets = useSafeArea();
   return (
-    <TopNavigator.Navigator>
+    <TopNavigator.Navigator
+      style={{
+        paddingTop: insets.top,
+        paddingBottom: insets.bottom,
+        backgroundColor: Color.primaryOrange,
+      }}
+      tabBarOptions={{
+        activeTintColor: Color.primaryOrange,
+        inactiveTintColor: Color.lightGrey,
+        indicatorContainerStyle: {
+          backgroundColor: Color.white,
+        },
+        indicatorStyle: {
+          backgroundColor: Color.primaryOrange,
+        },
+      }}
+    >
       <TopNavigator.Screen name="CurrentJobs" component={CurrentJobScreen} />
-      <TopNavigator.Screen name="PastJobs" component={PastJobScreen} />
       <TopNavigator.Screen name="Pending" component={PendingRequestScreen} />
+      <TopNavigator.Screen name="PastJobs" component={PastJobScreen} />
     </TopNavigator.Navigator>
   );
 };
@@ -128,7 +147,7 @@ const SettingScreenStack = () => {
     <SettingStack.Navigator screenOptions={defaultHeaderOptions}>
       <SettingStack.Screen
         name="Settings"
-        component={SettingScreen}
+        component={DeleteAccountScreen}
         options={screenOptions}
       />
     </SettingStack.Navigator>
@@ -213,7 +232,10 @@ const Drawer = createDrawerNavigator();
 
 const EmployeeNavigation = () => {
   return (
-    <Drawer.Navigator drawerContent={(props) => <DrawerContent {...props} />}>
+    <Drawer.Navigator
+      drawerContentOptions={{ activeTintColor: Color.red }}
+      drawerContent={(props) => <DrawerContent {...props} />}
+    >
       <Drawer.Screen name="HomeDrawer" component={BottomNavigation} />
       <Drawer.Screen name="Profile" component={AccountStackScreen} />
       <Drawer.Screen name="Setting" component={SettingScreenStack} />

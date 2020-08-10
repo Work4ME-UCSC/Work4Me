@@ -120,6 +120,7 @@ export const deleteAccount = () => {
       dispatch({ type: DELETE_ACCOUNT });
     } catch (e) {
       console.log(e);
+      throw e;
     }
   };
 };
