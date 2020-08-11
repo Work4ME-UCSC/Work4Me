@@ -1,23 +1,42 @@
+import AsyncStorage from "@react-native-community/async-storage";
+
 import workApi from "../../api/workApi";
 
-export const SIGNUP = "SIGNUP";
-export const LOGIN = "LOGIN";
+export const AUTHENTICATE = "AUTHENTICATE";
+export const TRY_AUTO_LOGIN = "TRY_AUTO_LOGIN";
 export const EMAIL_CHECK = "EMAIL_CHECK";
 export const LOGOUT = "LOGOUT";
 export const DELETE_ACCOUNT = "DELETE_ACCOUNT";
+
+export const tryAutoLogin = () => {
+  return { type: TRY_AUTO_LOGIN };
+};
+
+export const authenticate = (token, userID, firstName, lastName, userType) => {
+  return { type: AUTHENTICATE, token, userID, firstName, lastName, userType };
+};
 
 export const signup = (data) => {
   return async (dispatch) => {
     try {
       const response = await workApi.post("/users/signup", data);
-      console.log(response.data);
-      dispatch({
-        type: SIGNUP,
-        token: response.data.token,
-        userType: response.data.user.userType,
-        firstName: response.data.user.firstName,
-        lastName: response.data.user.lastName,
-      });
+
+      dispatch(
+        authenticate(
+          response.data.token,
+          response.data.user._id,
+          response.data.user.firstName,
+          response.data.user.lastName,
+          response.data.user.userType
+        )
+      );
+      saveDataStorage(
+        response.data.token,
+        response.data.user._id,
+        response.data.user.firstName,
+        response.data.user.lastName,
+        response.data.user.userType
+      );
     } catch (e) {
       console.log(e);
     }
@@ -28,14 +47,23 @@ export const login = ({ email, password }) => {
   return async (dispatch) => {
     try {
       const response = await workApi.post("/users/login", { email, password });
-      //console.log(response.data.user);
-      dispatch({
-        type: LOGIN,
-        token: response.data.token,
-        userType: response.data.user.userType,
-        firstName: response.data.user.firstName,
-        lastName: response.data.user.lastName,
-      });
+
+      dispatch(
+        authenticate(
+          response.data.token,
+          response.data.user._id,
+          response.data.user.firstName,
+          response.data.user.lastName,
+          response.data.user.userType
+        )
+      );
+      saveDataStorage(
+        response.data.token,
+        response.data.user._id,
+        response.data.user.firstName,
+        response.data.user.lastName,
+        response.data.user.userType
+      );
     } catch (e) {
       if (e.response.status === 400) {
         throw new Error("Incorrect email or password");
@@ -49,8 +77,8 @@ export const login = ({ email, password }) => {
 export const emailCheck = ({ email }) => {
   return async (dispatch) => {
     try {
-      const response = await workApi.post("/users/email", { email });
-      console.log(response.data);
+      await workApi.post("/users/email", { email });
+
       dispatch({ type: EMAIL_CHECK });
     } catch (e) {
       if (e.response.status === 400) {
@@ -66,12 +94,13 @@ export const logout = () => {
   return async (dispatch, getState) => {
     const token = getState().auth.token;
     try {
-      const response = await workApi.post(
+      await workApi.post(
         "/users/logout",
         {},
         { headers: { Authorization: `Bearer ${token}` } }
       );
-      console.log(response);
+
+      AsyncStorage.removeItem("UserData");
       dispatch({ type: LOGOUT });
     } catch (e) {
       console.log(e);
@@ -79,17 +108,50 @@ export const logout = () => {
   };
 };
 
-export const deleteAccount = () => {
+export const deleteAccount = (password) => {
   return async (dispatch, getState) => {
     const token = getState().auth.token;
+    const userType = getState().auth.userType;
     try {
-      const response = await workApi.delete("/users/me", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      console.log(response);
+      await workApi.post(
+        "users/verifyPassword",
+        { password },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      if (userType === "employee")
+        await workApi.delete("/users/employee/me", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+      else
+        await workApi.delete("/users/employer/me", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+      AsyncStorage.removeItem("UserData");
       dispatch({ type: DELETE_ACCOUNT });
     } catch (e) {
-      console.log(e);
+      if (e.response.status === 400) throw new Error("Incorrect Password");
+      console.log(e.response.status);
+      throw e;
     }
   };
+};
+
+export const saveDataStorage = (
+  token,
+  userID,
+  firstName,
+  lastName,
+  userType
+) => {
+  AsyncStorage.setItem(
+    "UserData",
+    JSON.stringify({
+      token,
+      userID,
+      firstName,
+      lastName,
+      userType,
+    })
+  );
 };

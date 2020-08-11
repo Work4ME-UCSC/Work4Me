@@ -49,6 +49,7 @@ const SigninScreen = ({ navigation }) => {
 
     if (!emailError && !passwordError) {
       setIsLoading(true);
+      setError(null);
       try {
         await dispatch(authActions.login({ email, password }));
       } catch (e) {
@@ -56,7 +57,6 @@ const SigninScreen = ({ navigation }) => {
         setError(e.message);
         setIsLoading(false);
       }
-      setError(null);
     }
   };
 
