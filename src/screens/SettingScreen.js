@@ -13,7 +13,7 @@ import { useDispatch } from "react-redux";
 import Colors from "../constants/Colors";
 import * as authActions from "../store/actions/auth";
 
-const SettingScreen = () => {
+const SettingScreen = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
 
@@ -36,17 +36,6 @@ const SettingScreen = () => {
     ]);
   };
 
-  const deleteHandler = () => {
-    Alert.alert("Are you sure", "Do you really want to delete your account?", [
-      { text: "No", style: "default" },
-      {
-        text: "yes",
-        style: "destructive",
-        onPress: () => dispatch(authActions.deleteAccount()),
-      },
-    ]);
-  };
-
   if (isLoading) {
     return (
       <View style={styles.centered}>
@@ -64,7 +53,7 @@ const SettingScreen = () => {
         <Button
           color="#cc0e00"
           title="Delete my account"
-          onPress={deleteHandler}
+          onPress={() => navigation.navigate("Delete")}
         />
       </View>
     </View>

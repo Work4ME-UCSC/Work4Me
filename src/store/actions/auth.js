@@ -47,7 +47,7 @@ export const login = ({ email, password }) => {
   return async (dispatch) => {
     try {
       const response = await workApi.post("/users/login", { email, password });
-      console.log(response.data);
+
       dispatch(
         authenticate(
           response.data.token,
@@ -77,8 +77,8 @@ export const login = ({ email, password }) => {
 export const emailCheck = ({ email }) => {
   return async (dispatch) => {
     try {
-      const response = await workApi.post("/users/email", { email });
-      console.log(response.data);
+      await workApi.post("/users/email", { email });
+
       dispatch({ type: EMAIL_CHECK });
     } catch (e) {
       if (e.response.status === 400) {
@@ -94,12 +94,12 @@ export const logout = () => {
   return async (dispatch, getState) => {
     const token = getState().auth.token;
     try {
-      const response = await workApi.post(
+      await workApi.post(
         "/users/logout",
         {},
         { headers: { Authorization: `Bearer ${token}` } }
       );
-      console.log(response);
+
       AsyncStorage.removeItem("UserData");
       dispatch({ type: LOGOUT });
     } catch (e) {
@@ -108,18 +108,30 @@ export const logout = () => {
   };
 };
 
-export const deleteAccount = () => {
+export const deleteAccount = (password) => {
   return async (dispatch, getState) => {
     const token = getState().auth.token;
+    const userType = getState().auth.userType;
     try {
-      const response = await workApi.delete("/users/me", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      console.log(response);
+      await workApi.post(
+        "users/verifyPassword",
+        { password },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      if (userType === "employee")
+        await workApi.delete("/users/employee/me", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+      else
+        await workApi.delete("/users/employer/me", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
       AsyncStorage.removeItem("UserData");
       dispatch({ type: DELETE_ACCOUNT });
     } catch (e) {
-      console.log(e);
+      if (e.response.status === 400) throw new Error("Incorrect Password");
+      console.log(e.response.status);
       throw e;
     }
   };

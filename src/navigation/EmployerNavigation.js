@@ -12,6 +12,7 @@ import { DrawerContent } from "../components/DrawerContent";
 import MessageScreen from "../screens/MessageScreen";
 import SettingScreen from "../screens/SettingScreen";
 import HelpScreen from "../screens/HelpScreen";
+import DeleteAccountScreen from "../screens/DeleteAccountScreen";
 
 //screens
 import Home from "../screens/Employer/Home";
@@ -110,6 +111,11 @@ const SettingScreenStack = () => {
         name="Settings"
         component={SettingScreen}
         options={screenOptions}
+      />
+      <SettingStack.Screen
+        name="Delete"
+        component={DeleteAccountScreen}
+        options={{ headerTitle: "Delete Account" }}
       />
     </SettingStack.Navigator>
   );

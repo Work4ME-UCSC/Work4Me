@@ -147,8 +147,13 @@ const SettingScreenStack = () => {
     <SettingStack.Navigator screenOptions={defaultHeaderOptions}>
       <SettingStack.Screen
         name="Settings"
-        component={DeleteAccountScreen}
+        component={SettingScreen}
         options={screenOptions}
+      />
+      <SettingStack.Screen
+        name="Delete"
+        component={DeleteAccountScreen}
+        options={{ headerTitle: "Delete Account" }}
       />
     </SettingStack.Navigator>
   );

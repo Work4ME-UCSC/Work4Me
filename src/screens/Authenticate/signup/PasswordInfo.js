@@ -73,8 +73,6 @@ const PasswordInfo = ({ navigation }) => {
       console.log(e.message);
       setIsLoading(false);
     }
-
-    console.log({ ...userData, password });
   };
 
   let errorMessage;

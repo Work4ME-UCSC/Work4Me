@@ -20,7 +20,7 @@ const DeleteAccountScreen = () => {
     setError(null);
     setIsLoading(true);
     try {
-      await dispatch(deleteAccount());
+      await dispatch(deleteAccount(password));
     } catch (e) {
       setError(e.message);
       setIsLoading(false);
