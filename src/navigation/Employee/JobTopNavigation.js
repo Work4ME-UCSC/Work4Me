@@ -1,5 +1,6 @@
 import React from "react";
 import { useSafeArea } from "react-native-safe-area-context";
+import { createStackNavigator } from "@react-navigation/stack";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 
 import CurrentJobScreen from "../../screens/Employee/CurrentJobScreen";
@@ -7,10 +8,20 @@ import PastJobScreen from "../../screens/Employee/PastJobScreen";
 import PendingRequestScreen from "../../screens/Employee/PendingRequestScreen";
 import Colors from "../../constants/Colors";
 
-const TopNavigator = createMaterialTopTabNavigator();
+const pendingJobsStack = () => {
+  const Stack = createStackNavigator();
+
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="pending" component={PendingRequestScreen} />
+    </Stack.Navigator>
+  );
+};
 
 const JobTopNavigation = () => {
   const insets = useSafeArea();
+  const TopNavigator = createMaterialTopTabNavigator();
+
   return (
     <TopNavigator.Navigator
       style={{
@@ -37,7 +48,7 @@ const JobTopNavigation = () => {
       <TopNavigator.Screen
         name="Pending"
         options={{ tabBarLabel: "Pending" }}
-        component={PendingRequestScreen}
+        component={pendingJobsStack}
       />
       <TopNavigator.Screen
         name="PastJobs"
