@@ -1,14 +1,21 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { View, Text, StyleSheet, ScrollView, FlatList } from "react-native";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import SearchBar from "../../components/Employee/SearchBar";
 import JobCard from "../../components/Employee/Jobcard";
+import * as jobActions from '../../store/actions/employee';
 
 const EmployeeHomeScreen = (props) => {
-  const JOBS = useSelector((state) => state.employee.availableJobs);
 
-  const renderJobCard = ({ item }) => {
+  const jobs = useSelector((state) => state.employee.availableJobs);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(jobActions.fetchJobs());
+  }, [dispatch]);
+
+  const renderJobCard = ({item}) => {
     return (
       <JobCard
         id={item.jobID}
@@ -31,14 +38,14 @@ const EmployeeHomeScreen = (props) => {
     <>
       <SearchBar feather="search" place_holder="search" />
 
-      {JOBS.length === 0 ? (
+      {jobs.length === 0 ? (
         <View style={styles.centered}>
           <Text>Currently no jobs available</Text>
         </View>
       ) : (
         <FlatList
           keyExtractor={(item) => item.jobID}
-          data={JOBS}
+          data={jobs}
           renderItem={renderJobCard}
           showsVerticalScrollIndicator={false}
         />
