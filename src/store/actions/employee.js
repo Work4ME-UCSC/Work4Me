@@ -1,37 +1,38 @@
 import workApi from "../../api/workApi";
+import Job from "../../models/jobs";
 
 export const CREATE_JOB = "CREATE_JOB";
 export const TOGGLE_FAVOURITE = "TOGGLE_FAVOURITE";
 export const SET_JOBS = "SET_JOBS";
 
-import Job from '../../models/jobs';
-
 export const fetchJobs = () => {
-  return async dispatch => {
-    const response = await fetch(
-      "http://eb83c93e8030.ngrok.io/jobs/get",
-    );
+  return async (dispatch) => {
+    const response = await workApi.get("/jobs/get");
 
-    const resData =response.json();
-    
-    console.log(resData);
-    // console.log("hry");
+    const data = response.data;
 
     const loadedJobs = [];
 
-    for (const key in resData) {
-      loadedJobs.push(new Job(
-        key,
-        'u1',
-        resData[key].jobTitle,
-        resData[key].jobDescribtion,
-        resData[key].jobLocation,
-        resData[key].jobAddress
+    for (const key in data) {
+      loadedJobs.push(
+        new Job(
+          data[key]._id,
+          data[key].JobTitle,
+          "",
+          data[key].JobCategory,
+          data[key].JobDescribtion,
+          "",
+          "",
+          data[key].Salary,
+          "",
+          "",
+          data[key].JobAddress,
+          data[key].JobLocation
         )
-        );
-    };
+      );
+    }
 
-    dispatch({ type: SET_JOBS, jobs: loadedJobs })
+    dispatch({ type: SET_JOBS, jobs: loadedJobs });
   };
 };
 

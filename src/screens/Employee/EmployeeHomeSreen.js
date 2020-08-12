@@ -1,21 +1,31 @@
-import React, {useEffect} from "react";
-import { View, Text, StyleSheet, ScrollView, FlatList } from "react-native";
+import React, { useEffect, useState } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  FlatList,
+  ActivityIndicator,
+} from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 
 import SearchBar from "../../components/Employee/SearchBar";
 import JobCard from "../../components/Employee/Jobcard";
-import * as jobActions from '../../store/actions/employee';
+import * as jobActions from "../../store/actions/employee";
+import Colors from "../../constants/Colors";
 
 const EmployeeHomeScreen = (props) => {
-
   const jobs = useSelector((state) => state.employee.availableJobs);
+  const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(jobActions.fetchJobs());
+    setIsLoading(true);
+    dispatch(jobActions.fetchJobs()).then(() => {
+      setIsLoading(false);
+    });
   }, [dispatch]);
 
-  const renderJobCard = ({item}) => {
+  const renderJobCard = ({ item }) => {
     return (
       <JobCard
         id={item.jobID}
@@ -33,6 +43,15 @@ const EmployeeHomeScreen = (props) => {
       />
     );
   };
+
+  if (isLoading) {
+    return (
+      <View style={styles.centered}>
+        <Text>Loading...</Text>
+        <ActivityIndicator size="large" color={Colors.primaryOrange} />
+      </View>
+    );
+  }
 
   return (
     <>
