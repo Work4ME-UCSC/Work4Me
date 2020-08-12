@@ -7,11 +7,11 @@ import ReduxThunk from "redux-thunk";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 
-import ScreenSelect from "./src/screens/ScreenSelect";
+// import ScreenSelect from "./src/screens/ScreenSelect";
 
-import AuthenticationNavigation from "./src/navigation/AuthenticationNavigation";
-import EmployeeNavigation from "./src/navigation/EmployeeNavigation";
-import EmployerNavigation from "./src/navigation/EmployerNavigation";
+// import AuthenticationNavigation from "./src/navigation/AuthenticationNavigation";
+// import EmployeeNavigation from "./src/navigation/EmployeeNavigation";
+// import EmployerNavigation from "./src/navigation/EmployerNavigation";
 import AppNavigation from "./src/navigation/AppNavigation";
 
 import signUpDataReducer from "./src/store/reducers/signUpData";
