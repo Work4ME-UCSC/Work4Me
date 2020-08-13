@@ -7,6 +7,7 @@ export const TOGGLE_FAVOURITE = "TOGGLE_FAVOURITE";
 export const SET_JOBS = "SET_JOBS";
 export const SET_APPLIED_JOBS = "SET_APPLIED_JOBS";
 export const APPLY_FOR_JOB = "APPLY_FOR_JOB";
+export const CANCEL_JOB_REQUEST = "CANCEL_JOB_REQUEST";
 
 export const fetchJobs = () => {
   return async (dispatch) => {
@@ -56,7 +57,7 @@ export const fetchAppliedJobs = () => {
         new AppliedJobs(
           resData[key]._id,
           resData[key].jobID,
-          resData[key].JobTitle,
+          resData[key].jobTitle,
           "",
           resData[key].owner,
           resData[key].jobStatus,
@@ -73,14 +74,14 @@ export const toggleFavourite = (jobID) => {
   return { type: TOGGLE_FAVOURITE, jobID };
 };
 
-export const applyForJob = (jobID) => {
+export const applyForJob = (jobID, jobTitle) => {
   return async (dispatch, getState) => {
     const token = getState().auth.token;
 
     try {
       const response = await workApi.post(
         `/employee/apply/${jobID}`,
-        {},
+        { jobTitle },
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
@@ -89,18 +90,33 @@ export const applyForJob = (jobID) => {
       const appliedJob = new AppliedJobs(
         resData._id,
         resData.jobID,
-        "",
+        resData.jobTitle,
         "",
         resData.owner,
         resData.jobStatus,
         resData.createdAt
       );
 
-      console.log(appliedJob);
-
       dispatch({ type: APPLY_FOR_JOB, appliedJob });
     } catch (e) {
       console.log(e);
+      throw e;
+    }
+  };
+};
+
+export const cancelJobRequest = (id) => {
+  return async (dispatch, getState) => {
+    const token = getState().auth.token;
+    try {
+      await workApi.delete(`/employee/cancelRequest/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      dispatch({ type: CANCEL_JOB_REQUEST, id });
+    } catch (e) {
+      console.log(e);
+      throw e;
     }
   };
 };

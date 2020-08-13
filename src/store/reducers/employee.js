@@ -6,6 +6,7 @@ import {
   SET_JOBS,
   SET_APPLIED_JOBS,
   APPLY_FOR_JOB,
+  CANCEL_JOB_REQUEST,
 } from "../actions/employee";
 
 const initialState = {
@@ -32,6 +33,12 @@ export default (state = initialState, action) => {
       return {
         ...state,
         appliedJobs: state.appliedJobs.concat(action.appliedJob),
+      };
+
+    case CANCEL_JOB_REQUEST:
+      return {
+        ...state,
+        appliedJobs: state.appliedJobs.filter((job) => job.id !== action.id),
       };
 
     case TOGGLE_FAVOURITE:

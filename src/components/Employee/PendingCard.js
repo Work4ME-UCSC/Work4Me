@@ -7,8 +7,11 @@ import {
   TouchableOpacity,
   TouchableNativeFeedback,
   StyleSheet,
+  Alert,
 } from "react-native";
 import { Button } from "react-native-paper";
+import moment from "moment";
+
 import Colors from "../../constants/Colors";
 
 const PendingCard = (props) => {
@@ -17,6 +20,13 @@ const PendingCard = (props) => {
   if (Platform.OS === "android" && Platform.Version >= 21) {
     TouchableCmp = TouchableNativeFeedback;
   }
+
+  const clickHandler = () => {
+    Alert.alert("Important", "Do you really want to cancel the job request", [
+      { text: "Yes", onPress: props.withdrawHandler },
+      { text: "No" },
+    ]);
+  };
 
   return (
     <TouchableCmp onPress={props.onSelect}>
@@ -30,13 +40,15 @@ const PendingCard = (props) => {
           />
         )}
         <View style={styles.detail}>
-          <Text style={styles.title}>Wash my car</Text>
-          <Text style={styles.time}>Sent 2 days ago</Text>
+          <Text style={styles.title}>{props.title}</Text>
+          <Text style={styles.time}>{`Sent ${moment(
+            props.time
+          ).fromNow()}`}</Text>
           <Button
             style={styles.button}
             mode="contained"
             color={Colors.red}
-            onPress={() => {}}
+            onPress={clickHandler}
           >
             Withdraw
           </Button>

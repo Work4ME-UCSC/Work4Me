@@ -17,7 +17,7 @@ import { toggleFavourite, applyForJob } from "../../store/actions/employee";
 const JobDescription = (props) => {
   const [isLoading, setIsLoading] = useState(false);
 
-  const { jobID } = props.route.params;
+  const { jobID, jobTitle } = props.route.params;
 
   const isApplied = useSelector((state) =>
     state.employee.appliedJobs.some((job) => job.jobID === jobID)
@@ -41,7 +41,7 @@ const JobDescription = (props) => {
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
-      headerTitle: props.route.params.jobTitle,
+      headerTitle: jobTitle,
       headerRight: () => (
         <HeaderButtons HeaderButtonComponent={HeaderButton}>
           <Item
@@ -57,7 +57,7 @@ const JobDescription = (props) => {
   const onApplyHandler = async () => {
     setIsLoading(true);
     try {
-      await dispatch(applyForJob(jobID));
+      await dispatch(applyForJob(jobID, jobTitle));
     } catch (e) {
       console.log(e);
     }
