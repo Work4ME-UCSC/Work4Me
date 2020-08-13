@@ -1,11 +1,17 @@
 import Job from "../../models/jobs";
 
 import { JOBS } from "../../data/dummy-data";
-import { TOGGLE_FAVOURITE, SET_JOBS } from "../actions/employee";
+import {
+  TOGGLE_FAVOURITE,
+  SET_JOBS,
+  SET_APPLIED_JOBS,
+  APPLY_FOR_JOB,
+} from "../actions/employee";
 
 const initialState = {
   availableJobs: JOBS,
   favouriteJobs: [],
+  appliedJobs: [],
 };
 
 export default (state = initialState, action) => {
@@ -14,6 +20,18 @@ export default (state = initialState, action) => {
       return {
         ...state,
         availableJobs: action.jobs,
+      };
+
+    case SET_APPLIED_JOBS:
+      return {
+        ...state,
+        appliedJobs: action.appliedJobs,
+      };
+
+    case APPLY_FOR_JOB:
+      return {
+        ...state,
+        appliedJobs: state.appliedJobs.concat(action.appliedJob),
       };
 
     case TOGGLE_FAVOURITE:

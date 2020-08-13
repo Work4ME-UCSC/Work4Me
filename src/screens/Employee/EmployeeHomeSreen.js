@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import {
   View,
   Text,
   StyleSheet,
   FlatList,
   ActivityIndicator,
+  Alert,
 } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 
@@ -16,14 +17,34 @@ import Colors from "../../constants/Colors";
 const EmployeeHomeScreen = (props) => {
   const jobs = useSelector((state) => state.employee.availableJobs);
   const [isLoading, setIsLoading] = useState(false);
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  const [error, setError] = useState();
   const dispatch = useDispatch();
+
+  const loadJobs = useCallback(async () => {
+    setError(null);
+    setIsRefreshing(true);
+    try {
+      await dispatch(jobActions.fetchJobs());
+      await dispatch(jobActions.fetchAppliedJobs());
+    } catch (e) {
+      setError(e.message);
+    }
+    setIsRefreshing(false);
+  }, [dispatch, setIsLoading, setError]);
+
+  useEffect(() => {
+    if (error) {
+      Alert.alert("An Error occured", error, [{ text: "Okay" }]);
+    }
+  }, [error]);
 
   useEffect(() => {
     setIsLoading(true);
-    dispatch(jobActions.fetchJobs()).then(() => {
+    loadJobs().then(() => {
       setIsLoading(false);
     });
-  }, [dispatch]);
+  }, [dispatch, loadJobs]);
 
   const renderJobCard = ({ item }) => {
     return (
@@ -38,6 +59,7 @@ const EmployeeHomeScreen = (props) => {
           props.navigation.navigate("JobDescription", {
             jobID: item.jobID,
             jobTitle: item.jobTitle,
+            applicants: item.applicants,
           });
         }}
       />
