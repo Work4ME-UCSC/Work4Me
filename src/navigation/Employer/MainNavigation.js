@@ -2,14 +2,13 @@ import React from "react";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 
-import DrawerContent from "../DrawerContent";
-
 import BottomNavigation from "./BottomNavigation";
 import {
   AccountStackScreen,
   SettingStackScreen,
   HelpStackScreen,
 } from "./DrawerScreens";
+import DrawerContent from "../DrawerContent";
 
 const MainNavigation = () => {
   const Drawer = createDrawerNavigator();
