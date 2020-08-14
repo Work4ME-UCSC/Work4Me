@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 
 import StartUpScreen from "../screens/StartUpScreen";
 import AuthenticationNavigation from "./AuthenticationNavigation";
-import EmployerNavigation from "./EmployerNavigation";
+import EmployerNavigation from "./Employer/MainNavigation";
 import EmployeeNavigation from "./Employee/MainNavigation";
 
 const AppNavigation = () => {
