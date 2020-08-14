@@ -1,22 +1,27 @@
-import React, { useEffect, useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import {
   View,
   Text,
   StyleSheet,
   ScrollView,
-  Button,
-  TouchableOpacity,
+  ActivityIndicator,
 } from "react-native";
+import { Button } from "react-native-paper";
+import { useSelector, useDispatch } from "react-redux";
 
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import HeaderButton from "../../components/HeaderButton";
-import { useSelector, useDispatch } from "react-redux";
-
 import Colors from "../../constants/Colors";
-import { toggleFavourite } from "../../store/actions/employee";
+import { toggleFavourite, applyForJob } from "../../store/actions/employee";
 
 const JobDescription = (props) => {
-  const jobID = props.route.params.jobID;
+  const [isLoading, setIsLoading] = useState(false);
+
+  const { jobID, jobTitle } = props.route.params;
+
+  const isApplied = useSelector((state) =>
+    state.employee.appliedJobs.some((job) => job.jobID === jobID)
+  );
 
   const isFav = useSelector((state) =>
     state.employee.favouriteJobs.some((job) => job.jobID === jobID)
@@ -36,7 +41,7 @@ const JobDescription = (props) => {
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
-      headerTitle: props.route.params.jobTitle,
+      headerTitle: jobTitle,
       headerRight: () => (
         <HeaderButtons HeaderButtonComponent={HeaderButton}>
           <Item
@@ -49,8 +54,27 @@ const JobDescription = (props) => {
     });
   }, [navigation, isFav, toggleFavouriteHandler]);
 
+  const onApplyHandler = async () => {
+    setIsLoading(true);
+    try {
+      await dispatch(applyForJob(jobID, jobTitle));
+    } catch (e) {
+      console.log(e);
+    }
+    setIsLoading(false);
+  };
+
+  if (isLoading) {
+    return (
+      <View style={styles.centered}>
+        <ActivityIndicator size="large" color={Colors.primaryOrange} />
+        <Text>Applying for the job....</Text>
+      </View>
+    );
+  }
+
   return (
-    <View>
+    <View style={{ flex: 1 }}>
       <ScrollView showsVerticalScrollIndicator={false}>
         {/* Describtion */}
         <View style={styles.DescribtionContainer}>
@@ -86,7 +110,14 @@ const JobDescription = (props) => {
         </View>
 
         <View style={styles.button}>
-          <Button color={Colors.primaryOrange} title="Apply" />
+          <Button
+            color={Colors.primaryOrange}
+            mode="contained"
+            onPress={onApplyHandler}
+            disabled={isApplied}
+          >
+            {isApplied ? "Already applied" : "Apply"}
+          </Button>
         </View>
       </ScrollView>
     </View>
@@ -164,6 +195,12 @@ const styles = StyleSheet.create({
     margin: 15,
     borderRadius: 20,
     height: 50,
+  },
+
+  centered: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
 

@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import StartUpScreen from "../screens/StartUpScreen";
 import AuthenticationNavigation from "./AuthenticationNavigation";
 import EmployerNavigation from "./EmployerNavigation";
-import EmployeeNavigation from "./EmployeeNavigation";
+import EmployeeNavigation from "./Employee/MainNavigation";
 
 const AppNavigation = () => {
   const isAuth = useSelector((state) => !!state.auth.token);

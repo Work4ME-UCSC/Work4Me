@@ -5,6 +5,7 @@ import { DrawerContentScrollView, DrawerItem } from "@react-navigation/drawer";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
 import { useSelector } from "react-redux";
+import Colors from "../constants/Colors";
 
 export const DrawerContent = (props) => {
   const firstName = useSelector((state) => state.auth.firstName);
@@ -35,6 +36,7 @@ export const DrawerContent = (props) => {
 
           <Drawer.Section style={styles.drawerSection}>
             <DrawerItem
+              activeTintColor={Colors.red}
               icon={({ color, size }) => (
                 <Icon name="home-outline" color={color} size={size} />
               )}
