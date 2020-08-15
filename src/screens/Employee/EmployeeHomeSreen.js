@@ -1,12 +1,50 @@
-import React from "react";
-import { View, Text, StyleSheet, ScrollView, FlatList } from "react-native";
-import { useSelector } from "react-redux";
+import React, { useEffect, useState, useCallback } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  FlatList,
+  ActivityIndicator,
+  Alert,
+} from "react-native";
+import { useSelector, useDispatch } from "react-redux";
 
 import SearchBar from "../../components/Employee/SearchBar";
 import JobCard from "../../components/Employee/Jobcard";
+import * as jobActions from "../../store/actions/employee";
+import Colors from "../../constants/Colors";
 
 const EmployeeHomeScreen = (props) => {
-  const JOBS = useSelector((state) => state.jobs.availableJobs);
+  const jobs = useSelector((state) => state.employee.availableJobs);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  const [error, setError] = useState();
+  const dispatch = useDispatch();
+
+  const loadJobs = useCallback(async () => {
+    setError(null);
+    setIsRefreshing(true);
+    try {
+      await dispatch(jobActions.fetchJobs());
+      await dispatch(jobActions.fetchAppliedJobs());
+    } catch (e) {
+      setError(e.message);
+    }
+    setIsRefreshing(false);
+  }, [dispatch, setIsLoading, setError]);
+
+  useEffect(() => {
+    if (error) {
+      Alert.alert("An Error occured", error, [{ text: "Okay" }]);
+    }
+  }, [error]);
+
+  useEffect(() => {
+    setIsLoading(true);
+    loadJobs().then(() => {
+      setIsLoading(false);
+    });
+  }, [dispatch, loadJobs]);
 
   const renderJobCard = ({ item }) => {
     return (
@@ -18,55 +56,43 @@ const EmployeeHomeScreen = (props) => {
         location={item.jobLocation}
         time={item.jobTime}
         onSelect={() => {
-          console.log("Job Describtion");
           props.navigation.navigate("JobDescription", {
             jobID: item.jobID,
             jobTitle: item.jobTitle,
+            applicants: item.applicants,
           });
         }}
       />
     );
   };
 
+  if (isLoading) {
+    return (
+      <View style={styles.centered}>
+        <Text>Loading...</Text>
+        <ActivityIndicator size="large" color={Colors.primaryOrange} />
+      </View>
+    );
+  }
+
   return (
     <>
       <SearchBar feather="search" place_holder="search" />
 
-      {JOBS.length === 0 ? (
+      {jobs.length === 0 ? (
         <View style={styles.centered}>
           <Text>Currently no jobs available</Text>
         </View>
       ) : (
         <FlatList
+          refreshing={isRefreshing}
+          onRefresh={loadJobs}
           keyExtractor={(item) => item.jobID}
-          data={JOBS}
+          data={jobs}
           renderItem={renderJobCard}
           showsVerticalScrollIndicator={false}
         />
       )}
-
-      {/* <ScrollView>
-        <JobCard
-        name="Delivery Boy" 
-        img="https://www.searchpng.com/wp-content/uploads/2019/01/Delivery-Boy-Clipart-Png.png"
-         />
-        <JobCard 
-        name="Gardening" 
-        img="https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/gardening-equipment-for-gardener-with-flowerpots-royalty-free-image-643182988-1555499917.jpg?crop=0.97213xw:1xh;center,top&resize=768:*" 
-        onSelect = {() => { 
-          console.log("Job Describtion")
-          props.navigation.navigate("JobDescription"
-            // params : {
-            //     categoryId : itemData.item.id
-            // }
-        );
-        } } />
-
-
-        <JobCard name="Data Entry" img="http://www.effectivedigitaldesign.co.uk/wp-content/uploads/2017/01/data-entry-1200x675.png" />
-        <JobCard name="Wash my car" img="https://www.carcility.com/blog/wp-content/uploads/2018/03/Car-Wash.jpg" />
-        <JobCard name="Delivery Boy" img="https://www.searchpng.com/wp-content/uploads/2019/01/Delivery-Boy-Clipart-Png.png" />
-      </ScrollView> */}
     </>
   );
 };

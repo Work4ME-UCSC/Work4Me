@@ -1,35 +1,45 @@
 import Job from "../../models/jobs";
 
 import { JOBS } from "../../data/dummy-data";
-import { TOGGLE_FAVOURITE, CREATE_JOB } from "../actions/jobs";
+import {
+  TOGGLE_FAVOURITE,
+  SET_JOBS,
+  SET_APPLIED_JOBS,
+  APPLY_FOR_JOB,
+  CANCEL_JOB_REQUEST,
+} from "../actions/employee";
 
 const initialState = {
   availableJobs: JOBS,
   favouriteJobs: [],
-  postedJobs: JOBS.filter((job) => job.EmployerID === "emr01"),
+  appliedJobs: [],
 };
 
 export default (state = initialState, action) => {
   switch (action.type) {
-    case CREATE_JOB:
-      const newJob = new Job(
-        new Date().toString(),
-        action.data.title,
-        "",
-        action.data.category,
-        action.data.description,
-        "",
-        "",
-        action.data.salary,
-        "",
-        "",
-        action.data.address,
-        action.data.location,
-        new Date(),
-        "emr01"
-      );
+    case SET_JOBS:
+      return {
+        ...state,
+        availableJobs: action.jobs,
+      };
 
-      return { ...state, availableJobs: state.availableJobs.concat(newJob) };
+    case SET_APPLIED_JOBS:
+      return {
+        ...state,
+        appliedJobs: action.appliedJobs,
+      };
+
+    case APPLY_FOR_JOB:
+      return {
+        ...state,
+        appliedJobs: state.appliedJobs.concat(action.appliedJob),
+      };
+
+    case CANCEL_JOB_REQUEST:
+      return {
+        ...state,
+        appliedJobs: state.appliedJobs.filter((job) => job.id !== action.id),
+      };
 
     case TOGGLE_FAVOURITE:
       const existingIndex = state.favouriteJobs.findIndex(

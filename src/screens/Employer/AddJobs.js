@@ -1,11 +1,13 @@
-import React, { useReducer, useCallback } from "react";
+import React, { useState, useReducer, useCallback, useEffect } from "react";
 import {
   View,
+  Text,
   StyleSheet,
   ScrollView,
   KeyboardAvoidingView,
   Platform,
   Alert,
+  ActivityIndicator,
 } from "react-native";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import { useDispatch } from "react-redux";
@@ -18,7 +20,9 @@ import { LOCATION, CATEGORIES, DAYS, SEX } from "../../data/addJobData";
 import SubmitButton from "../../components/SubmitButton";
 import ErrorText from "../../components/Authenticate/ErrorText";
 import HeaderButton from "../../components/HeaderButton";
-import * as jobActions from "../../store/actions/jobs";
+import Colors from "../../constants/Colors";
+
+import * as jobActions from "../../store/actions/employer";
 
 const FORM_INPUT_UPDATE = "FORM_INPUT_UPDATE";
 
@@ -50,14 +54,15 @@ const formReducer = (state, action) => {
 };
 
 const AddJobs = ({ navigation }) => {
-  // const [category, setCategory] = useState(null);
-  // const [location, setLocation] = useState(null);
-  // const [day, setDay] = useState(null);
-  // const [sex, setSex] = useState("Any");
-  // const [fromDate, setFromDate] = useState(new Date(2020, 0));
-  // const [toDate, setToDate] = useState(new Date(2020, 0));
-
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState();
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (error) {
+      Alert.alert("An error occured", error, [{ text: "Okay" }]);
+    }
+  }, [error]);
 
   const [formState, dispatchFormState] = useReducer(formReducer, {
     inputValues: {
@@ -79,7 +84,6 @@ const AddJobs = ({ navigation }) => {
       category: false,
       location: false,
       day: false,
-      sex: true,
     },
 
     formIsValid: false,
@@ -109,7 +113,7 @@ const AddJobs = ({ navigation }) => {
     });
   };
 
-  const submitHandler = useCallback(() => {
+  const submitHandler = useCallback(async () => {
     if (!formState.formIsValid) {
       Alert.alert("Wrong Inputs", "Please check the errors in the form", [
         { text: "Ok" },
@@ -117,31 +121,50 @@ const AddJobs = ({ navigation }) => {
       return;
     }
 
-    dispatch(
-      jobActions.createPost(
-        formState.inputValues.title,
-        formState.inputValues.description,
-        formState.inputValues.category,
-        formState.inputValues.location,
-        formState.inputValues.address,
-        formState.inputValues.salary,
-        formState.inputValues.day,
-        formState.inputValues.sex
-      )
-    );
-  });
+    setIsLoading(true);
+    setError(null);
+    try {
+      await dispatch(
+        jobActions.createJob(
+          formState.inputValues.title,
+          formState.inputValues.description,
+          formState.inputValues.category,
+          formState.inputValues.location,
+          formState.inputValues.address,
+          formState.inputValues.salary,
+          formState.inputValues.day,
+          formState.inputValues.sex
+        )
+      );
+      setIsLoading(false);
+      navigation.navigate("Home");
+    } catch (e) {
+      setError(e.message);
+      setIsLoading(false);
+    }
+  }, [dispatch, formState]);
 
   // console.log(formState);
 
+  if (isLoading) {
+    return (
+      <View style={styles.centered}>
+        <Text>Please wait</Text>
+        <ActivityIndicator size="large" color={Colors.primaryOrange} />
+      </View>
+    );
+  }
+
   return (
     <KeyboardAvoidingView style={{ flex: 1 }}>
-      <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+      <ScrollView style={styles.container}>
         <View style={styles.title}>
           <JobInput
             label="Job Title"
             icon="pencil"
             placeholder="Enter Job title"
             autoCorrect={false}
+            value={formState.inputValues.title}
             onChangeText={inputChangeHandler.bind(this, "title")}
             error={formState.inputValidities.title}
             errorMessage="Please enter a job title"
@@ -155,36 +178,57 @@ const AddJobs = ({ navigation }) => {
           textAlignVertical="top"
           style={styles.description}
           autoCapitalize="sentences"
+          value={formState.inputValues.description}
           onChangeText={inputChangeHandler.bind(this, "description")}
           error={formState.inputValidities.description}
           errorMessage="Please enter the description"
         />
 
-        <Dropdown
-          title="Job Category"
-          items={CATEGORIES}
-          //multiple={true}
-          //multipleText="%d categories have been selected."
-          //min={0}
-          //max={10}
-          searchable
-          placeholder="Select Categories"
-          searchablePlaceholder="Search for a category"
-          onChangeItem={dropDownChangeHandle.bind(this, "category")}
-          error={formState.inputValidities.category}
-          errorMessage="Please select a category"
-        />
+        <View
+          style={{
+            ...(Platform.OS !== "android" && {
+              zIndex: 10,
+            }),
+          }}
+        >
+          <Dropdown
+            title="Job Category"
+            items={CATEGORIES}
+            //multiple={true}
+            //multipleText="%d categories have been selected."
+            //min={0}
+            //max={10}
+            searchable
+            placeholder="Select Categories"
+            searchablePlaceholder="Search for a category"
+            onChangeItem={dropDownChangeHandle.bind(this, "category")}
+            error={formState.inputValidities.category}
+            errorMessage="Please select a category"
+            defaultValue={formState.inputValues.category}
+            zIndex={5000}
+          />
+        </View>
 
-        <Dropdown
-          title="Location"
-          items={LOCATION}
-          searchable
-          placeholder="Select Location"
-          searchablePlaceholder="Search for a Location"
-          onChangeItem={dropDownChangeHandle.bind(this, "location")}
-          error={formState.inputValidities.location}
-          errorMessage="Please select a location"
-        />
+        <View
+          style={{
+            ...(Platform.OS !== "android" && {
+              zIndex: 10,
+            }),
+          }}
+        >
+          <Dropdown
+            title="Location"
+            items={LOCATION}
+            searchable
+            placeholder="Select Location"
+            searchablePlaceholder="Search for a Location"
+            onChangeItem={dropDownChangeHandle.bind(this, "location")}
+            error={formState.inputValidities.location}
+            errorMessage="Please select a location"
+            zIndex={4000}
+            defaultValue={formState.inputValues.location}
+          />
+        </View>
 
         <JobInput
           label="Address (Optional)"
@@ -204,16 +248,26 @@ const AddJobs = ({ navigation }) => {
           error={true}
         />
 
-        <Dropdown
-          title="Working Day"
-          items={DAYS}
-          //multiple={true}
-          //multipleText="Selected %d"
-          placeholder="Select Day"
-          onChangeItem={dropDownChangeHandle.bind(this, "day")}
-          error={formState.inputValidities.day}
-          errorMessage="Please select a day"
-        />
+        <View
+          style={{
+            ...(Platform.OS !== "android" && {
+              zIndex: 10,
+            }),
+          }}
+        >
+          <Dropdown
+            title="Working Day"
+            items={DAYS}
+            //multiple={true}
+            //multipleText="Selected %d"
+            placeholder="Select Day"
+            onChangeItem={dropDownChangeHandle.bind(this, "day")}
+            error={formState.inputValidities.day}
+            errorMessage="Please select a day"
+            zIndex={3000}
+            defaultValue={formState.inputValues.day}
+          />
+        </View>
 
         {/* <View style={styles.timeContainer}>s
           <Time
@@ -275,7 +329,6 @@ const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 20,
     flex: 1,
-    zIndex: Platform.OS === "ios" ? 15 : null,
   },
 
   title: {
@@ -297,6 +350,12 @@ const styles = StyleSheet.create({
   button: {
     borderRadius: 20,
     marginVertical: 30,
+  },
+
+  centered: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
 

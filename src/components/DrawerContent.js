@@ -3,8 +3,9 @@ import { View, StyleSheet } from "react-native";
 import { Avatar, Title, Caption, Drawer, Text } from "react-native-paper";
 import { DrawerContentScrollView, DrawerItem } from "@react-navigation/drawer";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
-import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+
 import { useSelector } from "react-redux";
+import Colors from "../constants/Colors";
 
 export const DrawerContent = (props) => {
   const firstName = useSelector((state) => state.auth.firstName);
@@ -27,7 +28,7 @@ export const DrawerContent = (props) => {
                 <Title style={styles.title}>{`${firstName} ${lastName}`}</Title>
                 <View style={{ flexDirection: "row" }}>
                   <Caption style={styles.caption}>5.0</Caption>
-                  <MaterialCommunityIcons name="star" style={styles.icon} />
+                  <Icon name="star" style={styles.icon} />
                 </View>
               </View>
             </View>
@@ -35,6 +36,7 @@ export const DrawerContent = (props) => {
 
           <Drawer.Section style={styles.drawerSection}>
             <DrawerItem
+              activeTintColor={Colors.red}
               icon={({ color, size }) => (
                 <Icon name="home-outline" color={color} size={size} />
               )}

@@ -11,7 +11,7 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 import { Feather, Entypo, MaterialCommunityIcons } from "@expo/vector-icons";
 
-import { toggleFavourite } from "../../store/actions/jobs";
+import { toggleFavourite } from "../../store/actions/employee";
 
 const JobCard = (props) => {
   let TouchableCmp = TouchableOpacity;
@@ -23,7 +23,7 @@ const JobCard = (props) => {
   const { id } = props;
 
   const isFav = useSelector((state) =>
-    state.jobs.favouriteJobs.some((job) => job.jobID === id)
+    state.employee.favouriteJobs.some((job) => job.jobID === id)
   );
 
   const dispatch = useDispatch();

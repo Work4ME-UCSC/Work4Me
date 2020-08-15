@@ -1,32 +1,35 @@
-import React, { useEffect, useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import {
   View,
   Text,
   StyleSheet,
   ScrollView,
-  Button,
-  TouchableOpacity,
+  ActivityIndicator,
 } from "react-native";
+import { Button } from "react-native-paper";
+import { useSelector, useDispatch } from "react-redux";
 
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import HeaderButton from "../../components/HeaderButton";
-import { useSelector, useDispatch } from "react-redux";
-
 import Colors from "../../constants/Colors";
-import { toggleFavourite } from "../../store/actions/jobs";
+import { toggleFavourite, applyForJob } from "../../store/actions/employee";
 
 const JobDescription = (props) => {
-  const jobID = props.route.params.jobID;
+  const [isLoading, setIsLoading] = useState(false);
+
+  const { jobID, jobTitle } = props.route.params;
+
+  const isApplied = useSelector((state) =>
+    state.employee.appliedJobs.some((job) => job.jobID === jobID)
+  );
 
   const isFav = useSelector((state) =>
-    state.jobs.favouriteJobs.some((job) => job.jobID === jobID)
+    state.employee.favouriteJobs.some((job) => job.jobID === jobID)
   );
 
   const selectedJob = useSelector((state) =>
-    state.jobs.availableJobs.find((job) => job.jobID === jobID)
+    state.employee.availableJobs.find((job) => job.jobID === jobID)
   );
-
-  // console.log(selectedJob);
 
   const dispatch = useDispatch();
 
@@ -36,42 +39,42 @@ const JobDescription = (props) => {
     dispatch(toggleFavourite(jobID));
   }, [dispatch, jobID]);
 
-  useEffect(() => {
-    navigation.setParams({ toggleFav: toggleFavouriteHandler });
-  }, [toggleFavouriteHandler]);
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerTitle: jobTitle,
+      headerRight: () => (
+        <HeaderButtons HeaderButtonComponent={HeaderButton}>
+          <Item
+            title="Favourite"
+            iconName={isFav ? "md-heart" : "md-heart-empty"}
+            onPress={toggleFavouriteHandler}
+          />
+        </HeaderButtons>
+      ),
+    });
+  }, [navigation, isFav, toggleFavouriteHandler]);
 
-  useEffect(() => {
-    navigation.setParams({ isFav });
-  }, [isFav]);
+  const onApplyHandler = async () => {
+    setIsLoading(true);
+    try {
+      await dispatch(applyForJob(jobID, jobTitle));
+    } catch (e) {
+      console.log(e);
+    }
+    setIsLoading(false);
+  };
+
+  if (isLoading) {
+    return (
+      <View style={styles.centered}>
+        <ActivityIndicator size="large" color={Colors.primaryOrange} />
+        <Text>Applying for the job....</Text>
+      </View>
+    );
+  }
 
   return (
-    <View>
-      {/* <View style={styles.headerContainer}>
-        <View style={styles.titleContainer}>
-          <Text style={styles.title}>{selectedJob.jobTitle}</Text>
-          <View style={styles.item}>
-            <Entypo
-              name="location-pin"
-              style={styles.icon}
-              color={Colors.white}
-            />
-            <Text style={styles.location}>Colombo 07</Text>
-          </View>
-        </View>
-        <View style={styles.favIconContainer}>
-          <View style={styles.iconWrapper}>
-            <TouchableOpacity>
-              <Feather name="heart" size={30} color="orange" />
-            </TouchableOpacity>
-          </View> */}
-      {/* <Item 
-            title='favorite'
-            iconName='ios-star'
-            onPress={() =>{
-              console.log('Mark as favorite !');
-            } }/> */}
-      {/* </View>
-      </View> */}
+    <View style={{ flex: 1 }}>
       <ScrollView showsVerticalScrollIndicator={false}>
         {/* Describtion */}
         <View style={styles.DescribtionContainer}>
@@ -107,29 +110,18 @@ const JobDescription = (props) => {
         </View>
 
         <View style={styles.button}>
-          <Button color={Colors.primaryOrange} title="Apply" />
+          <Button
+            color={Colors.primaryOrange}
+            mode="contained"
+            onPress={onApplyHandler}
+            disabled={isApplied}
+          >
+            {isApplied ? "Already applied" : "Apply"}
+          </Button>
         </View>
       </ScrollView>
     </View>
   );
-};
-
-export const screenOptions = ({ route }) => {
-  console.log(route);
-  const toggleFav = route.params.toggleFav;
-  return {
-    headerTitle: route.params.jobTitle,
-
-    headerRight: () => (
-      <HeaderButtons HeaderButtonComponent={HeaderButton}>
-        <Item
-          title="Favourite"
-          iconName={route.params.isFav ? "md-heart" : "md-heart-empty"}
-          onPress={toggleFav}
-        />
-      </HeaderButtons>
-    ),
-  };
 };
 
 const styles = StyleSheet.create({
@@ -203,6 +195,12 @@ const styles = StyleSheet.create({
     margin: 15,
     borderRadius: 20,
     height: 50,
+  },
+
+  centered: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
 

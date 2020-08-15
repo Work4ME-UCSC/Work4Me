@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   TouchableOpacity,
@@ -6,12 +6,15 @@ import {
   StyleSheet,
   Button,
   Alert,
+  ActivityIndicator,
 } from "react-native";
 import { useDispatch } from "react-redux";
 
+import Colors from "../constants/Colors";
 import * as authActions from "../store/actions/auth";
 
-const SettingScreen = () => {
+const SettingScreen = ({ navigation }) => {
+  const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
 
   const logoutHandler = () => {
@@ -20,21 +23,27 @@ const SettingScreen = () => {
       {
         text: "yes",
         style: "destructive",
-        onPress: () => dispatch(authActions.logout()),
+        onPress: async () => {
+          setIsLoading(true);
+          try {
+            await dispatch(authActions.logout());
+          } catch (e) {
+            console.log(e);
+            setIsLoading(false);
+          }
+        },
       },
     ]);
   };
 
-  const deleteHandler = () => {
-    Alert.alert("Are you sure", "Do you really want to delete your account?", [
-      { text: "No", style: "default" },
-      {
-        text: "yes",
-        style: "destructive",
-        onPress: () => dispatch(authActions.deleteAccount()),
-      },
-    ]);
-  };
+  if (isLoading) {
+    return (
+      <View style={styles.centered}>
+        <Text>Logging out</Text>
+        <ActivityIndicator size="large" color={Colors.primaryOrange} />
+      </View>
+    );
+  }
 
   return (
     <View style={styles.screen}>
@@ -44,7 +53,7 @@ const SettingScreen = () => {
         <Button
           color="#cc0e00"
           title="Delete my account"
-          onPress={deleteHandler}
+          onPress={() => navigation.navigate("Delete")}
         />
       </View>
     </View>
@@ -57,6 +66,12 @@ const styles = StyleSheet.create({
     //alignItems: "center",
     justifyContent: "flex-end",
     margin: 20,
+  },
+
+  centered: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
 

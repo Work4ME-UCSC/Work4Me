@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import JobCard from "../../components/Employee/Jobcard";
 
 const FavouriteScreen = ({ navigation }) => {
-  const favJobs = useSelector((state) => state.jobs.favouriteJobs);
+  const favJobs = useSelector((state) => state.employee.favouriteJobs);
 
   const renderJobCard = ({ item }) => {
     return (
