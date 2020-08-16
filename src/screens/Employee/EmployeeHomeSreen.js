@@ -26,7 +26,7 @@ const EmployeeHomeScreen = (props) => {
     setIsRefreshing(true);
     try {
       await dispatch(jobActions.fetchJobs());
-      await dispatch(jobActions.fetchAppliedJobs());
+      await dispatch(jobActions.fetchPendingJobs());
     } catch (e) {
       setError(e.message);
     }

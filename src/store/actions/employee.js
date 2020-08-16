@@ -5,7 +5,8 @@ import AppliedJobs from "../../models/appliedJobs";
 export const CREATE_JOB = "CREATE_JOB";
 export const TOGGLE_FAVOURITE = "TOGGLE_FAVOURITE";
 export const SET_JOBS = "SET_JOBS";
-export const SET_APPLIED_JOBS = "SET_APPLIED_JOBS";
+export const SET_PENDING_JOBS = "SET_PENDING_JOBS";
+export const SET_CURRENT_JOBS = "SET_CURRENT_JOBS";
 export const APPLY_FOR_JOB = "APPLY_FOR_JOB";
 export const CANCEL_JOB_REQUEST = "CANCEL_JOB_REQUEST";
 
@@ -42,10 +43,12 @@ export const fetchJobs = () => {
   };
 };
 
-export const fetchAppliedJobs = () => {
+//fetch pending jobs
+
+export const fetchPendingJobs = () => {
   return async (dispatch, getState) => {
     const token = getState().auth.token;
-    const response = await workApi.get("/employee/apply", {
+    const response = await workApi.get("/employee/apply?status=pending", {
       headers: { Authorization: `Bearer ${token}` },
     });
     const resData = response.data;
@@ -66,7 +69,37 @@ export const fetchAppliedJobs = () => {
       );
     }
 
-    dispatch({ type: SET_APPLIED_JOBS, appliedJobs: loadedJobs });
+    dispatch({ type: SET_PENDING_JOBS, appliedJobs: loadedJobs });
+  };
+};
+
+//fetch current jobs
+
+export const fetchCurrentJobs = () => {
+  return async (dispatch, getState) => {
+    const token = getState().auth.token;
+    const response = await workApi.get("/employee/apply?status=confirmed", {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    const resData = response.data;
+
+    const loadedJobs = [];
+
+    for (const key in resData) {
+      loadedJobs.push(
+        new AppliedJobs(
+          resData[key]._id,
+          resData[key].jobID,
+          resData[key].jobTitle,
+          "",
+          resData[key].owner,
+          resData[key].jobStatus,
+          resData[key].createdAt
+        )
+      );
+    }
+
+    dispatch({ type: SET_CURRENT_JOBS, currentJobs: loadedJobs });
   };
 };
 
