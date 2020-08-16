@@ -5,26 +5,36 @@ import Spinner from "react-native-loading-spinner-overlay";
 
 import CurrentJobCard from "../../components/Employee/CurrentJobCard";
 import Colors from "../../constants/Colors";
-import { cancelJobRequest } from "../../store/actions/employee";
+import { fetchCurrentJobs } from "../../store/actions/employee";
 
 const PendingRequestScreen = () => {
   const [error, setError] = useState();
   const [isLoading, setIsLoading] = useState(false);
 
-  const pendingJobs = useSelector((state) => state.employee.appliedJobs);
+  const pendingJobs = useSelector((state) => state.employee.currentJobs);
 
   const dispatch = useDispatch();
 
-  const withdrawHandler = async (id) => {
-    setError(null);
-    setIsLoading(true);
-    try {
-      await dispatch(cancelJobRequest(id));
-    } catch (e) {
-      setError(e.message);
-    }
-    setIsLoading(false);
-  };
+  // const withdrawHandler = async (id) => {
+  //   setError(null);
+  //   setIsLoading(true);
+  //   try {
+  //     await dispatch(cancelJobRequest(id));
+  //   } catch (e) {
+  //     setError(e.message);
+  //   }
+  //   setIsLoading(false);
+  // };
+
+  useEffect(() => {
+    const fetchJobs = async () => {
+      setIsLoading(true);
+      await dispatch(fetchCurrentJobs());
+      setIsLoading(false);
+    };
+
+    fetchJobs();
+  }, []);
 
   const renderItem = ({ item }) => {
     return (
@@ -56,7 +66,7 @@ const PendingRequestScreen = () => {
   if (pendingJobs.length === 0) {
     return (
       <View style={styles.centered}>
-        <Text>No completed jobs...</Text>
+        <Text>Currently no jobs...</Text>
       </View>
     );
   }
