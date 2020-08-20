@@ -34,20 +34,15 @@ const SigninScreen = ({ navigation }) => {
 
   const dispatch = useDispatch();
 
-  const {
-    checkEmail,
-    checkPassword,
-    emailError,
-    passwordError,
-  } = epValidator();
+  const { checkEmail, checkLength, emailError, lengthError } = epValidator();
 
   const onClickLogin = async (email, password) => {
     setEmailEnd(true);
     setPasswordEnd(true);
     checkEmail(email);
-    checkPassword(password);
+    checkLength(password);
 
-    if (!emailError && !passwordError) {
+    if (!emailError && !lengthError) {
       setIsLoading(true);
       setError(null);
       try {
@@ -129,13 +124,13 @@ const SigninScreen = ({ navigation }) => {
               value={password}
               onChangeText={(pass) => {
                 setPassword(pass.replace(/\s/g, ""));
-                checkPassword(pass);
+                checkLength(pass);
               }}
               onEndEditing={() => onEndPassword(password)}
             />
 
-            {passwordEnd && passwordError && passwordError != "initial" ? (
-              <ErrorText title={passwordError} />
+            {passwordEnd && lengthError && lengthError != "initial" ? (
+              <ErrorText title={lengthError} />
             ) : (
               <Text></Text>
             )}

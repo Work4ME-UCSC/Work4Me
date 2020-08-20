@@ -11,6 +11,8 @@ const initialState = {
   userType: "",
   firstName: "",
   lastName: "",
+  email: "",
+  profilePic: null,
   tryAutoLogin: false,
 };
 
@@ -23,6 +25,8 @@ export default (state = initialState, action) => {
         userType: action.userType,
         firstName: action.firstName,
         lastName: action.lastName,
+        email: action.email,
+        profilePic: action.profilePic,
       };
 
     case TRY_AUTO_LOGIN:

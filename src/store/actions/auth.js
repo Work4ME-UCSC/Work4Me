@@ -13,7 +13,22 @@ export const tryAutoLogin = () => {
 };
 
 export const authenticate = (token, userID, firstName, lastName, userType) => {
-  return { type: AUTHENTICATE, token, userID, firstName, lastName, userType };
+  return async (dispatch) => {
+    const response = await workApi.get("/users/me", {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    dispatch({
+      type: AUTHENTICATE,
+      token,
+      userID,
+      firstName,
+      lastName,
+      userType,
+      email: response.data.email,
+      profilePic: response.data.avatar,
+    });
+  };
 };
 
 export const signup = (data) => {
@@ -112,9 +127,10 @@ export const deleteAccount = (password) => {
   return async (dispatch, getState) => {
     const token = getState().auth.token;
     const userType = getState().auth.userType;
+
     try {
       await workApi.post(
-        "users/verifyPassword",
+        "/users/verifyPassword",
         { password },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -133,6 +149,25 @@ export const deleteAccount = (password) => {
       if (e.response.status === 400) throw new Error("Incorrect Password");
       console.log(e.response.status);
       throw e;
+    }
+  };
+};
+
+export const uploadProfilePicture = (pictureData) => {
+  return async (dispatch, getState) => {
+    const token = getState().auth.token;
+
+    console.log(pictureData);
+
+    try {
+      await workApi.post(`/users/me/avatar`, pictureData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+        },
+      });
+    } catch (e) {
+      console.log(e);
     }
   };
 };
