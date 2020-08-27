@@ -7,6 +7,7 @@ export const TRY_AUTO_LOGIN = "TRY_AUTO_LOGIN";
 export const EMAIL_CHECK = "EMAIL_CHECK";
 export const LOGOUT = "LOGOUT";
 export const DELETE_ACCOUNT = "DELETE_ACCOUNT";
+export const SET_PROFILE_PICTURE = "SET_PROFILE_PICTURE";
 
 export const tryAutoLogin = () => {
   return { type: TRY_AUTO_LOGIN };
@@ -157,18 +158,29 @@ export const uploadProfilePicture = (pictureData) => {
   return async (dispatch, getState) => {
     const token = getState().auth.token;
 
-    console.log(pictureData);
-
     try {
-      await workApi.post(`/users/me/avatar`, pictureData, {
+      const response = await workApi.post(`/users/me/avatar`, pictureData, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "multipart/form-data",
         },
       });
+
+      dispatch({ type: SET_PROFILE_PICTURE, url: response.data.url });
     } catch (e) {
       console.log(e);
     }
+  };
+};
+
+export const deleteProfilePicture = () => {
+  return async (dispatch, getState) => {
+    const token = getState().auth.token;
+    await workApi.delete("/users/me/avatar", {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    dispatch({ type: SET_PROFILE_PICTURE, url: null });
   };
 };
 

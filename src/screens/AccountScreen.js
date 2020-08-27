@@ -16,7 +16,10 @@ import * as Permissions from "expo-permissions";
 import * as ImagePicker from "expo-image-picker";
 
 import Colors from "../constants/Colors";
-import { uploadProfilePicture } from "../store/actions/auth";
+import {
+  uploadProfilePicture,
+  deleteProfilePicture,
+} from "../store/actions/auth";
 
 const AccountScreen = ({ navigation }) => {
   const firstName = useSelector((state) => state.auth.firstName);
@@ -43,7 +46,7 @@ const AccountScreen = ({ navigation }) => {
       const result = await ImagePicker.launchCameraAsync({
         allowsEditing: true,
         aspect: [4, 3],
-        quality: 0.7,
+        quality: 0.6,
       });
 
       if (result.cancelled) {
@@ -55,7 +58,7 @@ const AccountScreen = ({ navigation }) => {
           type: `test/${result.uri.split(".").pop()}`,
           name: `test.${result.uri.split(".").pop()}`,
         };
-
+        setIsLoading(true);
         const data = new FormData();
         data.append("avatar", pictureData);
 
@@ -64,39 +67,55 @@ const AccountScreen = ({ navigation }) => {
     } catch (e) {
       console.log(e);
     }
-
-    //bs.current.snapTo(1);
+    setIsLoading(false);
   };
 
-  // const chooseFromGallery = () => {
-  //   ImagePicker.openPicker({
-  //     width: 300,
-  //     height: 300,
-  //     cropping: true,
-  //   })
-  //     .then(image => {
-  //       setImage(image.path);
-  //       dispatch(uploadProfilePicture(image.path));
-  //     })
-  //     .catch(e => {
-  //       Toast.show('Cancelled image selection');
-  //     });
+  const chooseFromGallery = async () => {
+    const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+    if (status !== "granted") {
+      Toast.show("Need permission to access gallery");
+    }
 
-  //   bs.current.snapTo(1);
-  // };
+    try {
+      const result = await ImagePicker.launchImageLibraryAsync({
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 0.6,
+      });
 
-  // const removePicture = () => {
-  //   setIsLoading(true);
-  //   dispatch(deleteProfilePicture())
-  //     .then(() => {
-  //       setImage(null);
-  //       setIsLoading(false);
-  //     })
-  //     .catch(e => {
-  //       setIsLoading(false);
-  //       alert(e.message);
-  //     });
-  // };
+      if (result.cancelled) {
+        Toast.show("Cancelled Image Pick");
+      } else {
+        setImage(result.uri);
+        const pictureData = {
+          uri: result.uri,
+          type: `test/${result.uri.split(".").pop()}`,
+          name: `test.${result.uri.split(".").pop()}`,
+        };
+        setIsLoading(true);
+        const data = new FormData();
+        data.append("avatar", pictureData);
+
+        await dispatch(uploadProfilePicture(data));
+      }
+    } catch (e) {
+      console.log(e);
+    }
+    setIsLoading(false);
+  };
+
+  const removePicture = () => {
+    setIsLoading(true);
+    dispatch(deleteProfilePicture())
+      .then(() => {
+        setImage(null);
+        setIsLoading(false);
+      })
+      .catch((e) => {
+        setIsLoading(false);
+        alert(e.message);
+      });
+  };
 
   const renderContent = () => (
     <View style={styles.panel}>
@@ -112,7 +131,7 @@ const AccountScreen = ({ navigation }) => {
         <Text style={styles.panelButtonTitle}>Take Photo</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.panelButton} onPress={() => {}}>
+      <TouchableOpacity style={styles.panelButton} onPress={chooseFromGallery}>
         <Text style={styles.panelButtonTitle}>Choose From Gallery</Text>
       </TouchableOpacity>
 
@@ -121,7 +140,7 @@ const AccountScreen = ({ navigation }) => {
           ...styles.panelButton,
           backgroundColor: image ? Colors.red : Colors.darkGrey,
         }}
-        onPress={() => {}}
+        onPress={removePicture}
         disabled={image ? false : true}
       >
         <Text style={styles.panelButtonTitle}>Remove Profile Picture</Text>
@@ -140,7 +159,7 @@ const AccountScreen = ({ navigation }) => {
   if (isLoading) {
     return (
       <View style={styles.centered}>
-        <Text>Please Wait</Text>
+        <Text>Please Wait...</Text>
         <ActivityIndicator size="large" color={Colors.blue} />
       </View>
     );

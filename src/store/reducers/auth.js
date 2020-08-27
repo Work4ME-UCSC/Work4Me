@@ -3,6 +3,7 @@ import {
   DELETE_ACCOUNT,
   AUTHENTICATE,
   TRY_AUTO_LOGIN,
+  SET_PROFILE_PICTURE,
 } from "../actions/auth";
 
 const initialState = {
@@ -27,6 +28,12 @@ export default (state = initialState, action) => {
         lastName: action.lastName,
         email: action.email,
         profilePic: action.profilePic,
+      };
+
+    case SET_PROFILE_PICTURE:
+      return {
+        ...state,
+        profilePic: action.url,
       };
 
     case TRY_AUTO_LOGIN:
