@@ -1,10 +1,11 @@
-import React, { createRef, useState } from "react";
+import React, { createRef, useState, useEffect } from "react";
 import {
   View,
   ScrollView,
   TouchableOpacity,
   ActivityIndicator,
   StyleSheet,
+  Alert,
 } from "react-native";
 import Animated from "react-native-reanimated";
 import BottomSheet from "reanimated-bottom-sheet";
@@ -32,6 +33,7 @@ const AccountScreen = ({ navigation }) => {
 
   const [image, setImage] = useState(profilePic);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState();
 
   const bs = createRef();
   const fall = new Animated.Value(1);
@@ -41,7 +43,7 @@ const AccountScreen = ({ navigation }) => {
     if (status !== "granted") {
       Toast.show("Need permission to access camera");
     }
-
+    setError(null);
     try {
       const result = await ImagePicker.launchCameraAsync({
         allowsEditing: true,
@@ -52,7 +54,6 @@ const AccountScreen = ({ navigation }) => {
       if (result.cancelled) {
         Toast.show("Cancelled Image Pick");
       } else {
-        setImage(result.uri);
         const pictureData = {
           uri: result.uri,
           type: `test/${result.uri.split(".").pop()}`,
@@ -63,9 +64,10 @@ const AccountScreen = ({ navigation }) => {
         data.append("avatar", pictureData);
 
         await dispatch(uploadProfilePicture(data));
+        setImage(result.uri);
       }
     } catch (e) {
-      console.log(e);
+      setError(e.message);
     }
     setIsLoading(false);
   };
@@ -75,7 +77,7 @@ const AccountScreen = ({ navigation }) => {
     if (status !== "granted") {
       Toast.show("Need permission to access gallery");
     }
-
+    setError(null);
     try {
       const result = await ImagePicker.launchImageLibraryAsync({
         allowsEditing: true,
@@ -86,7 +88,6 @@ const AccountScreen = ({ navigation }) => {
       if (result.cancelled) {
         Toast.show("Cancelled Image Pick");
       } else {
-        setImage(result.uri);
         const pictureData = {
           uri: result.uri,
           type: `test/${result.uri.split(".").pop()}`,
@@ -97,9 +98,10 @@ const AccountScreen = ({ navigation }) => {
         data.append("avatar", pictureData);
 
         await dispatch(uploadProfilePicture(data));
+        setImage(result.uri);
       }
     } catch (e) {
-      console.log(e);
+      setError(e.message);
     }
     setIsLoading(false);
   };
@@ -155,6 +157,12 @@ const AccountScreen = ({ navigation }) => {
       </View>
     </View>
   );
+
+  useEffect(() => {
+    if (error) {
+      Alert.alert("Important", error, [{ text: "Okay" }]);
+    }
+  }, [error]);
 
   if (isLoading) {
     return (

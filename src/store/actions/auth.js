@@ -168,7 +168,10 @@ export const uploadProfilePicture = (pictureData) => {
 
       dispatch({ type: SET_PROFILE_PICTURE, url: response.data.url });
     } catch (e) {
-      console.log(e);
+      if (e.response.data.error === "File too large")
+        throw new Error("Image size should be less than 5mb");
+      console.log(e.response.data.error);
+      throw e;
     }
   };
 };
