@@ -7,13 +7,29 @@ export const TRY_AUTO_LOGIN = "TRY_AUTO_LOGIN";
 export const EMAIL_CHECK = "EMAIL_CHECK";
 export const LOGOUT = "LOGOUT";
 export const DELETE_ACCOUNT = "DELETE_ACCOUNT";
+export const SET_PROFILE_PICTURE = "SET_PROFILE_PICTURE";
 
 export const tryAutoLogin = () => {
   return { type: TRY_AUTO_LOGIN };
 };
 
 export const authenticate = (token, userID, firstName, lastName, userType) => {
-  return { type: AUTHENTICATE, token, userID, firstName, lastName, userType };
+  return async (dispatch) => {
+    const response = await workApi.get("/users/me", {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    dispatch({
+      type: AUTHENTICATE,
+      token,
+      userID,
+      firstName,
+      lastName,
+      userType,
+      email: response.data.email,
+      profilePic: response.data.avatar,
+    });
+  };
 };
 
 export const signup = (data) => {
@@ -112,9 +128,10 @@ export const deleteAccount = (password) => {
   return async (dispatch, getState) => {
     const token = getState().auth.token;
     const userType = getState().auth.userType;
+
     try {
       await workApi.post(
-        "users/verifyPassword",
+        "/users/verifyPassword",
         { password },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -134,6 +151,39 @@ export const deleteAccount = (password) => {
       console.log(e.response.status);
       throw e;
     }
+  };
+};
+
+export const uploadProfilePicture = (pictureData) => {
+  return async (dispatch, getState) => {
+    const token = getState().auth.token;
+
+    try {
+      const response = await workApi.post(`/users/me/avatar`, pictureData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      dispatch({ type: SET_PROFILE_PICTURE, url: response.data.url });
+    } catch (e) {
+      if (e.response.data.error === "File too large")
+        throw new Error("Image size should be less than 5mb");
+      console.log(e.response.data.error);
+      throw e;
+    }
+  };
+};
+
+export const deleteProfilePicture = () => {
+  return async (dispatch, getState) => {
+    const token = getState().auth.token;
+    await workApi.delete("/users/me/avatar", {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    dispatch({ type: SET_PROFILE_PICTURE, url: null });
   };
 };
 

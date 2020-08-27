@@ -6,7 +6,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import HeaderButton from "../../components/HeaderButton";
 import Colors from "../../constants/Colors";
 
-import AccountScreen from "../../screens/Employee/AccountScreen";
+import AccountScreen from "../../screens/AccountScreen";
 import SettingScreen from "../../screens/SettingScreen";
 import HelpScreen from "../../screens/HelpScreen";
 import DeleteAccountScreen from "../../screens/DeleteAccountScreen";

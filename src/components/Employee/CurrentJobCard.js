@@ -10,6 +10,7 @@ import {
   Alert,
 } from "react-native";
 import { Button } from "react-native-paper";
+import { Entypo } from "@expo/vector-icons";
 import moment from "moment";
 
 import Colors from "../../constants/Colors";
@@ -40,7 +41,10 @@ const CurrentJobCard = (props) => {
           />
         )}
         <View style={styles.detail}>
-          <Text style={styles.title}>{props.title}</Text>
+          <View style={styles.titleContainer}>
+            <Text style={styles.title}>{props.title}</Text>
+            <Entypo name="dot-single" size={30} color={Colors.green} />
+          </View>
           <Text style={styles.time}>{`Confirmed ${moment(
             props.time
           ).fromNow()}`}</Text>
@@ -90,6 +94,11 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 10,
     borderBottomRightRadius: 10,
     justifyContent: "center",
+  },
+
+  titleContainer: {
+    flexDirection: "row",
+    alignItems: "center",
   },
 
   title: {
