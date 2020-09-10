@@ -43,9 +43,11 @@ const styles = StyleSheet.create({
   },
 
   inputContainer: {
-    borderBottomWidth: 1,
+    borderWidth: 1,
     flexDirection: "row",
     marginTop: 5,
+    padding: 10,
+    borderRadius:5,
     //marginBottom: 15,
   },
 
@@ -53,6 +55,7 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 16,
     paddingHorizontal: 2,
+
   },
 
   icon: {

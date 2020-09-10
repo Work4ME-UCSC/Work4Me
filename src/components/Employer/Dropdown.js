@@ -13,7 +13,7 @@ const Dropdown = (props) => {
       <View style={{ ...styles.dropContainer, ...props.style }}>
         <DropDownPicker
           {...props}
-          containerStyle={{ height: 40, marginBottom: 5 }}
+          containerStyle={{ height: 50, marginBottom: 5 ,borderRadius:5}}
           dropDownStyle={{ backgroundColor: "#fafafa", marginTop: 2 }}
           style={{ paddingVertical: 10 }}
           //   itemStyle={{
@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
 
   dropContainer: {
     paddingVertical: 10,
-    //zIndex: Platform.OS === "ios" ? 15 : null,
+    // zIndex: Platform.OS === "ios" ? 15 : null,
   },
 
   icon: {
