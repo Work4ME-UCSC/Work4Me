@@ -25,7 +25,7 @@ export const fetchJobs = () => {
           data[key].JobTitle,
           "",
           data[key].JobCategory,
-          data[key].JobDescribtion,
+          data[key].JobDescription,
           "",
           "",
           data[key].Salary,
@@ -34,7 +34,8 @@ export const fetchJobs = () => {
           data[key].JobAddress,
           data[key].JobLocation,
           data[key].createdAt,
-          data[key].owner
+          data[key].owner,
+          data[key].applicants
         )
       );
     }
