@@ -6,6 +6,7 @@ import { createMaterialTopTabNavigator } from "@react-navigation/material-top-ta
 import CurrentJobScreen from "../../screens/Employee/CurrentJobScreen";
 import PastJobScreen from "../../screens/Employee/PastJobScreen";
 import PendingRequestScreen from "../../screens/Employee/PendingRequestScreen";
+import ReviewScreen from "../../screens/ReviewScreen";
 import Colors from "../../constants/Colors";
 
 const pendingJobsStack = () => {
@@ -14,6 +15,17 @@ const pendingJobsStack = () => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="pending" component={PendingRequestScreen} />
+    </Stack.Navigator>
+  );
+};
+
+const currentJobsStack = () => {
+  const Stack = createStackNavigator();
+
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="current" component={CurrentJobScreen} />
+      <Stack.Screen name="review" component={ReviewScreen} />
     </Stack.Navigator>
   );
 };
@@ -43,7 +55,7 @@ const JobTopNavigation = () => {
       <TopNavigator.Screen
         name="CurrentJobs"
         options={{ tabBarLabel: "Current Jobs" }}
-        component={CurrentJobScreen}
+        component={currentJobsStack}
       />
       <TopNavigator.Screen
         name="Pending"

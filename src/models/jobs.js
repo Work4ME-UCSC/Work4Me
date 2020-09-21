@@ -13,7 +13,7 @@ class Job {
     jobAddress,
     jobLocation,
     jobPostedDate,
-    EmployerID,
+    employer,
     applicants
   ) {
     this.jobID = jobID;
@@ -29,7 +29,7 @@ class Job {
     this.jobAddress = jobAddress;
     this.jobLocation = jobLocation;
     this.jobPostedDate = jobPostedDate;
-    this.EmployerID = EmployerID;
+    this.employer = employer;
     this.applicants = applicants;
   }
 }

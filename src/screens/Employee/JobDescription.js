@@ -6,7 +6,7 @@ import {
   ScrollView,
   ActivityIndicator,
 } from "react-native";
-import { Button } from "react-native-paper";
+import { Button, Avatar } from "react-native-paper";
 import { useSelector, useDispatch } from "react-redux";
 
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
@@ -57,7 +57,7 @@ const JobDescription = (props) => {
   const onApplyHandler = async () => {
     setIsLoading(true);
     try {
-      await dispatch(applyForJob(jobID, jobTitle));
+      await dispatch(applyForJob(jobID));
     } catch (e) {
       console.log(e);
     }
@@ -77,8 +77,30 @@ const JobDescription = (props) => {
     <View style={{ flex: 1 }}>
       <ScrollView showsVerticalScrollIndicator={false}>
         {/* Describtion */}
+        <View style={styles.ownerContainer}>
+          <Text style={styles.DescribtionTitle}>Posted by</Text>
+          <View style={styles.owner}>
+            <Avatar.Image
+              source={
+                selectedJob.employer.avatar
+                  ? { uri: selectedJob.employer.avatar }
+                  : require("../../../assets/profile.png")
+              }
+              size={70}
+            />
+            <View style={{ marginLeft: 10 }}>
+              <Text>
+                {selectedJob.employer.firstName +
+                  " " +
+                  selectedJob.employer.lastName}
+              </Text>
+              <Text>5.0</Text>
+            </View>
+          </View>
+        </View>
+
         <View style={styles.DescribtionContainer}>
-          <Text style={styles.DescribtionTitle}>Job Describtion</Text>
+          <Text style={styles.DescribtionTitle}>Job Description</Text>
           <Text style={styles.DescribtionContent}>
             {selectedJob.jobDescribtion}
           </Text>
@@ -138,7 +160,18 @@ const styles = StyleSheet.create({
     width: "75%",
     paddingHorizontal: 20,
   },
-  favIconContainer: {},
+  ownerContainer: {
+    marginHorizontal: 20,
+    marginTop: 20,
+    //padding: 5,
+    borderRadius: 10,
+    backgroundColor: Colors.lightGrey,
+  },
+  owner: {
+    flexDirection: "row",
+    alignItems: "center",
+    padding: 5,
+  },
   iconWrapper: {
     width: 50,
     borderRadius: 25,

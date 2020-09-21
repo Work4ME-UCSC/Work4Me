@@ -25,7 +25,7 @@ export const fetchJobs = () => {
           data[key].JobTitle,
           "",
           data[key].JobCategory,
-          data[key].JobDescribtion,
+          data[key].JobDescription,
           "",
           "",
           data[key].Salary,
@@ -34,7 +34,8 @@ export const fetchJobs = () => {
           data[key].JobAddress,
           data[key].JobLocation,
           data[key].createdAt,
-          data[key].owner
+          data[key].owner,
+          data[key].applicants
         )
       );
     }
@@ -60,8 +61,8 @@ export const fetchPendingJobs = () => {
         new AppliedJobs(
           resData[key]._id,
           resData[key].jobID,
-          resData[key].jobTitle,
-          "",
+          resData[key].jobDetails.JobTitle,
+          resData[key].jobDetails.jobImage,
           resData[key].owner,
           resData[key].jobStatus,
           resData[key].createdAt
@@ -107,14 +108,17 @@ export const toggleFavourite = (jobID) => {
   return { type: TOGGLE_FAVOURITE, jobID };
 };
 
-export const applyForJob = (jobID, jobTitle) => {
+export const applyForJob = (jobID) => {
   return async (dispatch, getState) => {
     const token = getState().auth.token;
+    const job = getState().employee.availableJobs.find(
+      (job) => job.jobID === jobID
+    );
 
     try {
       const response = await workApi.post(
         `/employee/apply/${jobID}`,
-        { jobTitle },
+        {},
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
@@ -122,9 +126,9 @@ export const applyForJob = (jobID, jobTitle) => {
 
       const appliedJob = new AppliedJobs(
         resData._id,
-        resData.jobID,
-        resData.jobTitle,
-        "",
+        jobID,
+        job.jobTitle,
+        job.jobImage,
         resData.owner,
         resData.jobStatus,
         resData.createdAt

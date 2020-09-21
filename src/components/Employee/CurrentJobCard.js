@@ -22,9 +22,15 @@ const CurrentJobCard = (props) => {
     TouchableCmp = TouchableNativeFeedback;
   }
 
+  const { navigation } = props;
+
+  const finishJobHandler = () => {
+    navigation.navigate("review");
+  };
+
   const clickHandler = () => {
     Alert.alert("Important", "Have you completed this job", [
-      { text: "Yes", onPress: () => console.log("Finished") },
+      { text: "Yes", onPress: finishJobHandler },
       { text: "No" },
     ]);
   };
