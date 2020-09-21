@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import Animated from "react-native-reanimated";
 import BottomSheet from "reanimated-bottom-sheet";
-import Toast from "react-native-simple-toast";
+//import Toast from "react-native-simple-toast";
 import { Avatar, Text, Divider } from "react-native-paper";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useSelector, useDispatch } from "react-redux";
@@ -41,7 +41,7 @@ const AccountScreen = ({ navigation }) => {
   const takePhotoFromCamera = async () => {
     const { status } = await Permissions.askAsync(Permissions.CAMERA);
     if (status !== "granted") {
-      Toast.show("Need permission to access camera");
+      //Toast.show("Need permission to access camera");
     }
     setError(null);
     try {
@@ -52,7 +52,7 @@ const AccountScreen = ({ navigation }) => {
       });
 
       if (result.cancelled) {
-        Toast.show("Cancelled Image Pick");
+        //.show("Cancelled Image Pick");
       } else {
         const pictureData = {
           uri: result.uri,
@@ -75,7 +75,7 @@ const AccountScreen = ({ navigation }) => {
   const chooseFromGallery = async () => {
     const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
     if (status !== "granted") {
-      Toast.show("Need permission to access gallery");
+      //Toast.show("Need permission to access gallery");
     }
     setError(null);
     try {
@@ -86,7 +86,7 @@ const AccountScreen = ({ navigation }) => {
       });
 
       if (result.cancelled) {
-        Toast.show("Cancelled Image Pick");
+        //Toast.show("Cancelled Image Pick");
       } else {
         const pictureData = {
           uri: result.uri,
