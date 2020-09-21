@@ -57,7 +57,7 @@ const JobDescription = (props) => {
   const onApplyHandler = async () => {
     setIsLoading(true);
     try {
-      await dispatch(applyForJob(jobID, jobTitle));
+      await dispatch(applyForJob(jobID));
     } catch (e) {
       console.log(e);
     }

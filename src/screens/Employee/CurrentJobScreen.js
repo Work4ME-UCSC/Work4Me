@@ -7,7 +7,7 @@ import CurrentJobCard from "../../components/Employee/CurrentJobCard";
 import Colors from "../../constants/Colors";
 import { fetchCurrentJobs } from "../../store/actions/employee";
 
-const PendingRequestScreen = () => {
+const PendingRequestScreen = ({ navigation }) => {
   const [error, setError] = useState();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -42,6 +42,7 @@ const PendingRequestScreen = () => {
         title={item.jobTitle}
         time={item.createdAt}
         id={item.id}
+        navigation={navigation}
       />
     );
   };
