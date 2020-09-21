@@ -4,7 +4,7 @@ import { JOBS } from "../../data/dummy-data";
 import { CREATE_JOB } from "../actions/employer";
 
 const initialState = {
-  postedJobs: JOBS.filter((job) => job.EmployerID === "emr01"),
+  postedJobs: JOBS.filter((job) => job.employer === "emr01"),
 };
 
 export default (state = initialState, action) => {

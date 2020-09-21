@@ -10,8 +10,7 @@ import {
   ActivityIndicator,
 } from "react-native";
 
-
-import DatePicker from 'react-native-datepicker'
+import DatePicker from "react-native-datepicker";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import { useDispatch } from "react-redux";
 
@@ -59,12 +58,10 @@ const formReducer = (state, action) => {
 
 const AddJobs = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(false);
-  const [date, setDate] = useState("2016-05-15")
+  const [date, setDate] = useState("2016-05-15");
   const [error, setError] = useState();
   const dispatch = useDispatch();
 
-  
-    
   console.warn(date);
 
   useEffect(() => {
@@ -123,8 +120,6 @@ const AddJobs = ({ navigation }) => {
   };
 
   const submitHandler = useCallback(async () => {
-
-
     if (!formState.formIsValid) {
       Alert.alert("Wrong Inputs", "Please check the errors in the form", [
         { text: "Ok" },
@@ -165,8 +160,6 @@ const AddJobs = ({ navigation }) => {
       </View>
     );
   }
-
-
 
   return (
     <KeyboardAvoidingView style={{ flex: 1 }}>
@@ -263,34 +256,33 @@ const AddJobs = ({ navigation }) => {
           error={true}
         />
 
-
-<DatePicker
-        style={{width: 200}}
-        // date={time}
-        // mode="time"
-        placeholder="select date"
-        format="YYYY-MM-DD"
-        minDate="2020-08-01"
-        maxDate="2020-12-30"
-        confirmBtnText="Confirm"
-        cancelBtnText="Cancel"
-        customStyles={{
-          dateIcon: {
-            position: 'absolute',
-            left: 0,
-            top: 4,
-            marginLeft: 0,
-            marginRight: 20
-          },
-          dateInput: {
-            marginLeft:36,
-            width: 600,
-            color: "red"
-          }
-          // ... You can check the source to find the other keys.
-        }}
-        onDateChange={(date) => setDate(date)}
-      />
+        <DatePicker
+          style={{ width: 200 }}
+          // date={time}
+          // mode="time"
+          placeholder="select date"
+          format="YYYY-MM-DD"
+          minDate="2020-08-01"
+          maxDate="2020-12-30"
+          confirmBtnText="Confirm"
+          cancelBtnText="Cancel"
+          customStyles={{
+            dateIcon: {
+              position: "absolute",
+              left: 0,
+              top: 4,
+              marginLeft: 0,
+              marginRight: 20,
+            },
+            dateInput: {
+              marginLeft: 36,
+              width: 600,
+              color: "red",
+            },
+            // ... You can check the source to find the other keys.
+          }}
+          onDateChange={(date) => setDate(date)}
+        />
 
         {/* <View
           style={{
@@ -392,8 +384,8 @@ const styles = StyleSheet.create({
   },
 
   button: {
-    padding:10,
-    height:50,
+    padding: 10,
+    height: 50,
     borderRadius: 10,
     marginVertical: 30,
   },

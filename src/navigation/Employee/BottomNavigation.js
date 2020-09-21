@@ -89,6 +89,7 @@ const BottomNavigation = () => {
       tabBarOptions={{
         activeTintColor: Colors.primaryOrange,
         inactiveTintColor: Colors.black,
+        keyboardHidesTabBar: true,
       }}
     >
       <BottomTabNavigator.Screen

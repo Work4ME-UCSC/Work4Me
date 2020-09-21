@@ -25,7 +25,11 @@ const currentJobsStack = () => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="current" component={CurrentJobScreen} />
-      <Stack.Screen name="review" component={ReviewScreen} />
+      <Stack.Screen
+        name="review"
+        component={ReviewScreen}
+        options={{ tabBarOptions: { visible: false } }}
+      />
     </Stack.Navigator>
   );
 };
