@@ -9,6 +9,9 @@ import {
   Alert,
   ActivityIndicator,
 } from "react-native";
+
+
+import DatePicker from 'react-native-datepicker'
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import { useDispatch } from "react-redux";
 
@@ -23,6 +26,7 @@ import HeaderButton from "../../components/HeaderButton";
 import Colors from "../../constants/Colors";
 
 import * as jobActions from "../../store/actions/employer";
+import { color } from "react-native-reanimated";
 
 const FORM_INPUT_UPDATE = "FORM_INPUT_UPDATE";
 
@@ -55,8 +59,13 @@ const formReducer = (state, action) => {
 
 const AddJobs = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(false);
+  const [date, setDate] = useState("2016-05-15")
   const [error, setError] = useState();
   const dispatch = useDispatch();
+
+  
+    
+  console.warn(date);
 
   useEffect(() => {
     if (error) {
@@ -72,9 +81,9 @@ const AddJobs = ({ navigation }) => {
       location: null,
       address: "",
       salary: "",
-      day: null,
-      fromDate: new Date(),
-      toDate: new Date(),
+      // day: null,
+      // fromDate: new Date(),
+      // toDate: new Date(),
       sex: "any",
     },
 
@@ -83,7 +92,7 @@ const AddJobs = ({ navigation }) => {
       description: false,
       category: false,
       location: false,
-      day: false,
+      // day: false,
     },
 
     formIsValid: false,
@@ -114,6 +123,8 @@ const AddJobs = ({ navigation }) => {
   };
 
   const submitHandler = useCallback(async () => {
+
+
     if (!formState.formIsValid) {
       Alert.alert("Wrong Inputs", "Please check the errors in the form", [
         { text: "Ok" },
@@ -132,7 +143,7 @@ const AddJobs = ({ navigation }) => {
           formState.inputValues.location,
           formState.inputValues.address,
           formState.inputValues.salary,
-          formState.inputValues.day,
+          // formState.inputValues.day,
           formState.inputValues.sex
         )
       );
@@ -155,6 +166,8 @@ const AddJobs = ({ navigation }) => {
     );
   }
 
+
+
   return (
     <KeyboardAvoidingView style={{ flex: 1 }}>
       <ScrollView style={styles.container}>
@@ -173,6 +186,7 @@ const AddJobs = ({ navigation }) => {
 
         <JobInput
           label="Job Description"
+          icon="pencil"
           placeholder="Enter Description"
           multiline
           textAlignVertical="top"
@@ -187,7 +201,7 @@ const AddJobs = ({ navigation }) => {
         <View
           style={{
             ...(Platform.OS !== "android" && {
-              zIndex: 10,
+              zIndex: 20,
             }),
           }}
         >
@@ -205,7 +219,8 @@ const AddJobs = ({ navigation }) => {
             error={formState.inputValidities.category}
             errorMessage="Please select a category"
             defaultValue={formState.inputValues.category}
-            zIndex={5000}
+            // zIndex={6000}
+            // style={{zIndex: Platform.OS === "ios" ? 15 : null}}
           />
         </View>
 
@@ -225,7 +240,7 @@ const AddJobs = ({ navigation }) => {
             onChangeItem={dropDownChangeHandle.bind(this, "location")}
             error={formState.inputValidities.location}
             errorMessage="Please select a location"
-            zIndex={4000}
+            // zIndex={400}
             defaultValue={formState.inputValues.location}
           />
         </View>
@@ -248,7 +263,36 @@ const AddJobs = ({ navigation }) => {
           error={true}
         />
 
-        <View
+
+<DatePicker
+        style={{width: 200}}
+        // date={time}
+        // mode="time"
+        placeholder="select date"
+        format="YYYY-MM-DD"
+        minDate="2020-08-01"
+        maxDate="2020-12-30"
+        confirmBtnText="Confirm"
+        cancelBtnText="Cancel"
+        customStyles={{
+          dateIcon: {
+            position: 'absolute',
+            left: 0,
+            top: 4,
+            marginLeft: 0,
+            marginRight: 20
+          },
+          dateInput: {
+            marginLeft:36,
+            width: 600,
+            color: "red"
+          }
+          // ... You can check the source to find the other keys.
+        }}
+        onDateChange={(date) => setDate(date)}
+      />
+
+        {/* <View
           style={{
             ...(Platform.OS !== "android" && {
               zIndex: 10,
@@ -267,7 +311,7 @@ const AddJobs = ({ navigation }) => {
             zIndex={3000}
             defaultValue={formState.inputValues.day}
           />
-        </View>
+        </View> */}
 
         {/* <View style={styles.timeContainer}>s
           <Time
@@ -348,7 +392,9 @@ const styles = StyleSheet.create({
   },
 
   button: {
-    borderRadius: 20,
+    padding:10,
+    height:50,
+    borderRadius: 10,
     marginVertical: 30,
   },
 

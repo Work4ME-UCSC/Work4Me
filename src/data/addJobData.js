@@ -19,10 +19,13 @@ export const LOCATION = [
 
 export const CATEGORIES = [
   { label: "Household", value: "Household" },
+  { label: "Education", value: "Education" },
+  { label: "Technician", value: "Technician" },
   { label: "IT", value: "IT" },
-  { label: "Delivery", value: "Delivery" },
-  { label: "Shop keeper", value: "Shop keeper" },
-  { label: "Cashier", value: "Cashier" },
+  { label: "Driving", value: "Driving" },
+  { label: "Shop Works", value: "Shop Works" },
+  { label: "Content creator", value: "Content creator" },
+  { label: "Health care", value: "Health care" },
 ];
 
 export const DAYS = [
