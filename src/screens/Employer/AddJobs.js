@@ -63,6 +63,10 @@ const AddJobs = ({ navigation }) => {
   const [error, setError] = useState();
   const dispatch = useDispatch();
 
+  
+    
+  console.warn(date);
+
   useEffect(() => {
     if (error) {
       Alert.alert("An error occured", error, [{ text: "Okay" }]);
@@ -77,9 +81,9 @@ const AddJobs = ({ navigation }) => {
       location: null,
       address: "",
       salary: "",
-      day: null,
-      fromDate: new Date(),
-      toDate: new Date(),
+      // day: null,
+      // fromDate: new Date(),
+      // toDate: new Date(),
       sex: "any",
     },
 
@@ -88,7 +92,7 @@ const AddJobs = ({ navigation }) => {
       description: false,
       category: false,
       location: false,
-      day: false,
+      // day: false,
     },
 
     formIsValid: false,
@@ -119,6 +123,8 @@ const AddJobs = ({ navigation }) => {
   };
 
   const submitHandler = useCallback(async () => {
+
+
     if (!formState.formIsValid) {
       Alert.alert("Wrong Inputs", "Please check the errors in the form", [
         { text: "Ok" },
@@ -137,7 +143,7 @@ const AddJobs = ({ navigation }) => {
           formState.inputValues.location,
           formState.inputValues.address,
           formState.inputValues.salary,
-          formState.inputValues.day,
+          // formState.inputValues.day,
           formState.inputValues.sex
         )
       );
@@ -159,6 +165,8 @@ const AddJobs = ({ navigation }) => {
       </View>
     );
   }
+
+
 
   return (
     <KeyboardAvoidingView style={{ flex: 1 }}>
@@ -258,8 +266,8 @@ const AddJobs = ({ navigation }) => {
 
 <DatePicker
         style={{width: 200}}
-        date={date}
-        mode="datetime"
+        // date={time}
+        // mode="time"
         placeholder="select date"
         format="YYYY-MM-DD"
         minDate="2020-08-01"
@@ -283,6 +291,7 @@ const AddJobs = ({ navigation }) => {
         }}
         onDateChange={(date) => setDate(date)}
       />
+
         {/* <View
           style={{
             ...(Platform.OS !== "android" && {

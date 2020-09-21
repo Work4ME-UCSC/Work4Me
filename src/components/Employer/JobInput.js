@@ -11,7 +11,7 @@ const JobInput = (props) => {
   return (
     <View>
       <Text style={{ ...styles.title, color: borderColor }}>{props.label}</Text>
-      <View style={{ marginBottom: 25 }}>
+      <View style={{ marginBottom: 10 }}>
         <View
           style={{
             ...styles.inputContainer,

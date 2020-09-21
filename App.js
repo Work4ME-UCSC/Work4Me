@@ -4,6 +4,7 @@ import { createStore, combineReducers, applyMiddleware } from "redux";
 import { Provider } from "react-redux";
 import ReduxThunk from "redux-thunk";
 
+
 import AppNavigation from "./src/navigation/AppNavigation";
 
 import signUpDataReducer from "./src/store/reducers/signUpData";
