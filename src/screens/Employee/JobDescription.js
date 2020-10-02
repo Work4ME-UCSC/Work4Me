@@ -1,10 +1,11 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useState, useEffect } from "react";
 import {
   View,
   Text,
   StyleSheet,
   ScrollView,
   ActivityIndicator,
+  Alert,
 } from "react-native";
 import { Button, Avatar } from "react-native-paper";
 import { useSelector, useDispatch } from "react-redux";
@@ -16,12 +17,15 @@ import { toggleFavourite, applyForJob } from "../../store/actions/employee";
 
 const JobDescription = (props) => {
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState();
 
   const { jobID, jobTitle } = props.route.params;
 
   const isApplied = useSelector((state) =>
     state.employee.appliedJobs.some((job) => job.jobID === jobID)
   );
+
+  const isEmailVerified = useSelector((state) => state.auth.isEmailVerified);
 
   const isFav = useSelector((state) =>
     state.employee.favouriteJobs.some((job) => job.jobID === jobID)
@@ -55,6 +59,12 @@ const JobDescription = (props) => {
   }, [navigation, isFav, toggleFavouriteHandler]);
 
   const onApplyHandler = async () => {
+    setError(null);
+    if (!isEmailVerified) {
+      setError("Please verify your email address before applying");
+      return;
+    }
+
     setIsLoading(true);
     try {
       await dispatch(applyForJob(jobID));
@@ -63,6 +73,12 @@ const JobDescription = (props) => {
     }
     setIsLoading(false);
   };
+
+  useEffect(() => {
+    if (error) {
+      Alert.alert("An Error Occured", error, [{ text: "Okay" }]);
+    }
+  }, [error]);
 
   if (isLoading) {
     return (

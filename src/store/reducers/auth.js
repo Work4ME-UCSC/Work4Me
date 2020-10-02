@@ -15,6 +15,7 @@ const initialState = {
   email: "",
   profilePic: null,
   tryAutoLogin: false,
+  isEmailVerified: false,
 };
 
 export default (state = initialState, action) => {
@@ -28,6 +29,7 @@ export default (state = initialState, action) => {
         lastName: action.lastName,
         email: action.email,
         profilePic: action.profilePic,
+        isEmailVerified: action.isEmailVerified,
       };
 
     case SET_PROFILE_PICTURE:

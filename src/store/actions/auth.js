@@ -28,6 +28,7 @@ export const authenticate = (token, userID, firstName, lastName, userType) => {
       userType,
       email: response.data.email,
       profilePic: response.data.avatar,
+      isEmailVerified: response.data.isVerified,
     });
   };
 };

@@ -14,33 +14,32 @@ export const fetchJobs = () => {
       });
 
       const data = response.data;
-      console.log(data);
 
       const loadedJobs = [];
 
-      // for (const key in data) {
-      //   loadedJobs.push(
-      //     new Job(
-      //       data[key]._id,
-      //       data[key].JobTitle,
-      //       data[key].JobImage,
-      //       data[key].JobCategory,
-      //       data[key].JobDescription,
-      //       "",
-      //       "",
-      //       data[key].Salary,
-      //       "",
-      //       "",
-      //       data[key].JobAddress,
-      //       data[key].JobLocation,
-      //       data[key].createdAt,
-      //       data[key].owner,
-      //       data[key].applicants
-      //     )
-      //   );
-      // }
+      for (const key in data) {
+        loadedJobs.push(
+          new Job(
+            data[key]._id,
+            data[key].JobTitle,
+            data[key].JobImage,
+            data[key].JobCategory,
+            data[key].JobDescription,
+            "",
+            "",
+            data[key].Salary,
+            "",
+            "",
+            data[key].JobAddress,
+            data[key].JobLocation,
+            data[key].createdAt,
+            data[key].owner,
+            data[key].applicants
+          )
+        );
+      }
 
-      // dispatch({ type: SET_REQUESTS, jobs: loadedJobs });
+      dispatch({ type: SET_REQUESTS, jobRequests: loadedJobs });
     } catch (e) {
       console.log(e);
     }
