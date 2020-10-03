@@ -4,7 +4,7 @@ import { JOBS } from "../../data/dummy-data";
 import { CREATE_JOB, SET_REQUESTS } from "../actions/employer";
 
 const initialState = {
-  postedJobs: JOBS.filter((job) => job.employer === "emr01"),
+  postedJobs: [],
   jobRequests: [],
 };
 
@@ -34,9 +34,11 @@ export default (state = initialState, action) => {
         action.data.owner
       );
 
-      // console.log(newJob);
-
-      return { ...state, postedJobs: state.postedJobs.concat(newJob) };
+      return {
+        ...state,
+        postedJobs: state.postedJobs.concat(newJob),
+        jobRequests: state.jobRequests.concat(newJob),
+      };
 
     default:
       return state;

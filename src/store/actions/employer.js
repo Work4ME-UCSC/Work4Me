@@ -53,10 +53,10 @@ export const createJob = (
   location,
   address,
   salary,
-  workDay,
+  //workDay,
   sex
 ) => {
-  return async (dispathch, getState) => {
+  return async (dispatch, getState) => {
     const token = getState().auth.token;
     try {
       const response = await workApi.post(
@@ -67,7 +67,8 @@ export const createJob = (
           JobCategory: category,
           JobLocation: location,
           JobAddress: address,
-          JobDay: workDay,
+          JobSalary: salary,
+          //JobDay: workDay,
           Sex: sex,
         },
         { headers: { Authorization: `Bearer ${token}` } }
@@ -75,7 +76,7 @@ export const createJob = (
 
       // console.log(response.data);
 
-      dispathch({
+      dispatch({
         type: CREATE_JOB,
         data: {
           id: response.data._id,
@@ -85,7 +86,6 @@ export const createJob = (
           location,
           address,
           salary,
-          workDay,
           sex,
           createdDate: response.data.createdAt,
           owner: response.data.owner,
