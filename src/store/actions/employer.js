@@ -53,8 +53,9 @@ export const createJob = (
   location,
   address,
   salary,
-  //workDay,
-  sex
+  date,
+  sex,
+  image
 ) => {
   return async (dispatch, getState) => {
     const token = getState().auth.token;
@@ -68,8 +69,9 @@ export const createJob = (
           JobLocation: location,
           JobAddress: address,
           JobSalary: salary,
-          //JobDay: workDay,
+          JobDate: date,
           Sex: sex,
+          JobImage: image,
         },
         { headers: { Authorization: `Bearer ${token}` } }
       );

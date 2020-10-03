@@ -23,7 +23,7 @@ export const fetchJobs = () => {
         new Job(
           data[key]._id,
           data[key].JobTitle,
-          "",
+          data[key].JobImage,
           data[key].JobCategory,
           data[key].JobDescription,
           "",
@@ -62,7 +62,7 @@ export const fetchPendingJobs = () => {
           resData[key]._id,
           resData[key].jobID,
           resData[key].jobDetails.JobTitle,
-          resData[key].jobDetails.jobImage,
+          resData[key].jobDetails.JobImage,
           resData[key].owner,
           resData[key].jobStatus,
           resData[key].createdAt

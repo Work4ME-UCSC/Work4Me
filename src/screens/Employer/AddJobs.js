@@ -21,12 +21,9 @@ import Dropdown from "../../components/Employer/Dropdown";
 import Radiobutton from "../../components/Employer/Radiobutton";
 import { LOCATION, CATEGORIES, SEX } from "../../data/addJobData";
 import SubmitButton from "../../components/SubmitButton";
-import ErrorText from "../../components/Authenticate/ErrorText";
 import HeaderButton from "../../components/HeaderButton";
 import Colors from "../../constants/Colors";
-
 import * as jobActions from "../../store/actions/employer";
-import { color } from "react-native-reanimated";
 
 const FORM_INPUT_UPDATE = "FORM_INPUT_UPDATE";
 
@@ -59,7 +56,8 @@ const formReducer = (state, action) => {
 
 const AddJobs = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(false);
-  const [date, setDate] = useState("2016-05-15");
+  const [date, setDate] = useState("");
+  const [minDate, setMinDate] = useState("");
   const [image, setImage] = useState("");
   const [error, setError] = useState();
   const dispatch = useDispatch();
@@ -70,6 +68,17 @@ const AddJobs = ({ navigation }) => {
     }
   }, [error]);
 
+  useEffect(() => {
+    const today = new Date();
+    const month =
+      today.getMonth() + 1 < 10
+        ? `0${today.getMonth() + 1}`
+        : today.getMonth() + 1;
+    const date = today.getDate() < 10 ? `0${today.getDate()}` : today.getDate();
+    setMinDate(`${today.getFullYear()}-${month}-${date}`);
+    console.log(minDate);
+  }, []);
+
   const [formState, dispatchFormState] = useReducer(formReducer, {
     inputValues: {
       title: "",
@@ -78,7 +87,6 @@ const AddJobs = ({ navigation }) => {
       location: null,
       address: "",
       salary: "",
-      // day: null,
       sex: "any",
     },
 
@@ -87,7 +95,6 @@ const AddJobs = ({ navigation }) => {
       description: false,
       category: false,
       location: false,
-      // day: false,
     },
 
     formIsValid: false,
@@ -130,22 +137,10 @@ const AddJobs = ({ navigation }) => {
         quality: 0.6,
         base64: true,
       });
-
       if (result.cancelled) {
         //Toast.show("Cancelled Image Pick");
       } else {
-        // const pictureData = {
-        //   uri: result.uri,
-        //   type: `test/${result.uri.split(".").pop()}`,
-        //   name: `test.${result.uri.split(".").pop()}`,
-        // };
-        // setIsLoading(true);
-        // const data = new FormData();
-        // data.append("avatar", pictureData);
-
-        // await dispatch(uploadProfilePicture(data));
-        // setImage(result.uri);
-        console.log(result);
+        setImage(`data:image/jpeg;base64,${result.base64}`);
       }
     } catch (e) {
       setError(e.message);
@@ -172,8 +167,9 @@ const AddJobs = ({ navigation }) => {
           formState.inputValues.location,
           formState.inputValues.address,
           formState.inputValues.salary,
-          // formState.inputValues.day,
-          formState.inputValues.sex
+          date,
+          formState.inputValues.sex,
+          image
         )
       );
       setIsLoading(false);
@@ -183,9 +179,7 @@ const AddJobs = ({ navigation }) => {
       setError(e.message);
       setIsLoading(false);
     }
-  }, [dispatch, formState]);
-
-  //console.log(formState);
+  }, [dispatch, formState, image, date]);
 
   if (isLoading) {
     return (
@@ -236,10 +230,6 @@ const AddJobs = ({ navigation }) => {
           <Dropdown
             title="Job Category"
             items={CATEGORIES}
-            //multiple={true}
-            //multipleText="%d categories have been selected."
-            //min={0}
-            //max={10}
             searchable
             placeholder="Select Categories"
             searchablePlaceholder="Search for a category"
@@ -296,9 +286,9 @@ const AddJobs = ({ navigation }) => {
             style={{ width: 200 }}
             // date={time}
             // mode="time"
-            placeholder="Select date"
+            placeholder={date ? date : "Select date"}
             format="YYYY-MM-DD"
-            minDate="2020-08-01"
+            minDate={minDate}
             maxDate="2020-12-30"
             confirmBtnText="Confirm"
             cancelBtnText="Cancel"
@@ -319,6 +309,7 @@ const AddJobs = ({ navigation }) => {
             }}
             onDateChange={(date) => setDate(date)}
           />
+          {console.log(date)}
         </View>
 
         <Radiobutton
@@ -337,8 +328,16 @@ const AddJobs = ({ navigation }) => {
         />
 
         <View style={{ marginTop: 15 }}>
-          <Button onPress={chooseFromGallery} mode="contained">
-            Upload a job image
+          <Text style={{ fontSize: 16, marginBottom: 10 }}>
+            Job Image (Optional)
+          </Text>
+          <Button
+            width="80%"
+            onPress={chooseFromGallery}
+            mode="contained"
+            color={Colors.darkGrey}
+          >
+            {image ? "Image Selected" : "Upload a job image"}
           </Button>
         </View>
 
@@ -390,7 +389,7 @@ const styles = StyleSheet.create({
 
   button: {
     padding: 10,
-    height: 50,
+    height: 40,
     borderRadius: 10,
     marginVertical: 30,
   },
