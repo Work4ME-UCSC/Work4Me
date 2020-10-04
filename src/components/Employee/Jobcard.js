@@ -47,8 +47,10 @@ const JobCard = (props) => {
         </View>
 
         <View style={styles.DetailsContainer}>
-          <View style={{ flex: 1, alignSelf: "center" }}>
-            <Text style={styles.title}>{props.name}</Text>
+          <View style={{ flex: 1 }}>
+            <Text style={styles.title} numberOfLines={1}>
+              {props.name}
+            </Text>
           </View>
           <View style={styles.item}>
             <Feather name="calendar" style={styles.icon} color="black" />

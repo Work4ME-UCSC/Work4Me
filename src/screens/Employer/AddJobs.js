@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import DatePicker from "react-native-datepicker";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Button } from "react-native-paper";
 import * as Permissions from "expo-permissions";
 import * as ImagePicker from "expo-image-picker";
@@ -61,6 +61,8 @@ const AddJobs = ({ navigation }) => {
   const [image, setImage] = useState("");
   const [error, setError] = useState();
   const dispatch = useDispatch();
+
+  const isVerifiedUser = useSelector((state) => state.auth.isEmailVerified);
 
   useEffect(() => {
     if (error) {
@@ -156,6 +158,11 @@ const AddJobs = ({ navigation }) => {
       return;
     }
 
+    if (!isVerifiedUser) {
+      setError("Please verify your account before adding a job");
+      return;
+    }
+
     setIsLoading(true);
     setError(null);
     try {
@@ -193,6 +200,11 @@ const AddJobs = ({ navigation }) => {
   return (
     <KeyboardAvoidingView style={{ flex: 1 }}>
       <ScrollView style={styles.container}>
+        {!isVerifiedUser && (
+          <Text style={{ color: "red", fontWeight: "bold", marginTop: 10 }}>
+            Please verify your account before adding a job
+          </Text>
+        )}
         <View style={styles.title}>
           <JobInput
             label="Job Title"
@@ -309,7 +321,6 @@ const AddJobs = ({ navigation }) => {
             }}
             onDateChange={(date) => setDate(date)}
           />
-          {console.log(date)}
         </View>
 
         <Radiobutton

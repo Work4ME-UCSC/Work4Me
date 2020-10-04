@@ -5,7 +5,7 @@ import Spinner from "react-native-loading-spinner-overlay";
 
 import CurrentJobCard from "../../components/Employee/CurrentJobCard";
 import Colors from "../../constants/Colors";
-import { fetchCurrentJobs } from "../../store/actions/employee";
+import { fetchCurrentJobs, jobFinished } from "../../store/actions/employee";
 
 const CurrentJobScreen = ({ navigation }) => {
   const [error, setError] = useState();
@@ -15,16 +15,24 @@ const CurrentJobScreen = ({ navigation }) => {
 
   const dispatch = useDispatch();
 
-  // const withdrawHandler = async (id) => {
-  //   setError(null);
-  //   setIsLoading(true);
-  //   try {
-  //     await dispatch(cancelJobRequest(id));
-  //   } catch (e) {
-  //     setError(e.message);
-  //   }
-  //   setIsLoading(false);
-  // };
+  const finishJob = async (id) => {
+    setError(null);
+    setIsLoading(true);
+    try {
+      await dispatch(jobFinished(id));
+      navigation.navigate("review", { isSkip: true });
+    } catch (e) {
+      setError(e.message);
+    }
+    setIsLoading(false);
+  };
+
+  const clickFinishHandler = (id) => {
+    Alert.alert("Important", "Have you completed this job", [
+      { text: "Yes", onPress: () => finishJob(id) },
+      { text: "No" },
+    ]);
+  };
 
   useEffect(() => {
     const fetchJobs = async () => {
@@ -43,7 +51,7 @@ const CurrentJobScreen = ({ navigation }) => {
         time={item.createdAt}
         img={item.jobImage}
         id={item.id}
-        navigation={navigation}
+        finishHandler={clickFinishHandler}
         onSelect={() => {
           navigation.navigate("detail", {
             jobID: item.jobID,

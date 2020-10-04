@@ -22,19 +22,6 @@ const CurrentJobCard = (props) => {
     TouchableCmp = TouchableNativeFeedback;
   }
 
-  const { navigation } = props;
-
-  const finishJobHandler = () => {
-    navigation.navigate("review");
-  };
-
-  const clickHandler = () => {
-    Alert.alert("Important", "Have you completed this job", [
-      { text: "Yes", onPress: finishJobHandler },
-      { text: "No" },
-    ]);
-  };
-
   return (
     <TouchableCmp onPress={props.onSelect}>
       <View style={styles.container}>
@@ -58,7 +45,7 @@ const CurrentJobCard = (props) => {
             style={styles.button}
             mode="contained"
             color={Colors.primaryOrange}
-            onPress={clickHandler}
+            onPress={() => props.finishHandler(props.id)}
           >
             Finished
           </Button>
