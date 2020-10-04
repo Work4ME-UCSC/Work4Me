@@ -1,16 +1,28 @@
 import React from "react";
-import { Text, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  TouchableNativeFeedback,
+  Platform,
+} from "react-native";
 
 import Color from "../constants/Colors";
 
 const SubmitButton = ({ onClick, title = "Submit", style }) => {
+  let TouchableCmp = TouchableOpacity;
+
+  if (Platform.OS === "android" && Platform.Version >= 21) {
+    TouchableCmp = TouchableNativeFeedback;
+  }
+
   return (
-    <TouchableOpacity
-      style={{ ...styles.submitContainer, ...style }}
-      onPress={() => onClick()}
-    >
-      <Text style={styles.submit}>{title}</Text>
-    </TouchableOpacity>
+    <TouchableCmp onPress={() => onClick()}>
+      <View style={{ ...styles.submitContainer, ...style }}>
+        <Text style={styles.submit}>{title}</Text>
+      </View>
+    </TouchableCmp>
   );
 };
 

@@ -7,7 +7,7 @@ import PendingCard from "../../components/Employee/PendingCard";
 import Colors from "../../constants/Colors";
 import { cancelJobRequest } from "../../store/actions/employee";
 
-const PendingRequestScreen = () => {
+const PendingRequestScreen = ({ navigation }) => {
   const [error, setError] = useState();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -32,7 +32,14 @@ const PendingRequestScreen = () => {
         title={item.jobTitle}
         time={item.createdAt}
         id={item.id}
+        img={item.jobImage}
         withdrawHandler={() => withdrawHandler(item.id)}
+        onSelect={() => {
+          navigation.navigate("detail", {
+            jobID: item.jobID,
+            jobTitle: item.jobTitle,
+          });
+        }}
       />
     );
   };

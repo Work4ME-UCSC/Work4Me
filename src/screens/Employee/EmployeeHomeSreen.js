@@ -59,6 +59,7 @@ const EmployeeHomeScreen = (props) => {
           props.navigation.navigate("JobDescription", {
             jobID: item.jobID,
             jobTitle: item.jobTitle,
+            isConfirmed: false,
           });
         }}
       />

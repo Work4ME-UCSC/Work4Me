@@ -9,23 +9,21 @@ import {
   Alert,
   ActivityIndicator,
 } from "react-native";
-
 import DatePicker from "react-native-datepicker";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { Button } from "react-native-paper";
+import * as Permissions from "expo-permissions";
+import * as ImagePicker from "expo-image-picker";
 
 import JobInput from "../../components/Employer/JobInput";
 import Dropdown from "../../components/Employer/Dropdown";
 import Radiobutton from "../../components/Employer/Radiobutton";
-import Time from "../../components/Employer/Time";
-import { LOCATION, CATEGORIES, DAYS, SEX } from "../../data/addJobData";
+import { LOCATION, CATEGORIES, SEX } from "../../data/addJobData";
 import SubmitButton from "../../components/SubmitButton";
-import ErrorText from "../../components/Authenticate/ErrorText";
 import HeaderButton from "../../components/HeaderButton";
 import Colors from "../../constants/Colors";
-
 import * as jobActions from "../../store/actions/employer";
-import { color } from "react-native-reanimated";
 
 const FORM_INPUT_UPDATE = "FORM_INPUT_UPDATE";
 
@@ -58,17 +56,30 @@ const formReducer = (state, action) => {
 
 const AddJobs = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(false);
-  const [date, setDate] = useState("2016-05-15");
+  const [date, setDate] = useState("");
+  const [minDate, setMinDate] = useState("");
+  const [image, setImage] = useState("");
   const [error, setError] = useState();
   const dispatch = useDispatch();
 
-  console.warn(date);
+  const isVerifiedUser = useSelector((state) => state.auth.isEmailVerified);
 
   useEffect(() => {
     if (error) {
       Alert.alert("An error occured", error, [{ text: "Okay" }]);
     }
   }, [error]);
+
+  useEffect(() => {
+    const today = new Date();
+    const month =
+      today.getMonth() + 1 < 10
+        ? `0${today.getMonth() + 1}`
+        : today.getMonth() + 1;
+    const date = today.getDate() < 10 ? `0${today.getDate()}` : today.getDate();
+    setMinDate(`${today.getFullYear()}-${month}-${date}`);
+    console.log(minDate);
+  }, []);
 
   const [formState, dispatchFormState] = useReducer(formReducer, {
     inputValues: {
@@ -78,9 +89,6 @@ const AddJobs = ({ navigation }) => {
       location: null,
       address: "",
       salary: "",
-      // day: null,
-      // fromDate: new Date(),
-      // toDate: new Date(),
       sex: "any",
     },
 
@@ -89,7 +97,6 @@ const AddJobs = ({ navigation }) => {
       description: false,
       category: false,
       location: false,
-      // day: false,
     },
 
     formIsValid: false,
@@ -119,11 +126,40 @@ const AddJobs = ({ navigation }) => {
     });
   };
 
+  const chooseFromGallery = async () => {
+    const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+    if (status !== "granted") {
+      //Toast.show("Need permission to access gallery");
+    }
+    setError(null);
+    try {
+      const result = await ImagePicker.launchImageLibraryAsync({
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 0.6,
+        base64: true,
+      });
+      if (result.cancelled) {
+        //Toast.show("Cancelled Image Pick");
+      } else {
+        setImage(`data:image/jpeg;base64,${result.base64}`);
+      }
+    } catch (e) {
+      setError(e.message);
+    }
+    setIsLoading(false);
+  };
+
   const submitHandler = useCallback(async () => {
     if (!formState.formIsValid) {
       Alert.alert("Wrong Inputs", "Please check the errors in the form", [
         { text: "Ok" },
       ]);
+      return;
+    }
+
+    if (!isVerifiedUser) {
+      setError("Please verify your account before adding a job");
       return;
     }
 
@@ -138,19 +174,19 @@ const AddJobs = ({ navigation }) => {
           formState.inputValues.location,
           formState.inputValues.address,
           formState.inputValues.salary,
-          // formState.inputValues.day,
-          formState.inputValues.sex
+          date,
+          formState.inputValues.sex,
+          image
         )
       );
       setIsLoading(false);
       navigation.navigate("Home");
     } catch (e) {
+      console.log(e);
       setError(e.message);
       setIsLoading(false);
     }
-  }, [dispatch, formState]);
-
-  // console.log(formState);
+  }, [dispatch, formState, image, date]);
 
   if (isLoading) {
     return (
@@ -164,6 +200,11 @@ const AddJobs = ({ navigation }) => {
   return (
     <KeyboardAvoidingView style={{ flex: 1 }}>
       <ScrollView style={styles.container}>
+        {!isVerifiedUser && (
+          <Text style={{ color: "red", fontWeight: "bold", marginTop: 10 }}>
+            Please verify your account before adding a job
+          </Text>
+        )}
         <View style={styles.title}>
           <JobInput
             label="Job Title"
@@ -201,10 +242,6 @@ const AddJobs = ({ navigation }) => {
           <Dropdown
             title="Job Category"
             items={CATEGORIES}
-            //multiple={true}
-            //multipleText="%d categories have been selected."
-            //min={0}
-            //max={10}
             searchable
             placeholder="Select Categories"
             searchablePlaceholder="Search for a category"
@@ -256,71 +293,35 @@ const AddJobs = ({ navigation }) => {
           error={true}
         />
 
-        <DatePicker
-          style={{ width: 200 }}
-          // date={time}
-          // mode="time"
-          placeholder="select date"
-          format="YYYY-MM-DD"
-          minDate="2020-08-01"
-          maxDate="2020-12-30"
-          confirmBtnText="Confirm"
-          cancelBtnText="Cancel"
-          customStyles={{
-            dateIcon: {
-              position: "absolute",
-              left: 0,
-              top: 4,
-              marginLeft: 0,
-              marginRight: 20,
-            },
-            dateInput: {
-              marginLeft: 36,
-              width: 600,
-              color: "red",
-            },
-            // ... You can check the source to find the other keys.
-          }}
-          onDateChange={(date) => setDate(date)}
-        />
-
-        {/* <View
-          style={{
-            ...(Platform.OS !== "android" && {
-              zIndex: 10,
-            }),
-          }}
-        >
-          <Dropdown
-            title="Working Day"
-            items={DAYS}
-            //multiple={true}
-            //multipleText="Selected %d"
-            placeholder="Select Day"
-            onChangeItem={dropDownChangeHandle.bind(this, "day")}
-            error={formState.inputValidities.day}
-            errorMessage="Please select a day"
-            zIndex={3000}
-            defaultValue={formState.inputValues.day}
+        <View style={{ marginVertical: 15 }}>
+          <DatePicker
+            style={{ width: 200 }}
+            // date={time}
+            // mode="time"
+            placeholder={date ? date : "Select date"}
+            format="YYYY-MM-DD"
+            minDate={minDate}
+            maxDate="2020-12-30"
+            confirmBtnText="Confirm"
+            cancelBtnText="Cancel"
+            customStyles={{
+              dateIcon: {
+                position: "absolute",
+                left: 0,
+                top: 4,
+                marginLeft: 0,
+                marginRight: 20,
+              },
+              dateInput: {
+                marginLeft: 36,
+                width: 600,
+                color: "red",
+              },
+              // ... You can check the source to find the other keys.
+            }}
+            onDateChange={(date) => setDate(date)}
           />
-        </View> */}
-
-        {/* <View style={styles.timeContainer}>s
-          <Time
-            title="Time (Optional)"
-            subTitle="From"
-            mode="time"
-            date={formState.inputValues.fromDate}
-            // setDate={setFromDate}
-          />
-
-          <Time
-            subTitle="To"
-            mode="time"
-            date={formState.inputValues.toDate}
-            //setDate={setToDate}
-          />
-        </View> */}
+        </View>
 
         <Radiobutton
           title="Applicant Sex"
@@ -336,6 +337,20 @@ const AddJobs = ({ navigation }) => {
           initial={2}
           formHorizontal={true}
         />
+
+        <View style={{ marginTop: 15 }}>
+          <Text style={{ fontSize: 16, marginBottom: 10 }}>
+            Job Image (Optional)
+          </Text>
+          <Button
+            width="80%"
+            onPress={chooseFromGallery}
+            mode="contained"
+            color={Colors.darkGrey}
+          >
+            {image ? "Image Selected" : "Upload a job image"}
+          </Button>
+        </View>
 
         <SubmitButton style={styles.button} onClick={submitHandler} />
       </ScrollView>
@@ -385,7 +400,7 @@ const styles = StyleSheet.create({
 
   button: {
     padding: 10,
-    height: 50,
+    height: 40,
     borderRadius: 10,
     marginVertical: 30,
   },

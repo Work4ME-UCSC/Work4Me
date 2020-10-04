@@ -15,7 +15,7 @@ import moment from "moment";
 
 import Colors from "../../constants/Colors";
 
-const CurrentJobCard = (props) => {
+const PastJobCard = (props) => {
   let TouchableCmp = TouchableOpacity;
 
   if (Platform.OS === "android" && Platform.Version >= 21) {
@@ -36,18 +36,18 @@ const CurrentJobCard = (props) => {
         <View style={styles.detail}>
           <View style={styles.titleContainer}>
             <Text style={styles.title}>{props.title}</Text>
-            <Entypo name="dot-single" size={30} color={Colors.green} />
+            <Entypo name="check" size={30} color={Colors.green} />
           </View>
-          <Text style={styles.time}>{`Confirmed ${moment(
+          <Text style={styles.time}>{`Completed ${moment(
             props.time
           ).fromNow()}`}</Text>
           <Button
             style={styles.button}
             mode="contained"
             color={Colors.primaryOrange}
-            onPress={() => props.finishHandler(props.id)}
+            onPress={props.reviewHandler}
           >
-            Finished
+            Rate and Tip
           </Button>
         </View>
       </View>
@@ -113,4 +113,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CurrentJobCard;
+export default PastJobCard;

@@ -1,5 +1,3 @@
-import Job from "../../models/jobs";
-
 import {
   TOGGLE_FAVOURITE,
   SET_JOBS,
@@ -7,6 +5,8 @@ import {
   APPLY_FOR_JOB,
   CANCEL_JOB_REQUEST,
   SET_CURRENT_JOBS,
+  JOB_FINISHED,
+  SET_PAST_JOBS,
 } from "../actions/employee";
 
 const initialState = {
@@ -14,6 +14,7 @@ const initialState = {
   favouriteJobs: [],
   appliedJobs: [],
   currentJobs: [],
+  finishedJobs: [],
 };
 
 export default (state = initialState, action) => {
@@ -36,6 +37,12 @@ export default (state = initialState, action) => {
         currentJobs: action.currentJobs,
       };
 
+    case SET_PAST_JOBS:
+      return {
+        ...state,
+        finishedJobs: action.pastJobs,
+      };
+
     case APPLY_FOR_JOB:
       return {
         ...state,
@@ -46,6 +53,14 @@ export default (state = initialState, action) => {
       return {
         ...state,
         appliedJobs: state.appliedJobs.filter((job) => job.id !== action.id),
+      };
+
+    case JOB_FINISHED:
+      const job = state.currentJobs.find((jobs) => jobs.id === action.id);
+      return {
+        ...state,
+        currentJobs: state.currentJobs.filter((job) => job.id !== action.id),
+        finishedJobs: state.finishedJobs.concat(job),
       };
 
     case TOGGLE_FAVOURITE:

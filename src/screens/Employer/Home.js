@@ -1,19 +1,37 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { View, Text, StyleSheet, FlatList } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  FlatList,
+  ActivityIndicator,
+} from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 
+import Colors from "../../constants/Colors";
 import RequestCard from "../../components/Employer/RequestCard";
 import { fetchJobs } from "../../store/actions/employer";
 
-export default function Home() {
+export default function Home({ navigation }) {
   const [isLoading, setIsLoading] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [error, setError] = useState();
   const dispatch = useDispatch();
   const JOBS = useSelector((state) => state.employer.postedJobs);
+  const JOB_REQUESTS = useSelector((state) => state.employer.jobRequests);
 
   const renderRequestCard = ({ item }) => {
-    return <RequestCard name={item.jobTitle} />;
+    return (
+      <RequestCard
+        title={item.jobTitle}
+        onSelect={() =>
+          navigation.navigate("JobProfile", {
+            requests: item.applicants,
+            jobID: item.jobID,
+          })
+        }
+      />
+    );
   };
 
   const loadJobs = useCallback(async () => {
@@ -40,6 +58,15 @@ export default function Home() {
     });
   }, [dispatch, loadJobs]);
 
+  if (isLoading) {
+    return (
+      <View style={styles.centered}>
+        <Text>Loading...</Text>
+        <ActivityIndicator size="large" color={Colors.primaryOrange} />
+      </View>
+    );
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -47,8 +74,10 @@ export default function Home() {
       </View>
       <View style={styles.card}>
         <FlatList
+          refreshing={isRefreshing}
+          onRefresh={loadJobs}
           keyExtractor={(item) => item.jobID}
-          data={JOBS}
+          data={JOB_REQUESTS}
           renderItem={renderRequestCard}
           showsVerticalScrollIndicator={false}
         />
@@ -78,5 +107,10 @@ const styles = StyleSheet.create({
   },
   card: {
     flex: 1,
+  },
+  centered: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
