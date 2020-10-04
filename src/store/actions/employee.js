@@ -33,7 +33,9 @@ export const fetchJobs = () => {
           data[key].JobAddress,
           data[key].JobLocation,
           data[key].createdAt,
-          data[key].owner
+          data[key].owner,
+          "",
+          data[key].Sex
         )
       );
     }
@@ -71,7 +73,8 @@ export const fetchPendingJobs = () => {
           resData[key].jobDetails.JobAddress,
           resData[key].jobDetails.JobLocation,
           resData[key].jobDetails.createdAt,
-          resData[key].jobDetails.owner
+          resData[key].jobDetails.owner,
+          resData[key].jobDetails.Sex
         )
       );
     }
@@ -109,7 +112,8 @@ export const fetchCurrentJobs = () => {
           resData[key].jobDetails.JobAddress,
           resData[key].jobDetails.JobLocation,
           resData[key].jobDetails.createdAt,
-          resData[key].jobDetails.owner
+          resData[key].jobDetails.owner,
+          resData[key].jobDetails.Sex
         )
       );
     }
@@ -220,12 +224,11 @@ export const fetchPastJobs = () => {
           resData[key].jobDetails.JobAddress,
           resData[key].jobDetails.JobLocation,
           resData[key].jobDetails.createdAt,
-          resData[key].jobDetails.owner
+          resData[key].jobDetails.owner,
+          resData[key].jobDetails.Sex
         )
       );
     }
-
-    console.log(loadedJobs);
 
     dispatch({ type: SET_PAST_JOBS, pastJobs: loadedJobs });
   };

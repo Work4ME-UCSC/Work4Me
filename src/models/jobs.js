@@ -11,7 +11,8 @@ class Job {
     jobLocation,
     jobPostedDate,
     employer,
-    applicants
+    applicants,
+    sex
   ) {
     this.jobID = jobID;
     this.jobTitle = jobTitle;
@@ -25,6 +26,7 @@ class Job {
     this.jobPostedDate = jobPostedDate;
     this.employer = employer;
     this.applicants = applicants;
+    this.sex = sex;
   }
 }
 

@@ -33,6 +33,7 @@
     "react-native-datepicker": "^1.7.2",
     "react-native-dropdown-picker": "^3.0.5",
     "react-native-gesture-handler": "~1.6.0",
+    "react-native-image-header-scroll-view": "^0.10.3",
     "react-native-loading-spinner-overlay": "^1.1.0",
     "react-native-paper": "^3.10.1",
     "react-native-ratings": "^7.3.0",
@@ -46,8 +47,8 @@
     "react-native-web": "~0.11.7",
     "react-navigation-header-buttons": "^4.0.2",
     "react-redux": "^7.2.0",
-    "reanimated-bottom-sheet": "^1.0.0-alpha.22",
     "react-star-rating-component": "^1.4.1",
+    "reanimated-bottom-sheet": "^1.0.0-alpha.22",
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
     "validator": "^13.1.1"

@@ -1,5 +1,5 @@
 import React from "react";
-import { createStackNavigator } from "@react-navigation/stack";
+import { createStackNavigator, HeaderTitle } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
@@ -46,6 +46,12 @@ const HomeStackScreen = () => {
       <HomeEmployeeStack.Screen
         name="JobDescription"
         component={JobDescription}
+        options={{
+          headerBackTitleVisible: false,
+          headerTitle: false,
+          headerTransparent: true,
+          headerTintColor: "#fff",
+        }}
       />
     </HomeEmployeeStack.Navigator>
   );
