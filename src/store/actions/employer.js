@@ -3,6 +3,8 @@ import Job from "../../models/jobs";
 
 export const CREATE_JOB = "CREATE_JOB";
 export const SET_REQUESTS = "SET_REQUESTS";
+export const REJECT_REQUEST = "REJECT_REQUEST";
+export const ACCEPT_REQUEST = "ACCEPT_REQUEST";
 
 export const fetchJobs = () => {
   return async (dispatch, getState) => {
@@ -25,11 +27,8 @@ export const fetchJobs = () => {
             data[key].JobImage,
             data[key].JobCategory,
             data[key].JobDescription,
-            "",
-            "",
             data[key].Salary,
-            "",
-            "",
+            data[key].JobDate,
             data[key].JobAddress,
             data[key].JobLocation,
             data[key].createdAt,
@@ -88,7 +87,9 @@ export const createJob = (
           location,
           address,
           salary,
+          date,
           sex,
+          jobImage: response.data.JobImage,
           createdDate: response.data.createdAt,
           owner: response.data.owner,
         },
@@ -100,5 +101,33 @@ export const createJob = (
       if (err.response.status === 401) message = "Please sign in";
       throw new Error(message);
     }
+  };
+};
+
+export const acceptRequest = (jobID, userID) => {
+  return async (dispatch, getState) => {
+    const token = getState().auth.token;
+    try {
+      await workApi.patch(
+        `/jobs/confirm/${jobID}/${userID}`,
+        {},
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      dispatch({ type: ACCEPT_REQUEST, jobID });
+    } catch (err) {}
+  };
+};
+
+export const rejectRequest = (jobID, userID) => {
+  return async (dispatch, getState) => {
+    const token = getState().auth.token;
+    try {
+      await workApi.delete(`/jobs/reject/${jobID}/${userID}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      dispatch({ type: REJECT_REQUEST, userID, jobID });
+    } catch (err) {}
   };
 };

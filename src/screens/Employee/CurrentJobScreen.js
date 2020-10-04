@@ -41,8 +41,16 @@ const PendingRequestScreen = ({ navigation }) => {
       <CurrentJobCard
         title={item.jobTitle}
         time={item.createdAt}
+        img={item.jobImage}
         id={item.id}
         navigation={navigation}
+        onSelect={() => {
+          navigation.navigate("JobDescription", {
+            jobID: item.jobID,
+            jobTitle: item.jobTitle,
+            isConfirmed: true,
+          });
+        }}
       />
     );
   };

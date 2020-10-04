@@ -27,6 +27,7 @@ const currentJobsStack = () => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="current" component={CurrentJobScreen} />
+      <Stack.Screen name="detail" component={JobDescription} />
       <Stack.Screen
         name="review"
         component={ReviewScreen}

@@ -26,16 +26,12 @@ export const fetchJobs = () => {
           data[key].JobImage,
           data[key].JobCategory,
           data[key].JobDescription,
-          "",
-          "",
           data[key].Salary,
-          "",
-          "",
+          data[key].JobDate,
           data[key].JobAddress,
           data[key].JobLocation,
           data[key].createdAt,
-          data[key].owner,
-          data[key].applicants
+          data[key].owner
         )
       );
     }
@@ -60,12 +56,20 @@ export const fetchPendingJobs = () => {
       loadedJobs.push(
         new AppliedJobs(
           resData[key]._id,
-          resData[key].jobID,
+          resData[key].jobDetails._id,
           resData[key].jobDetails.JobTitle,
           resData[key].jobDetails.JobImage,
           resData[key].owner,
           resData[key].jobStatus,
-          resData[key].createdAt
+          resData[key].createdAt,
+          resData[key].jobDetails.JobCategory,
+          resData[key].jobDetails.JobDescription,
+          resData[key].jobDetails.Salary,
+          resData[key].jobDetails.JobDate,
+          resData[key].jobDetails.JobAddress,
+          resData[key].jobDetails.JobLocation,
+          resData[key].jobDetails.createdAt,
+          resData[key].jobDetails.owner
         )
       );
     }
@@ -90,15 +94,25 @@ export const fetchCurrentJobs = () => {
       loadedJobs.push(
         new AppliedJobs(
           resData[key]._id,
-          resData[key].jobID,
-          resData[key].jobTitle,
-          "",
+          resData[key].jobDetails.jobID,
+          resData[key].jobDetails.JobTitle,
+          resData[key].jobDetails.JobImage,
           resData[key].owner,
           resData[key].jobStatus,
-          resData[key].createdAt
+          resData[key].updatedAt,
+          resData[key].jobDetails.JobCategory,
+          resData[key].jobDetails.JobDescription,
+          resData[key].jobDetails.Salary,
+          resData[key].jobDetails.JobDate,
+          resData[key].jobDetails.JobAddress,
+          resData[key].jobDetails.JobLocation,
+          resData[key].jobDetails.createdAt,
+          resData[key].jobDetails.owner
         )
       );
     }
+
+    console.log(loadedJobs);
 
     dispatch({ type: SET_CURRENT_JOBS, currentJobs: loadedJobs });
   };

@@ -7,7 +7,14 @@ class AppliedJobs {
     owner,
     jobStatus,
     createdAt,
-    employerID
+    jobCategory,
+    jobDescribtion,
+    jobSalary,
+    jobDate,
+    jobAddress,
+    jobLocation,
+    jobPostedDate,
+    employer
   ) {
     this.id = id;
     this.jobID = jobID;
@@ -16,7 +23,14 @@ class AppliedJobs {
     this.owner = owner;
     this.jobStatus = jobStatus;
     this.createdAt = createdAt;
-    this.employerID = employerID;
+    this.jobCategory = jobCategory;
+    this.jobDescribtion = jobDescribtion;
+    this.jobSalary = jobSalary;
+    this.jobDate = jobDate;
+    this.jobAddress = jobAddress;
+    this.jobLocation = jobLocation;
+    this.jobPostedDate = jobPostedDate;
+    this.employer = employer;
   }
 }
 

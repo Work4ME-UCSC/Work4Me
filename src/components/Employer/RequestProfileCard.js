@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   StyleSheet,
@@ -7,10 +7,14 @@ import {
   TouchableNativeFeedback,
 } from "react-native";
 import { Avatar, Button, Card } from "react-native-paper";
+import { useDispatch } from "react-redux";
 
 import Colors from "../../constants/Colors";
+import { acceptRequest, rejectRequest } from "../../store/actions/employer";
 
 const RequestProfileCard = (props) => {
+  const dispatch = useDispatch();
+  const [loading, setIsLoading] = useState(false);
   let TouchableCmp = TouchableOpacity;
 
   if (Platform.OS === "android" && Platform.Version >= 21) {
@@ -55,7 +59,7 @@ const RequestProfileCard = (props) => {
             borderColor: Colors.black,
           }}
           color={Colors.primaryOrange}
-          onPress={() => {}}
+          onPress={() => props.handleJobAccept(props.jobID, props.userID)}
         >
           Accept
         </Button>
@@ -63,7 +67,7 @@ const RequestProfileCard = (props) => {
           mode="text"
           style={styles.button}
           color={Colors.red}
-          onPress={() => {}}
+          onPress={() => props.handleJobReject(props.jobID, props.userID)}
         >
           Reject
         </Button>

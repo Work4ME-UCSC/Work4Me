@@ -1,5 +1,3 @@
-import Job from "../../models/jobs";
-
 import {
   TOGGLE_FAVOURITE,
   SET_JOBS,

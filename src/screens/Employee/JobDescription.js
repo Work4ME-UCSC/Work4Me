@@ -19,7 +19,7 @@ const JobDescription = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
 
-  const { jobID, jobTitle } = props.route.params;
+  const { jobID, jobTitle, isConfirmed } = props.route.params;
 
   const isApplied = useSelector((state) =>
     state.employee.appliedJobs.some((job) => job.jobID === jobID)
@@ -31,9 +31,13 @@ const JobDescription = (props) => {
     state.employee.favouriteJobs.some((job) => job.jobID === jobID)
   );
 
-  const selectedJob = useSelector((state) =>
-    state.employee.availableJobs.find((job) => job.jobID === jobID)
-  );
+  const selectedJob = isConfirmed
+    ? useSelector((state) =>
+        state.employee.currentJobs.find((job) => job.jobID === jobID)
+      )
+    : useSelector((state) =>
+        state.employee.availableJobs.find((job) => job.jobID === jobID)
+      );
 
   const dispatch = useDispatch();
 
@@ -146,17 +150,18 @@ const JobDescription = (props) => {
             {selectedJob.jobEmpExpectations}
           </Text>
         </View>
-
-        <View style={styles.button}>
-          <Button
-            color={Colors.primaryOrange}
-            mode="contained"
-            onPress={onApplyHandler}
-            disabled={isApplied}
-          >
-            {isApplied ? "Already applied" : "Apply"}
-          </Button>
-        </View>
+        {isConfirmed ? null : (
+          <View style={styles.button}>
+            <Button
+              color={Colors.primaryOrange}
+              mode="contained"
+              onPress={onApplyHandler}
+              disabled={isApplied}
+            >
+              {isApplied ? "Already applied" : "Apply"}
+            </Button>
+          </View>
+        )}
       </ScrollView>
     </View>
   );

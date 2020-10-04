@@ -5,11 +5,8 @@ class Job {
     jobImage,
     jobCategory,
     jobDescribtion,
-    jobDetails,
-    jobEmpExpectations,
     jobSalary,
     jobDate,
-    jobTime,
     jobAddress,
     jobLocation,
     jobPostedDate,
@@ -21,11 +18,8 @@ class Job {
     this.jobImage = jobImage;
     this.jobCategory = jobCategory;
     this.jobDescribtion = jobDescribtion;
-    this.jobDetails = jobDetails;
-    this.jobEmpExpectations = jobEmpExpectations;
     this.jobSalary = jobSalary;
     this.jobDate = jobDate;
-    this.jobTime = jobTime;
     this.jobAddress = jobAddress;
     this.jobLocation = jobLocation;
     this.jobPostedDate = jobPostedDate;

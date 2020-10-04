@@ -25,7 +25,10 @@ export default function Home({ navigation }) {
       <RequestCard
         title={item.jobTitle}
         onSelect={() =>
-          navigation.navigate("JobProfile", { requests: item.applicants })
+          navigation.navigate("JobProfile", {
+            requests: item.applicants,
+            jobID: item.jobID,
+          })
         }
       />
     );
@@ -71,6 +74,8 @@ export default function Home({ navigation }) {
       </View>
       <View style={styles.card}>
         <FlatList
+          refreshing={isRefreshing}
+          onRefresh={loadJobs}
           keyExtractor={(item) => item.jobID}
           data={JOB_REQUESTS}
           renderItem={renderRequestCard}
