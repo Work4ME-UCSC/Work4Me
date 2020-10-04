@@ -35,7 +35,7 @@ const PendingRequestScreen = ({ navigation }) => {
         img={item.jobImage}
         withdrawHandler={() => withdrawHandler(item.id)}
         onSelect={() => {
-          navigation.navigate("JobDescription", {
+          navigation.navigate("detail", {
             jobID: item.jobID,
             jobTitle: item.jobTitle,
           });

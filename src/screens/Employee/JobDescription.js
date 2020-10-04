@@ -19,7 +19,7 @@ const JobDescription = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
 
-  const { jobID, jobTitle, isConfirmed } = props.route.params;
+  const { jobID, jobTitle, isConfirmed, isCompleted } = props.route.params;
 
   const isApplied = useSelector((state) =>
     state.employee.appliedJobs.some((job) => job.jobID === jobID)
@@ -34,6 +34,10 @@ const JobDescription = (props) => {
   const selectedJob = isConfirmed
     ? useSelector((state) =>
         state.employee.currentJobs.find((job) => job.jobID === jobID)
+      )
+    : isCompleted
+    ? useSelector((state) =>
+        state.employee.finishedJobs.find((job) => job.jobID === jobID)
       )
     : useSelector((state) =>
         state.employee.availableJobs.find((job) => job.jobID === jobID)
@@ -150,7 +154,7 @@ const JobDescription = (props) => {
             {selectedJob.jobEmpExpectations}
           </Text>
         </View>
-        {isConfirmed ? null : (
+        {isConfirmed || isCompleted ? null : (
           <View style={styles.button}>
             <Button
               color={Colors.primaryOrange}

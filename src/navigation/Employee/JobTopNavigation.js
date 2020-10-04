@@ -37,6 +37,22 @@ const currentJobsStack = () => {
   );
 };
 
+const pastJobsStack = () => {
+  const Stack = createStackNavigator();
+
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="past" component={PastJobScreen} />
+      <Stack.Screen name="detail" component={JobDescription} />
+      <Stack.Screen
+        name="review"
+        component={ReviewScreen}
+        options={{ tabBarOptions: { visible: false } }}
+      />
+    </Stack.Navigator>
+  );
+};
+
 const JobTopNavigation = () => {
   const insets = useSafeArea();
   const TopNavigator = createMaterialTopTabNavigator();
@@ -72,7 +88,7 @@ const JobTopNavigation = () => {
       <TopNavigator.Screen
         name="PastJobs"
         options={{ tabBarLabel: "Past Jobs" }}
-        component={PastJobScreen}
+        component={pastJobsStack}
       />
     </TopNavigator.Navigator>
   );

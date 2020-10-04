@@ -12,10 +12,10 @@ import { AirbnbRating } from "react-native-ratings";
 import JobInput from "../components/Employer/JobInput";
 import { Button } from "react-native-paper";
 import Colors from "../constants/Colors";
-import { color } from "react-native-reanimated";
 
-const ReviewScreen = ({ navigation }) => {
+const ReviewScreen = ({ navigation, route }) => {
   const [rating, setRating] = useState(0);
+  const isSkip = route.params.isSkip;
 
   return (
     <KeyboardAvoidingView
@@ -25,7 +25,7 @@ const ReviewScreen = ({ navigation }) => {
       <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
         <View style={styles.screen}>
           <Text style={styles.skip} onPress={() => navigation.pop()}>
-            SKIP
+            {isSkip ? "SKIP" : "CANCEL"}
           </Text>
           <View style={styles.header}>
             <Image

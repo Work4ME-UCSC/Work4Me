@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, FlatList, Alert } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import Spinner from "react-native-loading-spinner-overlay";
 
-import CurrentJobCard from "../../components/Employee/CurrentJobCard";
+import PastJobCard from "../../components/Employee/PastJobCard";
 import Colors from "../../constants/Colors";
 import { fetchPastJobs } from "../../store/actions/employee";
 
@@ -15,16 +15,9 @@ const PastJobScreen = ({ navigation }) => {
 
   const dispatch = useDispatch();
 
-  // const withdrawHandler = async (id) => {
-  //   setError(null);
-  //   setIsLoading(true);
-  //   try {
-  //     await dispatch(cancelJobRequest(id));
-  //   } catch (e) {
-  //     setError(e.message);
-  //   }
-  //   setIsLoading(false);
-  // };
+  const reviewHandler = async (id) => {
+    navigation.navigate("review", { isSkip: false });
+  };
 
   useEffect(() => {
     const fetchJobs = async () => {
@@ -38,17 +31,17 @@ const PastJobScreen = ({ navigation }) => {
 
   const renderItem = ({ item }) => {
     return (
-      <CurrentJobCard
+      <PastJobCard
         title={item.jobTitle}
         time={item.createdAt}
         img={item.jobImage}
         id={item.id}
-        navigation={navigation}
+        reviewHandler={reviewHandler}
         onSelect={() => {
-          navigation.navigate("JobDescription", {
+          navigation.navigate("detail", {
             jobID: item.jobID,
             jobTitle: item.jobTitle,
-            isConfirmed: true,
+            isCompleted: true,
           });
         }}
       />

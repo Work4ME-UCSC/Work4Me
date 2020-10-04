@@ -225,6 +225,8 @@ export const fetchPastJobs = () => {
       );
     }
 
+    console.log(loadedJobs);
+
     dispatch({ type: SET_PAST_JOBS, pastJobs: loadedJobs });
   };
 };

@@ -244,7 +244,7 @@ const AccountScreen = ({ navigation }) => {
 
           <Divider />
 
-          <View style={styles.deleteContainer}>
+          {/* <View style={styles.deleteContainer}>
             <Text style={styles.editableLabel}>Advanced</Text>
             <Text
               style={styles.deleteText}
@@ -252,7 +252,7 @@ const AccountScreen = ({ navigation }) => {
             >
               Delete account
             </Text>
-          </View>
+          </View> */}
         </View>
       </Animated.View>
     </ScrollView>

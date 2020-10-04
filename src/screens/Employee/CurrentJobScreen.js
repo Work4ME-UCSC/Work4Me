@@ -45,7 +45,7 @@ const CurrentJobScreen = ({ navigation }) => {
         id={item.id}
         navigation={navigation}
         onSelect={() => {
-          navigation.navigate("JobDescription", {
+          navigation.navigate("detail", {
             jobID: item.jobID,
             jobTitle: item.jobTitle,
             isConfirmed: true,
