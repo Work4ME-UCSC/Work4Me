@@ -1,3 +1,5 @@
+/*********\\\\\\\\\*************************************************
+
 //import libraries which want to create component
 import React from "react";
 import { 
@@ -67,8 +69,8 @@ const styles = StyleSheet.create({
 
 //after export AccountScreen can access any place in this project
 export default AccountScreen;
-
-
+****************\\\\\\\\\\\\\\\\\*************************/
+//
 /**************************************************************************
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
@@ -85,3 +87,66 @@ const styles = StyleSheet.create({});
 
 export default AccountScreen;
 ***************************************************************************/
+
+import React from 'react';
+import {Text, View, Button, StyleSheet} from 'react-native';
+
+import Colors from "../../constants/Colors";
+//import account.js from '../../store/reducers/account.js';
+
+const AccountScreen = () => {
+  return (
+    <View style = {styles.container} >
+      <Text style={styles.textStyle}>Name: </Text>
+      <Text style={styles.textStyle}>Email: </Text>
+      <Text style={styles.textStyle}>Contact Number: </Text>
+      <Text style={styles.textStyle}>User Type: </Text>
+      <View>
+        <Image
+            source={{ uri: 'https://api.adorable.io/avatars/285/test@user.i.png' }}
+            style={{
+                marginLeft: 10, width: 100, height: 100, borderRadius: 50
+            }}
+        />
+      <Icon name={'edit'} containerStyle={styles.icon} onPress={console.log('I was clicked')}/>
+     </View>
+      <View style = {styles.button} >
+        <Button 
+          title =  "Edit Details"
+          color = {Colors.primaryOrange}
+        />
+      </View>
+    </View>
+  );
+};
+
+const styles = StyleSheet.create ({
+  textStyle: {
+    fontSize: 15,
+    fontWeight: "bold",
+    margin:10
+  }, 
+  container: {
+    flex: 1,
+    marginTop: 15,
+    marginBottom: 15,
+    marginLeft: 15,
+    marginRight: 15,
+    //backgroundColor: Colors.white
+  },
+  button: {
+    //backgroundColor: Colors.primaryOrange,
+    justifyContent: "flex-end",
+    margin: 10,
+    //borderRadius: 20,
+    //height: 50
+  },
+  icon: {
+    backgroundColor: '#ccc',
+    position: 'absolute',
+    right: 0,
+    bottom: 0,
+   },
+});
+
+export default AccountScreen;
