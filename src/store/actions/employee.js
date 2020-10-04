@@ -9,6 +9,8 @@ export const SET_PENDING_JOBS = "SET_PENDING_JOBS";
 export const SET_CURRENT_JOBS = "SET_CURRENT_JOBS";
 export const APPLY_FOR_JOB = "APPLY_FOR_JOB";
 export const CANCEL_JOB_REQUEST = "CANCEL_JOB_REQUEST";
+export const JOB_FINISHED = "JOB_FINISHED";
+export const SET_PAST_JOBS = "SET_PAST_JOBS";
 
 export const fetchJobs = () => {
   return async (dispatch) => {
@@ -94,7 +96,7 @@ export const fetchCurrentJobs = () => {
       loadedJobs.push(
         new AppliedJobs(
           resData[key]._id,
-          resData[key].jobDetails.jobID,
+          resData[key].jobDetails._id,
           resData[key].jobDetails.JobTitle,
           resData[key].jobDetails.JobImage,
           resData[key].owner,
@@ -111,8 +113,6 @@ export const fetchCurrentJobs = () => {
         )
       );
     }
-
-    console.log(loadedJobs);
 
     dispatch({ type: SET_CURRENT_JOBS, currentJobs: loadedJobs });
   };
@@ -169,5 +169,62 @@ export const cancelJobRequest = (id) => {
       console.log(e);
       throw e;
     }
+  };
+};
+
+export const jobFinished = (id) => {
+  return async (dispatch, getState) => {
+    const token = getState().auth.token;
+
+    try {
+      await workApi.patch(
+        `/employee/jobFinished/${id}`,
+        {},
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+
+      dispatch({ type: JOB_FINISHED, id });
+    } catch (e) {
+      console.log(e);
+      throw e;
+    }
+  };
+};
+
+export const fetchPastJobs = () => {
+  return async (dispatch, getState) => {
+    const token = getState().auth.token;
+    const response = await workApi.get("/employee/apply?status=finished", {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    const resData = response.data;
+
+    const loadedJobs = [];
+
+    for (const key in resData) {
+      loadedJobs.push(
+        new AppliedJobs(
+          resData[key]._id,
+          resData[key].jobDetails._id,
+          resData[key].jobDetails.JobTitle,
+          resData[key].jobDetails.JobImage,
+          resData[key].owner,
+          resData[key].jobStatus,
+          resData[key].updatedAt,
+          resData[key].jobDetails.JobCategory,
+          resData[key].jobDetails.JobDescription,
+          resData[key].jobDetails.Salary,
+          resData[key].jobDetails.JobDate,
+          resData[key].jobDetails.JobAddress,
+          resData[key].jobDetails.JobLocation,
+          resData[key].jobDetails.createdAt,
+          resData[key].jobDetails.owner
+        )
+      );
+    }
+
+    dispatch({ type: SET_PAST_JOBS, pastJobs: loadedJobs });
   };
 };

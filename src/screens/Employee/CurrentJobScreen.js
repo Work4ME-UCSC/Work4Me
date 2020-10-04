@@ -7,7 +7,7 @@ import CurrentJobCard from "../../components/Employee/CurrentJobCard";
 import Colors from "../../constants/Colors";
 import { fetchCurrentJobs } from "../../store/actions/employee";
 
-const PendingRequestScreen = ({ navigation }) => {
+const CurrentJobScreen = ({ navigation }) => {
   const [error, setError] = useState();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -95,4 +95,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default PendingRequestScreen;
+export default CurrentJobScreen;
