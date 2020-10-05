@@ -15,7 +15,9 @@ class AppliedJobs {
     jobLocation,
     jobPostedDate,
     employer,
-    sex
+    sex,
+    isEmployerReviewed,
+    isEmployeeReviewed
   ) {
     this.id = id;
     this.jobID = jobID;
@@ -33,6 +35,8 @@ class AppliedJobs {
     this.jobPostedDate = jobPostedDate;
     this.employer = employer;
     this.sex = sex;
+    this.isEmployerReviewed = isEmployerReviewed;
+    this.isEmployeeReviewed = isEmployeeReviewed;
   }
 }
 

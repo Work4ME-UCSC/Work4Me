@@ -60,9 +60,9 @@ export default (state = initialState, action) => {
       const updatedJobApplicants = job.applicants.filter(
         (applicant) => applicant.applicantID._id !== action.userID
       );
-      console.log(job.applicants);
+
       job.applicants = updatedJobApplicants;
-      console.log(job.applicants);
+
       updateJobs[jobLocalId] = job;
 
       return {

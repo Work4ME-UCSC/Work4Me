@@ -12,6 +12,7 @@ import {
 import { Button } from "react-native-paper";
 import { Entypo } from "@expo/vector-icons";
 import moment from "moment";
+import { AirbnbRating } from "react-native-ratings";
 
 import Colors from "../../constants/Colors";
 
@@ -35,20 +36,33 @@ const PastJobCard = (props) => {
         )}
         <View style={styles.detail}>
           <View style={styles.titleContainer}>
-            <Text style={styles.title}>{props.title}</Text>
+            <Text style={styles.title} numberOfLines={1}>
+              {props.title}
+            </Text>
             <Entypo name="check" size={30} color={Colors.green} />
           </View>
           <Text style={styles.time}>{`Completed ${moment(
             props.time
           ).fromNow()}`}</Text>
-          <Button
-            style={styles.button}
-            mode="contained"
-            color={Colors.primaryOrange}
-            onPress={props.reviewHandler}
-          >
-            Rate and Tip
-          </Button>
+          {!props.isReviewed ? (
+            <Button
+              style={styles.button}
+              mode="contained"
+              color={Colors.primaryOrange}
+              onPress={() => props.reviewHandler(props.id)}
+            >
+              Rate and Tip
+            </Button>
+          ) : (
+            <AirbnbRating
+              defaultRating={props.isReviewed}
+              size={15}
+              isDisabled
+              selectedColor={Colors.primaryOrange}
+              showRating={false}
+              starContainerStyle={{ alignItems: "flex-start" }}
+            />
+          )}
         </View>
       </View>
     </TouchableCmp>
@@ -91,7 +105,7 @@ const styles = StyleSheet.create({
 
   titleContainer: {
     flexDirection: "row",
-    alignItems: "center",
+    //alignItems: "center",
   },
 
   title: {

@@ -11,6 +11,7 @@ export const APPLY_FOR_JOB = "APPLY_FOR_JOB";
 export const CANCEL_JOB_REQUEST = "CANCEL_JOB_REQUEST";
 export const JOB_FINISHED = "JOB_FINISHED";
 export const SET_PAST_JOBS = "SET_PAST_JOBS";
+export const SET_REVIEW = "SET_REVIEW";
 
 export const fetchJobs = () => {
   return async (dispatch) => {
@@ -176,14 +177,14 @@ export const cancelJobRequest = (id) => {
   };
 };
 
-export const jobFinished = (id) => {
+export const jobFinished = (id, employerID) => {
   return async (dispatch, getState) => {
     const token = getState().auth.token;
 
     try {
       await workApi.patch(
         `/employee/jobFinished/${id}`,
-        {},
+        { employerID },
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -225,11 +226,33 @@ export const fetchPastJobs = () => {
           resData[key].jobDetails.JobLocation,
           resData[key].jobDetails.createdAt,
           resData[key].jobDetails.owner,
-          resData[key].jobDetails.Sex
+          resData[key].jobDetails.Sex,
+          "",
+          resData[key].isEmployeeReviewed
         )
       );
     }
 
     dispatch({ type: SET_PAST_JOBS, pastJobs: loadedJobs });
+  };
+};
+
+export const addReview = (to, rate, review, jobID, id) => {
+  return async (dispatch, getState) => {
+    const token = getState().auth.token;
+    try {
+      await workApi.post(
+        "/review/add",
+        { to, rate, review, jobID },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+
+      dispatch({ type: SET_REVIEW, id, rate });
+    } catch (e) {
+      console.log(e);
+      throw e;
+    }
   };
 };

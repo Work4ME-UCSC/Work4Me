@@ -16,6 +16,7 @@ const DrawerContent = ({ children }) => {
   const firstName = useSelector((state) => state.auth.firstName);
   const lastName = useSelector((state) => state.auth.lastName);
   const profilePic = useSelector((state) => state.auth.profilePic);
+  const rate = useSelector((state) => state.auth.rate);
 
   const Drawer = createDrawerNavigator();
 
@@ -43,7 +44,7 @@ const DrawerContent = ({ children }) => {
                 </Text>
                 <View style={{ flexDirection: "row" }}>
                   <Caption style={{ lineHeight: 14, marginRight: 3 }}>
-                    5.0
+                    {rate.toFixed(1)}
                   </Caption>
                   <MaterialCommunityIcons
                     name="star"

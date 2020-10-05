@@ -11,25 +11,25 @@ const CurrentJobScreen = ({ navigation }) => {
   const [error, setError] = useState();
   const [isLoading, setIsLoading] = useState(false);
 
-  const pendingJobs = useSelector((state) => state.employee.currentJobs);
+  const currentJobs = useSelector((state) => state.employee.currentJobs);
 
   const dispatch = useDispatch();
 
-  const finishJob = async (id) => {
+  const finishJob = async (id, employerID) => {
     setError(null);
     setIsLoading(true);
     try {
-      await dispatch(jobFinished(id));
-      navigation.navigate("review", { isSkip: true });
+      await dispatch(jobFinished(id, employerID));
+      navigation.navigate("review", { isSkip: true, id });
     } catch (e) {
       setError(e.message);
     }
     setIsLoading(false);
   };
 
-  const clickFinishHandler = (id) => {
+  const clickFinishHandler = (id, employerID) => {
     Alert.alert("Important", "Have you completed this job", [
-      { text: "Yes", onPress: () => finishJob(id) },
+      { text: "Yes", onPress: () => finishJob(id, employerID) },
       { text: "No" },
     ]);
   };
@@ -51,6 +51,7 @@ const CurrentJobScreen = ({ navigation }) => {
         time={item.createdAt}
         img={item.jobImage}
         id={item.id}
+        employerID={item.employer._id}
         finishHandler={clickFinishHandler}
         onSelect={() => {
           navigation.navigate("detail", {
@@ -80,7 +81,7 @@ const CurrentJobScreen = ({ navigation }) => {
     );
   }
 
-  if (pendingJobs.length === 0) {
+  if (currentJobs.length === 0) {
     return (
       <View style={styles.centered}>
         <Text>Currently no jobs...</Text>
@@ -90,7 +91,7 @@ const CurrentJobScreen = ({ navigation }) => {
 
   return (
     <View>
-      <FlatList data={pendingJobs} renderItem={renderItem} />
+      <FlatList data={currentJobs} renderItem={renderItem} />
     </View>
   );
 };

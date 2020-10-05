@@ -7,6 +7,7 @@ import {
   SET_CURRENT_JOBS,
   JOB_FINISHED,
   SET_PAST_JOBS,
+  SET_REVIEW,
 } from "../actions/employee";
 
 const initialState = {
@@ -78,6 +79,20 @@ export default (state = initialState, action) => {
         );
         return { ...state, favouriteJobs: state.favouriteJobs.concat(job) };
       }
+
+    case SET_REVIEW:
+      const updateFinishJobs = [...state.finishedJobs];
+      const jobID = state.finishedJobs.findIndex((job) => job.id === action.id);
+      const updateJob = state.finishedJobs.find((job) => job.id === action.id);
+
+      updateJob.isEmployeeReviewed = action.rate;
+
+      updateFinishJobs[jobID] = updateJob;
+
+      return {
+        ...state,
+        finishedJobs: updateFinishJobs,
+      };
 
     default:
       return state;
