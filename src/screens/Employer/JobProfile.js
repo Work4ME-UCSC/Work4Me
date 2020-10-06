@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, FlatList, Alert } from "react-native";
+import { View, Text, FlatList, Alert, StyleSheet } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import Spinner from "react-native-loading-spinner-overlay";
 
@@ -90,19 +90,49 @@ const JobProfile = ({ route, navigation }) => {
 
   if (jobRequests.applicants.length === 0) {
     return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <Text>Currently no one has applied for the job.</Text>
+      <View>
+        <View style={styles.header}>
+          <Text style={styles.headerText}>Job Requests</Text>
+        </View>
+        <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+          <Text>Currently no one has applied for the job.</Text>
+        </View>
       </View>
     );
   }
 
   return (
-    <FlatList
-      data={jobRequests.applicants}
-      renderItem={renderItem}
-      keyExtractor={(item) => item._id}
-    />
+    <View>
+      <View style={styles.header}>
+        <Text style={styles.headerText}>Job Requests</Text>
+      </View>
+      <FlatList
+        data={jobRequests.applicants}
+        renderItem={renderItem}
+        keyExtractor={(item) => item._id}
+      />
+    </View>
+
   );
 };
+
+
+const styles = StyleSheet.create({
+
+  header: {
+    backgroundColor: "#F27523",
+    height: 50,
+    margin: 2,
+    borderBottomLeftRadius: 15,
+    borderBottomRightRadius: 15,
+    padding: 10,
+  },
+  headerText: {
+    textAlign: "center",
+    color: "#FFFFFF",
+    fontSize: 20,
+  },
+
+})
 
 export default JobProfile;
