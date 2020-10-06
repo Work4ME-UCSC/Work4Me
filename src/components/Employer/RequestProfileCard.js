@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   View,
   StyleSheet,
@@ -7,14 +7,10 @@ import {
   TouchableNativeFeedback,
 } from "react-native";
 import { Avatar, Button, Card } from "react-native-paper";
-import { useDispatch } from "react-redux";
 
 import Colors from "../../constants/Colors";
-import { acceptRequest, rejectRequest } from "../../store/actions/employer";
 
 const RequestProfileCard = (props) => {
-  const dispatch = useDispatch();
-  const [loading, setIsLoading] = useState(false);
   let TouchableCmp = TouchableOpacity;
 
   if (Platform.OS === "android" && Platform.Version >= 21) {
@@ -24,14 +20,13 @@ const RequestProfileCard = (props) => {
   return (
     <View style={styles.container}>
       <View>
-        <TouchableCmp onPress={() => { }}>
+        <TouchableCmp onPress={() => {}}>
           <Card
             style={{
               borderRadius: 10,
             }}
           >
             <Card.Content>
-              {/* <Title>{props.name}</Title> */}
               <Card.Actions>
                 <Avatar.Image
                   size={80}
@@ -42,7 +37,6 @@ const RequestProfileCard = (props) => {
                   }
                 />
                 <Card.Title title={props.name} />
-                
               </Card.Actions>
               <Card.Actions>
                 <View style={styles.buttonContainer}>
@@ -50,7 +44,9 @@ const RequestProfileCard = (props) => {
                     mode="text"
                     style={styles.button}
                     color={Colors.primaryOrange}
-                    onPress={() => props.handleJobAccept(props.jobID, props.userID)}
+                    onPress={() =>
+                      props.handleJobAccept(props.jobID, props.userID)
+                    }
                   >
                     Accept
                   </Button>
@@ -58,7 +54,9 @@ const RequestProfileCard = (props) => {
                     mode="contained"
                     style={styles.button}
                     color={Colors.primaryOrange}
-                    onPress={() => props.handleJobReject(props.jobID, props.userID)}
+                    onPress={() =>
+                      props.handleJobReject(props.jobID, props.userID)
+                    }
                   >
                     Reject
                   </Button>
@@ -81,11 +79,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
 
-  // buttonContainer: {
-  //   flexDirection: "row",
-  //   // justifyContent: "space-between",
-  //   // alignItems: "stretch",
-  // },
+  buttonContainer: {
+    flexDirection: "row",
+    // justifyContent: "space-between",
+    // alignItems: "stretch",
+  },
 
   button: {
     flex: 1,
