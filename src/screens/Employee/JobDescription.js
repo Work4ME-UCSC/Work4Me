@@ -198,7 +198,9 @@ const JobDescription = (props) => {
                   selectedJob.employer.lastName}
               </Text>
               <View style={{ flexDirection: "row" }}>
-                <Text style={styles.rating}>5.0</Text>
+                <Text style={styles.rating}>
+                  {selectedJob.employer.rate.toFixed(1)}
+                </Text>
                 <Entypo name="star" size={14} color={Colors.primaryOrange} />
               </View>
             </View>

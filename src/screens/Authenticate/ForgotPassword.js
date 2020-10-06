@@ -1,31 +1,44 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import validator from "validator";
+import Spinner from "react-native-loading-spinner-overlay";
 
 import SubmitButton from "../../components/SubmitButton";
 import ErrorText from "../../components/Authenticate/ErrorText";
 import FullTextInput from "../../components/Authenticate/FullTextInput";
-
-const color = "#ff8400";
+import Colors from "../../constants/Colors";
+import { sendOtp } from "../../hooks/forgotPassword";
 
 const ForgotPassword = ({ navigation, route }) => {
   const [email, setEmail] = useState(route.params.mail);
-  const [emailError, setEmailError] = useState(false);
-  const [emailValidation, setEmailValidation] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [emailValidation, setEmailValidation] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleEmailInput = (email) => {
     setEmail(email);
+    if (!validator.isEmail(email)) setEmailError(true);
+    else setEmailError(false);
   };
 
   let errorMessage;
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!validator.isEmail(email)) {
       setEmailError(true);
       return;
     }
     setEmailError("");
-    navigation.navigate("ForgotVerify");
+    try {
+      setIsLoading(true);
+      setEmailValidation("");
+      await sendOtp(email);
+      setIsLoading(false);
+      navigation.navigate("ForgotVerify", { email });
+    } catch (e) {
+      setIsLoading(false);
+      setEmailValidation(e);
+    }
   };
 
   if (emailError)
@@ -36,19 +49,27 @@ const ForgotPassword = ({ navigation, route }) => {
       />
     );
 
+  if (isLoading) {
+    return (
+      <Spinner
+        visible={isLoading}
+        //textContent={"Please wait..."}
+        color={Colors.primaryOrange}
+        overlayColor="rgba(10, 0, 0, 0.25)"
+      />
+    );
+  }
+
   return (
     <View style={styles.container}>
       {emailValidation ? (
-        <ErrorText
-          title={`We couldn't find an account associated with ${email}`}
-          icon="alert-circle-outline"
-        />
+        <ErrorText title={emailValidation} icon="alert-circle-outline" />
       ) : null}
 
       <Text style={styles.heading}>First, let's find your account</Text>
 
       <Text style={{ marginTop: 10 }}>
-        Email <Text style={{ color }}>*</Text>
+        Email <Text style={{ color: Colors.primaryOrange }}>*</Text>
       </Text>
 
       <FullTextInput
