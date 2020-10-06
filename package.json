@@ -22,6 +22,7 @@
     "antd-mobile": "^2.3.3",
     "axios": "^0.19.2",
     "expo": "~37.0.3",
+    "expo-font": "~8.1.0",
     "expo-image-picker": "~8.1.0",
     "expo-permissions": "~8.1.0",
     "moment": "^2.27.0",

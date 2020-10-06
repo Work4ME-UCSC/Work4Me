@@ -24,6 +24,7 @@ export default function Home({ navigation }) {
     return (
       <RequestCard
         title={item.jobTitle}
+        img={item.jobImage}
         requestnumber={item.applicants.length}
         onSelect={() =>
           navigation.navigate("JobProfile", {
@@ -89,7 +90,7 @@ export default function Home({ navigation }) {
 
 const styles = StyleSheet.create({
   container: {
-    width: "100%",
+    //width: "100%",
     flex: 1,
     padding: 5,
   },

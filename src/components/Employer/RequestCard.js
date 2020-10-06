@@ -7,8 +7,8 @@ import {
   TouchableOpacity,
   Platform,
 } from "react-native";
-import {Text } from "react-native-paper";
-import { Badge } from 'native-base';
+import { Text, Badge } from "react-native-paper";
+// import { Badge } from 'native-base';
 import Colors from "../../constants/Colors";
 
 const RequestCard = (props) => {
@@ -21,7 +21,7 @@ const RequestCard = (props) => {
   return (
     <TouchableCmp onPress={props.onSelect}>
       <View style={styles.container}>
-      <View style={styles.imageContainer}>
+        <View style={styles.imageContainer}>
           {props.img ? (
             <Image source={{ uri: props.img }} style={styles.image} />
           ) : (
@@ -33,13 +33,14 @@ const RequestCard = (props) => {
         </View>
         <View style={styles.DetailsContainer}>
           <View style={styles.item}>
-          <Text style={styles.title}> Job Title:</Text>
-            <Text style={styles.title} numberOfLines={1}>{props.title}</Text>
+            <Text style={{ ...styles.title, fontSize: 20 }} numberOfLines={1}>
+              {props.title}
+            </Text>
           </View>
-          <View style={styles.item}> 
-          <Badge style={{ backgroundColor: Colors.primaryOrange }}>
-            <Text style={{fontSize: "15"}}>{props.requestnumber} Job Requests</Text>
-          </Badge>
+          <View style={styles.item}>
+            <Badge style={{ backgroundColor: Colors.primaryOrange }} size={30}>
+              {props.requestnumber} Job Requests
+            </Badge>
           </View>
         </View>
       </View>
@@ -48,10 +49,9 @@ const RequestCard = (props) => {
 };
 
 const styles = StyleSheet.create({
-
   container: {
     flexDirection: "row",
-    height: 120,
+    height: 160,
     margin: 10,
     backgroundColor: "#fff2e6",
     borderRadius: 10,
@@ -80,15 +80,17 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 10,
   },
   DetailsContainer: {
-    width: "45%",
-    marginBottom: 10,
+    //width: "45%",
+    marginLeft: 10,
+    justifyContent: "center",
   },
 
   title: {
     fontSize: 15,
     fontWeight: "600",
-    marginTop: 25,
-    marginBottom: 8,
+    //marginTop: 25,
+    //marginBottom: 8,
+    fontFamily: "Roboto_medium",
   },
 
   item: {

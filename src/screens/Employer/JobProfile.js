@@ -90,13 +90,8 @@ const JobProfile = ({ route, navigation }) => {
 
   if (jobRequests.applicants.length === 0) {
     return (
-      <View>
-        <View style={styles.header}>
-          <Text style={styles.headerText}>Job Requests</Text>
-        </View>
-        <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-          <Text>Currently no one has applied for the job.</Text>
-        </View>
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <Text>Currently no one has applied for the job...</Text>
       </View>
     );
   }
@@ -112,13 +107,10 @@ const JobProfile = ({ route, navigation }) => {
         keyExtractor={(item) => item._id}
       />
     </View>
-
   );
 };
 
-
 const styles = StyleSheet.create({
-
   header: {
     backgroundColor: "#F27523",
     height: 50,
@@ -132,7 +124,6 @@ const styles = StyleSheet.create({
     color: "#FFFFFF",
     fontSize: 20,
   },
-
-})
+});
 
 export default JobProfile;
