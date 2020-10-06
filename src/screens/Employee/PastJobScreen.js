@@ -16,7 +16,7 @@ const PastJobScreen = ({ navigation }) => {
   const dispatch = useDispatch();
 
   const reviewHandler = async (id) => {
-    navigation.navigate("review", { isSkip: false });
+    navigation.navigate("review", { isSkip: false, id });
   };
 
   useEffect(() => {
@@ -36,6 +36,7 @@ const PastJobScreen = ({ navigation }) => {
         time={item.createdAt}
         img={item.jobImage}
         id={item.id}
+        isReviewed={item.isEmployeeReviewed}
         reviewHandler={reviewHandler}
         onSelect={() => {
           navigation.navigate("detail", {

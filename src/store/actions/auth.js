@@ -15,21 +15,27 @@ export const tryAutoLogin = () => {
 
 export const authenticate = (token, userID, firstName, lastName, userType) => {
   return async (dispatch) => {
-    const response = await workApi.get("/users/me", {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    try {
+      const response = await workApi.get("/users/me", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
 
-    dispatch({
-      type: AUTHENTICATE,
-      token,
-      userID,
-      firstName,
-      lastName,
-      userType,
-      email: response.data.email,
-      profilePic: response.data.avatar,
-      isEmailVerified: response.data.isVerified,
-    });
+      dispatch({
+        type: AUTHENTICATE,
+        token,
+        userID,
+        firstName,
+        lastName,
+        userType,
+        email: response.data.email,
+        profilePic: response.data.avatar,
+        isEmailVerified: response.data.isVerified,
+        rate: response.data.rate,
+      });
+    } catch (e) {
+      AsyncStorage.removeItem("UserData");
+      dispatch({ type: LOGOUT });
+    }
   };
 };
 

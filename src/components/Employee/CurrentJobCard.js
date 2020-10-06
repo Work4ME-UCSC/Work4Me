@@ -45,7 +45,7 @@ const CurrentJobCard = (props) => {
             style={styles.button}
             mode="contained"
             color={Colors.primaryOrange}
-            onPress={() => props.finishHandler(props.id)}
+            onPress={() => props.finishHandler(props.id, props.employerID)}
           >
             Finished
           </Button>

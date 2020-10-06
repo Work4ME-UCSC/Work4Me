@@ -1,42 +1,83 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { useSafeArea } from "react-native-safe-area-context";
+import Spinner from "react-native-loading-spinner-overlay";
 
 import FullTextInput from "../../components/Authenticate/FullTextInput";
 import SubmitButton from "../../components/SubmitButton";
 import ErrorText from "../../components/Authenticate/ErrorText";
+import Colors from "../../constants/Colors";
+import { confirmOtp, sendOtp } from "../../hooks/forgotPassword";
 
-const color = "#ff8400";
-
-const ForgotVerificationScreen = ({ navigation }) => {
+const ForgotVerificationScreen = ({ navigation, route }) => {
   const [code, setCode] = useState("");
   const [error, setError] = useState("");
+  const [resend, setResend] = useState(false);
   const [inputError, setInputError] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const email = route.params.email;
 
   const insets = useSafeArea();
 
   const handleInput = (code) => {
     setCode(code.replace(/[^0-9]/g, ""));
+    if (code.length !== 6) setInputError(true);
+    else setInputError(false);
   };
 
   let errorMessage;
 
-  const handleSubmit = () => {
-    if (code.length !== 4) {
+  const handleSubmit = async () => {
+    if (code.length !== 6) {
       setInputError(true);
       return;
     }
     setInputError(false);
-    navigation.navigate("NewPassword");
+    try {
+      setIsLoading(true);
+      setError("");
+      setResend(false);
+      await confirmOtp(email, code);
+      setIsLoading(false);
+      navigation.navigate("NewPassword", { email });
+    } catch (e) {
+      setIsLoading(false);
+      setError(e);
+    }
+  };
+
+  const handleResend = async () => {
+    setError("");
+    try {
+      setIsLoading(true);
+      await sendOtp(email);
+      setResend(true);
+      setIsLoading(false);
+    } catch (e) {
+      setIsLoading(false);
+      setError(e);
+    }
   };
 
   if (inputError)
     errorMessage = (
       <ErrorText
-        title="Length of code should be 4 "
+        title="Length of code should be 6 "
         icon="alert-circle-outline"
       />
     );
+
+  if (isLoading) {
+    return (
+      <Spinner
+        visible={isLoading}
+        //textContent={"Please wait..."}
+        color={Colors.primaryOrange}
+        overlayColor="rgba(10, 0, 0, 0.25)"
+      />
+    );
+  }
 
   return (
     <View
@@ -46,11 +87,12 @@ const ForgotVerificationScreen = ({ navigation }) => {
         paddingBottom: insets.bottom,
       }}
     >
-      {error ? (
-        <ErrorText
-          icon="alert-circle-outline"
-          title="The verification code you entered isn't valid. Please check the code and try again"
-        />
+      {error ? <ErrorText icon="alert-circle-outline" title={error} /> : null}
+
+      {resend ? (
+        <Text style={{ color: Colors.green, fontWeight: "bold", fontSize: 16 }}>
+          Please check your email
+        </Text>
       ) : null}
 
       <Text style={styles.heading}>We just sent you a verification code</Text>
@@ -65,7 +107,7 @@ const ForgotVerificationScreen = ({ navigation }) => {
         keyboardType="number-pad"
         value={code}
         onChangeText={handleInput}
-        maxLength={4}
+        maxLength={6}
       />
 
       {errorMessage}
@@ -73,7 +115,7 @@ const ForgotVerificationScreen = ({ navigation }) => {
       <View style={styles.resendContainer}>
         <Text style={{ fontSize: 16 }}>Didn't receive the code? </Text>
 
-        <TouchableOpacity>
+        <TouchableOpacity onPress={handleResend}>
           <Text style={styles.resend}>Resend</Text>
         </TouchableOpacity>
       </View>
@@ -112,7 +154,7 @@ const styles = StyleSheet.create({
 
   resend: {
     fontWeight: "bold",
-    color,
+    color: Colors.primaryOrange,
     fontSize: 16,
     marginBottom: 5,
   },
