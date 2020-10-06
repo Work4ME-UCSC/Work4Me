@@ -24,12 +24,10 @@ const RequestProfileCard = (props) => {
   return (
     <View style={styles.container}>
       <View>
-        <TouchableCmp onPress={() => {}}>
+        <TouchableCmp onPress={() => { }}>
           <Card
             style={{
-              borderRadius: 0,
-              borderTopLeftRadius: 12,
-              borderTopRightRadius: 12,
+              borderRadius: 10,
             }}
           >
             <Card.Content>
@@ -44,33 +42,31 @@ const RequestProfileCard = (props) => {
                   }
                 />
                 <Card.Title title={props.name} />
+                
+              </Card.Actions>
+              <Card.Actions>
+                <View style={styles.buttonContainer}>
+                  <Button
+                    mode="text"
+                    style={styles.button}
+                    color={Colors.primaryOrange}
+                    onPress={() => props.handleJobAccept(props.jobID, props.userID)}
+                  >
+                    Accept
+                  </Button>
+                  <Button
+                    mode="contained"
+                    style={styles.button}
+                    color={Colors.primaryOrange}
+                    onPress={() => props.handleJobReject(props.jobID, props.userID)}
+                  >
+                    Reject
+                  </Button>
+                </View>
               </Card.Actions>
             </Card.Content>
           </Card>
         </TouchableCmp>
-      </View>
-
-      <View style={styles.buttonContainer}>
-        <Button
-          mode="text"
-          style={{
-            ...styles.button,
-            borderRightWidth: 1,
-            borderColor: Colors.black,
-          }}
-          color={Colors.primaryOrange}
-          onPress={() => props.handleJobAccept(props.jobID, props.userID)}
-        >
-          Accept
-        </Button>
-        <Button
-          mode="text"
-          style={styles.button}
-          color={Colors.red}
-          onPress={() => props.handleJobReject(props.jobID, props.userID)}
-        >
-          Reject
-        </Button>
       </View>
     </View>
   );
@@ -79,26 +75,24 @@ const RequestProfileCard = (props) => {
 const styles = StyleSheet.create({
   container: {
     margin: 10,
-    padding: 2,
   },
 
   nameContainer: {
     flexDirection: "row",
   },
 
-  buttonContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "stretch",
-    backgroundColor: Colors.lightGrey,
-  },
+  // buttonContainer: {
+  //   flexDirection: "row",
+  //   // justifyContent: "space-between",
+  //   // alignItems: "stretch",
+  // },
 
   button: {
     flex: 1,
-    borderTopWidth: 1,
-    borderTopColor: Colors.black,
-    borderRadius: 0,
-    borderBottomLeftRadius: 10,
+    borderWidth: 2,
+    borderColor: Colors.primaryOrange,
+    borderRadius: 10,
+    margin: 10,
   },
 });
 

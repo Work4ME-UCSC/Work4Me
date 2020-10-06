@@ -24,6 +24,7 @@ export default function Home({ navigation }) {
     return (
       <RequestCard
         title={item.jobTitle}
+        requestnumber={item.applicants.length}
         onSelect={() =>
           navigation.navigate("JobProfile", {
             requests: item.applicants,
@@ -70,7 +71,7 @@ export default function Home({ navigation }) {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.headerText}>Job Requests</Text>
+        <Text style={styles.headerText}>Posted Job List</Text>
       </View>
       <View style={styles.card}>
         <FlatList
