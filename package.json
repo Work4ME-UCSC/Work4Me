@@ -10,6 +10,7 @@
   "dependencies": {
     "@ant-design/react-native": "^4.0.5",
     "@expo/vector-icons": "^10.2.0",
+    "@react-native-community/art": "^1.2.0",
     "@react-native-community/async-storage": "^1.11.0",
     "@react-native-community/datetimepicker": "2.2.2",
     "@react-native-community/masked-view": "0.1.6",
@@ -34,6 +35,7 @@
     "react-native-dropdown-picker": "^3.0.5",
     "react-native-gesture-handler": "~1.6.0",
     "react-native-image-header-scroll-view": "^0.10.3",
+    "react-native-indicator": "^1.2.2",
     "react-native-loading-spinner-overlay": "^1.1.0",
     "react-native-paper": "^3.10.1",
     "react-native-ratings": "^7.3.0",
@@ -42,6 +44,7 @@
     "react-native-screens": "~2.2.0",
     "react-native-simple-radio-button": "^2.7.4",
     "react-native-simple-toast": "^1.1.2",
+    "react-native-spinkit": "^1.5.1",
     "react-native-swiper": "^1.6.0",
     "react-native-tab-view": "^2.14.2",
     "react-native-web": "~0.11.7",
