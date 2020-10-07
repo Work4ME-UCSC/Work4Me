@@ -1,10 +1,13 @@
 import workApi from "../../api/workApi";
 import Job from "../../models/jobs";
+import AppliedJobs from "../../models/appliedJobs";
 
 export const CREATE_JOB = "CREATE_JOB";
 export const SET_REQUESTS = "SET_REQUESTS";
 export const REJECT_REQUEST = "REJECT_REQUEST";
 export const ACCEPT_REQUEST = "ACCEPT_REQUEST";
+export const SET_CURRENT_JOBS = "SET_CURRENT_JOBS";
+export const SET_PAST_JOBS = "SET_PAST_JOBS";
 
 export const fetchJobs = () => {
   return async (dispatch, getState) => {
@@ -129,5 +132,51 @@ export const rejectRequest = (jobID, userID) => {
 
       dispatch({ type: REJECT_REQUEST, userID, jobID });
     } catch (err) {}
+  };
+};
+
+export const fetchSelectedJobs = (type) => {
+  return async (dispatch, getState) => {
+    const token = getState().auth.token;
+
+    try {
+      const response = await workApi.get(`/jobs/selectedJobs?status=${type}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      const resData = response.data;
+
+      const loadedJobs = [];
+
+      for (const key in resData) {
+        loadedJobs.push(
+          new AppliedJobs(
+            resData[key]._id,
+            resData[key].jobDetails._id,
+            resData[key].jobDetails.JobTitle,
+            resData[key].jobDetails.JobImage,
+            resData[key].owner,
+            resData[key].jobStatus,
+            resData[key].createdAt,
+            resData[key].jobDetails.JobCategory,
+            resData[key].jobDetails.JobDescription,
+            resData[key].jobDetails.JobSalary,
+            resData[key].jobDetails.JobDate,
+            resData[key].jobDetails.JobAddress,
+            resData[key].jobDetails.JobLocation,
+            resData[key].jobDetails.createdAt,
+            resData[key].jobDetails.owner,
+            resData[key].jobDetails.Sex,
+            resData[key].isEmployerReviewed
+          )
+        );
+      }
+
+      if (type === "confirmed")
+        dispatch({ type: SET_CURRENT_JOBS, jobs: loadedJobs });
+      else dispatch({ type: SET_PAST_JOBS, jobs: loadedJobs });
+    } catch (e) {
+      console.log(e);
+    }
   };
 };

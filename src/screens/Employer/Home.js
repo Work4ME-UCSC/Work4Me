@@ -16,9 +16,11 @@ export default function Home({ navigation }) {
   const [isLoading, setIsLoading] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [error, setError] = useState();
-  const dispatch = useDispatch();
-  const JOBS = useSelector((state) => state.employer.postedJobs);
+
   const JOB_REQUESTS = useSelector((state) => state.employer.jobRequests);
+
+  const dispatch = useDispatch();
+  console.log(JOB_REQUESTS);
 
   const renderRequestCard = ({ item }) => {
     return (
