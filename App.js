@@ -13,6 +13,7 @@ import signUpDataReducer from "./src/store/reducers/signUpData";
 import authReducer from "./src/store/reducers/auth";
 import employeeReducer from "./src/store/reducers/employee";
 import employerReducer from "./src/store/reducers/employer";
+import reviewReducer from "./src/store/reducers/reviews";
 
 const fetchFonts = () => {
   return Font.loadAsync({
@@ -27,6 +28,7 @@ const rootReducer = combineReducers({
   auth: authReducer,
   employee: employeeReducer,
   employer: employerReducer,
+  review: reviewReducer,
 });
 
 const store = createStore(rootReducer, applyMiddleware(ReduxThunk));
