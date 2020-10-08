@@ -2,5 +2,5 @@ import axios from "axios";
 
 export default axios.create({
   //baseURL: "http://d5819b347a66.ngrok.io", //update the link by runnig ngrok http port_no
-  baseURL: "http://1fb78ffb8b89.ngrok.io",
+  baseURL: "http://e74741346b4b.ngrok.io",
 });
