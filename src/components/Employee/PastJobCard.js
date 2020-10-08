@@ -60,7 +60,7 @@ const PastJobCard = (props) => {
               isDisabled
               selectedColor={Colors.primaryOrange}
               showRating={false}
-              starContainerStyle={{ alignItems: "flex-start" }}
+              starContainerStyle={{ alignSelf: "flex-start" }}
             />
           )}
         </View>
