@@ -27,7 +27,6 @@
     "expo-image-picker": "~8.1.0",
     "expo-permissions": "~8.1.0",
     "moment": "^2.27.0",
-    "ngrok": "^3.2.7",
     "native-base": "^2.13.14",
     "react": "~16.9.0",
     "react-dom": "~16.9.0",
