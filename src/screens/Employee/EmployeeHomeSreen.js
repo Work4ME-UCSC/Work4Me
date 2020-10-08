@@ -26,7 +26,7 @@ const EmployeeHomeScreen = (props) => {
     setIsRefreshing(true);
     try {
       await dispatch(jobActions.fetchJobs());
-      await dispatch(jobActions.fetchAppliedJobs());
+      await dispatch(jobActions.fetchPendingJobs());
     } catch (e) {
       setError(e.message);
     }
@@ -52,14 +52,14 @@ const EmployeeHomeScreen = (props) => {
         id={item.jobID}
         name={item.jobTitle}
         img={item.jobImage}
-        date={item.jobDate}
+        category={item.jobCategory}
         location={item.jobLocation}
-        time={item.jobTime}
+        time={item.jobPostedDate}
         onSelect={() => {
           props.navigation.navigate("JobDescription", {
             jobID: item.jobID,
             jobTitle: item.jobTitle,
-            applicants: item.applicants,
+            isConfirmed: false,
           });
         }}
       />

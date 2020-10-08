@@ -15,6 +15,8 @@ import Colors from "../constants/Colors";
 const DrawerContent = ({ children }) => {
   const firstName = useSelector((state) => state.auth.firstName);
   const lastName = useSelector((state) => state.auth.lastName);
+  const profilePic = useSelector((state) => state.auth.profilePic);
+  const rate = useSelector((state) => state.auth.rate);
 
   const Drawer = createDrawerNavigator();
 
@@ -27,10 +29,11 @@ const DrawerContent = ({ children }) => {
           <View style={{ flex: 1 }}>
             <View style={{ flexDirection: "row", alignItems: "center" }}>
               <Avatar.Image
-                source={{
-                  uri:
-                    "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
-                }}
+                source={
+                  profilePic
+                    ? { uri: profilePic }
+                    : require("../../assets/profile2.png")
+                }
                 style={{ margin: 15 }}
                 size={80}
               />
@@ -41,7 +44,7 @@ const DrawerContent = ({ children }) => {
                 </Text>
                 <View style={{ flexDirection: "row" }}>
                   <Caption style={{ lineHeight: 14, marginRight: 3 }}>
-                    5.0
+                    {rate.toFixed(1)}
                   </Caption>
                   <MaterialCommunityIcons
                     name="star"

@@ -1,31 +1,87 @@
-import React from "react";
-import { View, StyleSheet, FlatList } from "react-native";
-import { useSelector } from "react-redux";
+import React, { useState, useEffect, useCallback } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  FlatList,
+  ActivityIndicator,
+} from "react-native";
+import { useSelector, useDispatch } from "react-redux";
 
-import Card from "../../components/Employer/Card";
+import Colors from "../../constants/Colors";
+import RequestCard from "../../components/Employer/RequestCard";
+import { fetchJobs } from "../../store/actions/employer";
 
-export default function Home() {
+export default function Home({ navigation }) {
+  const [isLoading, setIsLoading] = useState(false);
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  const [error, setError] = useState();
+  const dispatch = useDispatch();
   const JOBS = useSelector((state) => state.employer.postedJobs);
+  const JOB_REQUESTS = useSelector((state) => state.employer.jobRequests);
 
-  const renderCard = ({ item }) => {
+  const renderRequestCard = ({ item }) => {
     return (
-      <Card
-        name={item.jobTitle}
+      <RequestCard
+        title={item.jobTitle}
         img={item.jobImage}
-        date={item.jobDate}
-        location={item.jobLocation}
-        time={item.jobTime}
+        requestnumber={item.applicants.length}
+        onSelect={() =>
+          navigation.navigate("JobProfile", {
+            requests: item.applicants,
+            jobID: item.jobID,
+          })
+        }
       />
     );
   };
 
+  const loadJobs = useCallback(async () => {
+    setError(null);
+    setIsRefreshing(true);
+    try {
+      await dispatch(fetchJobs());
+    } catch (e) {
+      setError(e.message);
+    }
+    setIsRefreshing(false);
+  }, [dispatch, setIsLoading, setError]);
+
+  useEffect(() => {
+    if (error) {
+      Alert.alert("An Error occured", error, [{ text: "Okay" }]);
+    }
+  }, [error]);
+
+  useEffect(() => {
+    setIsLoading(true);
+    loadJobs().then(() => {
+      setIsLoading(false);
+    });
+  }, [dispatch, loadJobs]);
+
+  if (isLoading) {
+    return (
+      <View style={styles.centered}>
+        <Text>Loading...</Text>
+        <ActivityIndicator size="large" color={Colors.primaryOrange} />
+      </View>
+    );
+  }
+
   return (
     <View style={styles.container}>
+      <View style={styles.header}>
+        <Text style={styles.headerText}>Posted Job List</Text>
+      </View>
       <View style={styles.card}>
         <FlatList
+          refreshing={isRefreshing}
+          onRefresh={loadJobs}
           keyExtractor={(item) => item.jobID}
-          data={JOBS}
-          renderItem={renderCard}
+          data={JOB_REQUESTS}
+          renderItem={renderRequestCard}
+          showsVerticalScrollIndicator={false}
         />
       </View>
     </View>
@@ -34,12 +90,29 @@ export default function Home() {
 
 const styles = StyleSheet.create({
   container: {
-    width: "100%",
+    //width: "100%",
     flex: 1,
+    padding: 5,
+  },
+  header: {
+    backgroundColor: "#F27523",
+    height: 50,
+    margin: 2,
+    borderBottomLeftRadius: 15,
+    borderBottomRightRadius: 15,
     padding: 10,
-    backgroundColor: "#dcdcdc",
+  },
+  headerText: {
+    textAlign: "center",
+    color: "#FFFFFF",
+    fontSize: 20,
   },
   card: {
     flex: 1,
+  },
+  centered: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
   },
 });

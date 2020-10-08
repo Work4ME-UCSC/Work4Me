@@ -1,31 +1,35 @@
-import React, { useState } from "react";
-import { View, Text, StyleSheet, TextInput } from "react-native";
+import React, { useState, useEffect } from "react";
+import { View, Text, StyleSheet, Alert } from "react-native";
 import { useSafeArea } from "react-native-safe-area-context";
+import Spinner from "react-native-loading-spinner-overlay";
 
 import FullTextInput from "../../components/Authenticate/FullTextInput";
 import SubmitButton from "../../components/SubmitButton";
 import epValidator from "../../hooks/epValidator";
 import ErrorText from "../../components/Authenticate/ErrorText";
+import Colors from "../../constants/Colors";
+import { resetPassword } from "../../hooks/forgotPassword";
 
-const color = "#ff8400";
-
-const SetNewPassword = () => {
+const SetNewPassword = ({ navigation, route }) => {
   const [password, setPassword] = useState("");
   const [retype, setRetype] = useState("");
   const [passEnd, setPassEnd] = useState(false);
   const [reEnd, setReEnd] = useState(false);
   const [reError, setReError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState();
 
   const insets = useSafeArea();
 
   const { checkPassword, passwordError } = epValidator();
+  const email = route.params.email;
 
   const checkRetype = (pass, retype) => {
     if (retype !== pass) return setReError("Password does not mismatch");
     return setReError("");
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (passwordError || reError) {
       setPassEnd(true);
       setReEnd(true);
@@ -33,8 +37,35 @@ const SetNewPassword = () => {
       checkRetype(password, retype);
       return;
     }
-    console.log("Correct");
+
+    try {
+      setIsLoading(true);
+      setError(null);
+      await resetPassword(email, password);
+      setIsLoading(false);
+      navigation.navigate("Signin");
+    } catch (e) {
+      setError(e);
+      setIsLoading(false);
+    }
   };
+
+  useEffect(() => {
+    if (error) {
+      Alert.alert("Error", error, [{ text: "Okay" }]);
+    }
+  }, [error]);
+
+  if (isLoading) {
+    return (
+      <Spinner
+        visible={isLoading}
+        //textContent={"Please wait..."}
+        color={Colors.primaryOrange}
+        overlayColor="rgba(10, 0, 0, 0.25)"
+      />
+    );
+  }
 
   return (
     <View
@@ -52,7 +83,7 @@ const SetNewPassword = () => {
       </Text>
 
       <Text style={styles.inputTitle}>
-        New password <Text style={{ color }}>*</Text>
+        New password <Text style={{ color: Colors.primaryOrange }}>*</Text>
       </Text>
 
       <FullTextInput
@@ -75,7 +106,8 @@ const SetNewPassword = () => {
       ) : null}
 
       <Text style={styles.inputTitle}>
-        Retype new password <Text style={{ color }}>*</Text>
+        Retype new password{" "}
+        <Text style={{ color: Colors.primaryOrange }}>*</Text>
       </Text>
 
       <FullTextInput

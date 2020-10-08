@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { Feather, Entypo, MaterialCommunityIcons } from "@expo/vector-icons";
+import moment from "moment";
 
 import { toggleFavourite } from "../../store/actions/employee";
 
@@ -47,20 +48,24 @@ const JobCard = (props) => {
         </View>
 
         <View style={styles.DetailsContainer}>
-          <View style={{ flex: 1, alignSelf: "center" }}>
-            <Text style={styles.title}>{props.name}</Text>
+          <View style={{ flex: 1 }}>
+            <Text style={styles.title} numberOfLines={1}>
+              {props.name}
+            </Text>
           </View>
           <View style={styles.item}>
-            <Feather name="calendar" style={styles.icon} color="black" />
-            <Text style={{ color: "grey" }}>{props.date}</Text>
+            <Feather name="chevron-right" style={styles.icon} color="black" />
+            <Text style={{ color: "grey" }}>{props.category}</Text>
           </View>
           <View style={styles.item}>
             <Entypo name="location-pin" style={styles.icon} color="black" />
             <Text style={{ color: "grey" }}>{props.location}</Text>
           </View>
           <View style={styles.item}>
-            <Feather name="clock" style={styles.icon} color="black" />
-            <Text style={{ color: "grey" }}>{props.time}</Text>
+            <Feather name="calendar" style={styles.icon} color="black" />
+            <Text style={{ color: "grey" }}>
+              {moment(props.time).fromNow()}
+            </Text>
           </View>
         </View>
 

@@ -1,11 +1,12 @@
 import React from "react";
-import { createStackNavigator } from "@react-navigation/stack";
+import { createStackNavigator, HeaderTitle } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 
 import EmployeeHomeScreen from "../../screens/Employee/EmployeeHomeSreen";
 import JobDescription from "../../screens/Employee/JobDescription";
+import PublicProfile from "../../screens/PublicProfile";
 import FavouriteScreen from "../../screens/Employee/FavouriteScreen";
 import MessageScreen from "../../screens/MessageScreen";
 import JobTopNavigation from "./JobTopNavigation";
@@ -46,6 +47,22 @@ const HomeStackScreen = () => {
       <HomeEmployeeStack.Screen
         name="JobDescription"
         component={JobDescription}
+        options={{
+          headerBackTitleVisible: false,
+          headerTitle: false,
+          headerTransparent: true,
+          headerTintColor: "#fff",
+        }}
+      />
+      <HomeEmployeeStack.Screen
+        name="PublicProfile"
+        component={PublicProfile}
+        options={{
+          headerBackTitleVisible: false,
+          headerTitle: false,
+          headerTransparent: true,
+          headerTintColor: "#fff",
+        }}
       />
     </HomeEmployeeStack.Navigator>
   );
@@ -61,7 +78,16 @@ const FavouriteStackScreen = () => {
         component={FavouriteScreen}
         options={screenOptions}
       />
-      <FavouriteStack.Screen name="JobDescription" component={JobDescription} />
+      <FavouriteStack.Screen
+        name="JobDescription"
+        component={JobDescription}
+        options={{
+          headerBackTitleVisible: false,
+          headerTitle: false,
+          headerTransparent: true,
+          headerTintColor: "#fff",
+        }}
+      />
     </FavouriteStack.Navigator>
   );
 };
@@ -89,6 +115,7 @@ const BottomNavigation = () => {
       tabBarOptions={{
         activeTintColor: Colors.primaryOrange,
         inactiveTintColor: Colors.black,
+        keyboardHidesTabBar: true,
       }}
     >
       <BottomTabNavigator.Screen

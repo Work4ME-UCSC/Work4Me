@@ -1,20 +1,12 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text } from "react-native";
 
 const MessageScreen = () => {
   return (
-    <View style={styles.screen}>
-      <Text>Message</Text>
+    <View>
+      <Text>Message Screen</Text>
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  screen: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
 
 export default MessageScreen;

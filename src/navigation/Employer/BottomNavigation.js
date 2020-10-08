@@ -5,6 +5,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 
 import Home from "../../screens/Employer/Home";
+import JobProfile from "../../screens/Employer/JobProfile";
 import AddJobs, {
   screenOptions as addJobScreenOptions,
 } from "../../screens/Employer/AddJobs";
@@ -65,6 +66,7 @@ const HomeBottomTabNavigatorScreen = () => {
   return (
     <stack.Navigator screenOptions={defaultHeaderOptions}>
       <stack.Screen name="Home" component={Home} options={screenOptions} />
+      <stack.Screen name="JobProfile" component={JobProfile} />
     </stack.Navigator>
   );
 };

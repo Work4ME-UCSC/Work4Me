@@ -3,6 +3,7 @@ import { useState } from "react";
 export default () => {
   const [emailError, setEmailError] = useState("initial");
   const [passwordError, setPasswordError] = useState("initial");
+  const [lengthError, setLengthError] = useState("initial");
 
   const checkPassword = (password) => {
     let length = password.length;
@@ -29,5 +30,26 @@ export default () => {
 
     return setEmailError("");
   };
-  return { checkEmail, checkPassword, emailError, passwordError };
+
+  const checkLength = (text) => {
+    let length = text.length;
+    if (length == 0) {
+      setLengthError("Please enter a password");
+      return passwordError;
+    }
+    if (text.length < 8) {
+      setLengthError("Please enter a password with 8 characters");
+      return passwordError;
+    }
+    return setLengthError("");
+  };
+
+  return {
+    checkEmail,
+    checkPassword,
+    emailError,
+    passwordError,
+    lengthError,
+    checkLength,
+  };
 };
