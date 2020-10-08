@@ -12,51 +12,12 @@ import { color } from "react-native-reanimated";
 import Colors from "../constants/Colors";
 // import { Badge } from 'native-base';
 // import Colors from "../../constants/Colors";
+import ReviewCard from "../components/ReviewCard";
 
 const MessageScreen = () => {
   return (
     <View>
-    <View style={styles.container}>
-      <View style={styles.headerContainer}>
-        <Avatar.Image size={35} source={require('../../assets/profile.png')} />
-        <View style={styles.titleContainer}>
-          <Text style={styles.title}> Reviewer Name</Text>
-        </View>
-      </View>
-      <View style={styles.reviewContainer}>
-        <Text>
-          Blah Blah very bad service and bad employee ever really bad time management and all bad
-        </Text>
-      </View>
-    </View>
-
-    <View style={styles.container}>
-      <View style={styles.headerContainer}>
-        <Avatar.Image size={35} source={require('../../assets/profile.png')} />
-        <View style={styles.titleContainer}>
-          <Text style={styles.title}> Reviewer Name</Text>
-        </View>
-      </View>
-      <View style={styles.reviewContainer}>
-        <Text>
-          Blah Blah very bad service and bad employee ever really bad time management and all bad
-        </Text>
-      </View>
-    </View>
-
-    <View style={styles.container}>
-      <View style={styles.headerContainer}>
-        <Avatar.Image size={35} source={require('../../assets/profile.png')} />
-        <View style={styles.titleContainer}>
-          <Text style={styles.title}> Reviewer Name</Text>
-        </View>
-      </View>
-      <View style={styles.reviewContainer}>
-        <Text>
-          Blah Blah very bad service and bad employee ever really bad time management and all bad
-        </Text>
-      </View>
-    </View>
+      <ReviewCard />
     </View>
   );
 };
@@ -76,29 +37,28 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: Colors.primaryOrange,
     borderRadius: 10,
-
   },
   headerContainer: {
-    padding:5,
-    width:"100%",
+    padding: 5,
+    width: "100%",
     height: "40%",
     flexDirection: "row",
-    backgroundColor: Colors.primaryOrange, 
+    backgroundColor: Colors.primaryOrange,
     borderTopLeftRadius: 10,
-    borderTopRightRadius:10,
+    borderTopRightRadius: 10,
   },
 
-  titleContainer:{
-        marginLeft:5,
-        flexDirection:"column",
-        justifyContent:"center",
+  titleContainer: {
+    marginLeft: 5,
+    flexDirection: "column",
+    justifyContent: "center",
   },
   title: {
     fontSize: 20,
     fontWeight: "500",
   },
 
-  reviewContainer:{
+  reviewContainer: {
     margin: 10,
   },
 });
