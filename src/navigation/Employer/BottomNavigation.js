@@ -9,6 +9,7 @@ import JobProfile from "../../screens/Employer/JobProfile";
 import AddJobs, {
   screenOptions as addJobScreenOptions,
 } from "../../screens/Employer/AddJobs";
+import JobTopNavigation from "./JobTopNavigation";
 import MessageScreen from "../../screens/MessageScreen";
 
 import Color from "../../constants/Colors";
@@ -97,6 +98,19 @@ const BottomNavigation = () => {
         options={{
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="plus" size={size} color={color} />
+          ),
+        }}
+      />
+      <BottomTabNavigator.Screen
+        name="Jobs"
+        component={JobTopNavigation}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons
+              name="playlist-edit"
+              size={size}
+              color={color}
+            />
           ),
         }}
       />
