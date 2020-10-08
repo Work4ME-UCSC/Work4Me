@@ -4,12 +4,16 @@ import {
   ACCEPT_REQUEST,
   CREATE_JOB,
   REJECT_REQUEST,
+  SET_CURRENT_JOBS,
+  SET_PAST_JOBS,
   SET_REQUESTS,
 } from "../actions/employer";
 
 const initialState = {
   postedJobs: [],
   jobRequests: [],
+  currentJobs: [],
+  pastJobs: [],
 };
 
 export default (state = initialState, action) => {
@@ -68,6 +72,18 @@ export default (state = initialState, action) => {
       return {
         ...state,
         jobRequests: updateJobs,
+      };
+
+    case SET_CURRENT_JOBS:
+      return {
+        ...state,
+        currentJobs: action.jobs,
+      };
+
+    case SET_PAST_JOBS:
+      return {
+        ...state,
+        pastJobs: action.jobs,
       };
 
     default:
