@@ -90,6 +90,7 @@ const JobDescription = (props) => {
         minHeight={MIN_HEIGHT}
         maxOverlayOpacity={0.6}
         minOverlayOpacity={0.3}
+        bounces={false}
         showsVerticalScrollIndicator={false}
         renderHeader={() => (
           <Image source={{ uri: selectedJob.jobImage }} style={styles.image} />
@@ -108,9 +109,7 @@ const JobDescription = (props) => {
         <TriggeringView
           style={styles.section}
           onHide={() => navTitleView.current.fadeInUp(200)}
-          onDisplay={() => {
-            navTitleView.current.fadeOut(100);
-          }}
+          onDisplay={() => navTitleView.current.fadeOut(100)}
         >
           <View
             style={{
@@ -207,7 +206,11 @@ const JobDescription = (props) => {
           </View>
           <Button
             mode="outlined"
-            onPress={() => {}}
+            onPress={() =>
+              props.navigation.navigate("PublicProfile", {
+                user: selectedJob.employer,
+              })
+            }
             style={styles.viewProfile}
             color={Colors.green}
           >
@@ -312,7 +315,7 @@ const styles = StyleSheet.create({
 
   content: {
     fontSize: 16,
-    textAlign: "justify",
+    //textAlign: "justify",
     marginVertical: 4,
   },
 
