@@ -6,6 +6,7 @@ import { HeaderButtons, Item } from "react-navigation-header-buttons";
 
 import Home from "../../screens/Employer/Home";
 import JobProfile from "../../screens/Employer/JobProfile";
+import PublicProfile from "../../screens/PublicProfile";
 import AddJobs, {
   screenOptions as addJobScreenOptions,
 } from "../../screens/Employer/AddJobs";
@@ -37,38 +38,48 @@ const screenOptions = ({ navigation }) => ({
 });
 
 const AddJobScreen = () => {
-  const stack = createStackNavigator();
+  const Stack = createStackNavigator();
   return (
-    <stack.Navigator screenOptions={defaultHeaderOptions}>
-      <stack.Screen
+    <Stack.Navigator screenOptions={defaultHeaderOptions}>
+      <Stack.Screen
         name="Add"
         component={AddJobs}
         options={addJobScreenOptions}
       />
-    </stack.Navigator>
+    </Stack.Navigator>
   );
 };
 
 const MessageScreenStack = () => {
-  const stack = createStackNavigator();
+  const Stack = createStackNavigator();
   return (
-    <stack.Navigator screenOptions={defaultHeaderOptions}>
-      <stack.Screen
+    <Stack.Navigator screenOptions={defaultHeaderOptions}>
+      <Stack.Screen
         name="Message"
         component={MessageScreen}
         options={screenOptions}
       />
-    </stack.Navigator>
+    </Stack.Navigator>
   );
 };
 
 const HomeBottomTabNavigatorScreen = () => {
-  const stack = createStackNavigator();
+  const Stack = createStackNavigator();
   return (
-    <stack.Navigator screenOptions={defaultHeaderOptions}>
-      <stack.Screen name="Home" component={Home} options={screenOptions} />
-      <stack.Screen name="JobProfile" component={JobProfile} />
-    </stack.Navigator>
+    <Stack.Navigator screenOptions={defaultHeaderOptions}>
+      <Stack.Screen name="Home" component={Home} options={screenOptions} />
+      <Stack.Screen name="JobProfile" component={JobProfile} />
+      <Stack.Screen
+        name="PublicProfile"
+        component={PublicProfile}
+        options={{
+          headerBackTitleVisible: false,
+          headerTitle: false,
+          headerTransparent: true,
+          headerTintColor: "#fff",
+        }}
+      />
+    </Stack.Navigator>
   );
 };
 
@@ -81,6 +92,7 @@ const BottomNavigation = () => {
       tabBarOptions={{
         activeTintColor: Color.primaryOrange,
         inactiveTintColor: Color.black,
+        keyboardHidesTabBar: true,
       }}
     >
       <BottomTabNavigator.Screen

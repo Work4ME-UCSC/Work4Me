@@ -74,6 +74,9 @@ const JobProfile = ({ route, navigation }) => {
       jobID={jobID}
       handleJobAccept={confirmAccept}
       handleJobReject={confirmReject}
+      onSelect={() =>
+        navigation.navigate("PublicProfile", { user: item.applicantID })
+      }
     />
   );
 

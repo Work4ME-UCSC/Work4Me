@@ -20,7 +20,6 @@ export default function Home({ navigation }) {
   const JOB_REQUESTS = useSelector((state) => state.employer.jobRequests);
 
   const dispatch = useDispatch();
-  console.log(JOB_REQUESTS);
 
   const renderRequestCard = ({ item }) => {
     return (
