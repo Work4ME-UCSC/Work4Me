@@ -12,6 +12,7 @@ import AddJobs, {
 } from "../../screens/Employer/AddJobs";
 import JobTopNavigation from "./JobTopNavigation";
 import MessageScreen from "../../screens/MessageScreen";
+import MessageListScreen from "../../screens/MessageListScreen";
 
 import Color from "../../constants/Colors";
 import HeaderButton from "../../components/HeaderButton";
@@ -55,9 +56,14 @@ const MessageScreenStack = () => {
   return (
     <Stack.Navigator screenOptions={defaultHeaderOptions}>
       <Stack.Screen
-        name="Message"
+        name="messageList"
+        component={MessageListScreen}
+        options={{ headerTitle: "Messages" }}
+      />
+      <Stack.Screen
+        name="messageScreen"
         component={MessageScreen}
-        options={screenOptions}
+        options={{ headerTitle: "Message" }}
       />
     </Stack.Navigator>
   );
@@ -78,6 +84,11 @@ const HomeBottomTabNavigatorScreen = () => {
           headerTransparent: true,
           headerTintColor: "#fff",
         }}
+      />
+      <Stack.Screen
+        name="message"
+        component={MessageScreen}
+        options={{ headerTitle: "Message" }}
       />
     </Stack.Navigator>
   );

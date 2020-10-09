@@ -17,6 +17,7 @@ const initialState = {
   tryAutoLogin: false,
   isEmailVerified: false,
   rate: 0,
+  streamToken: null,
 };
 
 export default (state = initialState, action) => {
@@ -32,6 +33,7 @@ export default (state = initialState, action) => {
         profilePic: action.profilePic,
         isEmailVerified: action.isEmailVerified,
         rate: action.rate,
+        streamToken: action.streamToken,
       };
 
     case SET_PROFILE_PICTURE:
