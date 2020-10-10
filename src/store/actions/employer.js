@@ -8,6 +8,7 @@ export const REJECT_REQUEST = "REJECT_REQUEST";
 export const ACCEPT_REQUEST = "ACCEPT_REQUEST";
 export const SET_CURRENT_JOBS = "SET_CURRENT_JOBS";
 export const SET_PAST_JOBS = "SET_PAST_JOBS";
+export const SET_REVIEW_EMPLOYER = "SET_REVIEW_EMPLOYER";
 
 export const fetchJobs = () => {
   return async (dispatch, getState) => {
@@ -107,9 +108,12 @@ export const createJob = (
   };
 };
 
-export const acceptRequest = (jobID, userID) => {
+export const acceptRequest = (jobID, userID, user) => {
   return async (dispatch, getState) => {
     const token = getState().auth.token;
+    const job = getState().employer.jobRequests.find(job => job.jobID === jobID)    
+
+    const newCurrentJob = new AppliedJobs(new Date().toString(), jobID, job.jobTitle, job.jobImage, user, "confirmed", new Date().toString(), job.jobCategory, job.jobDescription, job.jobSalary, job.jobDate, job.jobAddress, job.jobLocation, job.jobPostedDate, job.employer, job.sex, "", "")
     try {
       await workApi.patch(
         `/jobs/confirm/${jobID}/${userID}`,
@@ -117,7 +121,7 @@ export const acceptRequest = (jobID, userID) => {
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
-      dispatch({ type: ACCEPT_REQUEST, jobID });
+      dispatch({ type: ACCEPT_REQUEST, jobID, newCurrentJob });
     } catch (err) {}
   };
 };
@@ -171,12 +175,31 @@ export const fetchSelectedJobs = (type) => {
           )
         );
       }
-
+     
       if (type === "confirmed")
         dispatch({ type: SET_CURRENT_JOBS, jobs: loadedJobs });
       else dispatch({ type: SET_PAST_JOBS, jobs: loadedJobs });
     } catch (e) {
       console.log(e);
+    }
+  };
+};
+
+export const addReview = (to, rate, review, jobID, id) => {
+  return async (dispatch, getState) => {
+    const token = getState().auth.token;
+    try {
+      await workApi.post(
+        "/review/add",
+        { to, rate, review, jobID },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      dispatch({ type: SET_REVIEW_EMPLOYER, id, rate });
+    } catch (e) {
+      console.log(e);
+      throw e;
     }
   };
 };

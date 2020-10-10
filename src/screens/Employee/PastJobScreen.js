@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, FlatList, Alert } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import Spinner from "react-native-loading-spinner-overlay";
 
-import PastJobCard from "../../components/Employee/PastJobCard";
+import CurrentPastJobCard from "../../components/Employee/CurrentPastJobCard";
 import Colors from "../../constants/Colors";
 import { fetchPastJobs } from "../../store/actions/employee";
 
@@ -16,7 +16,7 @@ const PastJobScreen = ({ navigation }) => {
   const dispatch = useDispatch();
 
   const reviewHandler = async (id) => {
-    navigation.navigate("review", { isSkip: false, id });
+    navigation.navigate("review", { isSkip: false, id, user: "employee" });
   };
 
   useEffect(() => {
@@ -31,12 +31,15 @@ const PastJobScreen = ({ navigation }) => {
 
   const renderItem = ({ item }) => {
     return (
-      <PastJobCard
+      <CurrentPastJobCard
         title={item.jobTitle}
-        time={item.createdAt}
+        //date={item.createdAt}
         img={item.jobImage}
         id={item.id}
         isReviewed={item.isEmployeeReviewed}
+        personName={`${item.employer.firstName} ${item.employer.lastName}`}
+        personImage={item.employer.avatar}
+        date={item.jobPostedDate}
         reviewHandler={reviewHandler}
         onSelect={() => {
           navigation.navigate("detail", {
@@ -75,13 +78,17 @@ const PastJobScreen = ({ navigation }) => {
   }
 
   return (
-    <View>
+    <View style={styles.screen}>
       <FlatList data={pendingJobs} renderItem={renderItem} />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  screen: {
+    marginVertical: 20,
+  },
+
   centered: {
     flex: 1,
     justifyContent: "center",

@@ -27,10 +27,10 @@ const JobProfile = ({ route, navigation }) => {
     }
   };
 
-  const handleJobAccept = async (jobId, userId) => {
+  const handleJobAccept = async (jobId, userId, user) => {
     try {
       setIsLoading(true);
-      await dispatch(acceptRequest(jobId, userId));
+      await dispatch(acceptRequest(jobId, userId, user));
       navigation.navigate("Home");
     } catch (e) {
       setIsLoading(false);
@@ -38,13 +38,13 @@ const JobProfile = ({ route, navigation }) => {
     }
   };
 
-  const confirmAccept = (jobId, userId) => {
+  const confirmAccept = (jobId, userId, user) => {
     Alert.alert(
       "Important",
       "Are you sure about hiring the selected employee for the job",
       [
         { text: "No" },
-        { text: "Yes", onPress: () => handleJobAccept(jobId, userId) },
+        { text: "Yes", onPress: () => handleJobAccept(jobId, userId, user) },
       ]
     );
   };
@@ -72,6 +72,7 @@ const JobProfile = ({ route, navigation }) => {
       avatar={item.applicantID.avatar}
       userID={item.applicantID._id}
       jobID={jobID}
+      employee={item.applicantID}
       handleJobAccept={confirmAccept}
       handleJobReject={confirmReject}
     />

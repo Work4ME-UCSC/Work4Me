@@ -45,7 +45,7 @@ const RequestProfileCard = (props) => {
                     style={styles.button}
                     color={Colors.primaryOrange}
                     onPress={() =>
-                      props.handleJobAccept(props.jobID, props.userID)
+                      props.handleJobAccept(props.jobID, props.userID, props.employee)
                     }
                   >
                     Accept
