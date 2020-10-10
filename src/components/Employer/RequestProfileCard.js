@@ -20,7 +20,7 @@ const RequestProfileCard = (props) => {
   return (
     <View style={styles.container}>
       <View>
-        <TouchableCmp onPress={() => {}}>
+        <TouchableCmp onPress={props.onSelect}>
           <Card
             style={{
               borderRadius: 10,

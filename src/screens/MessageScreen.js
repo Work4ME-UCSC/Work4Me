@@ -1,66 +1,31 @@
 import React from "react";
-import {
-  View,
-  StyleSheet,
-  Image,
-  TouchableNativeFeedback,
-  TouchableOpacity,
-  Platform,
-} from "react-native";
-import { Text, Badge, Avatar, Divider } from "react-native-paper";
-import { color } from "react-native-reanimated";
-import Colors from "../constants/Colors";
-// import { Badge } from 'native-base';
-// import Colors from "../../constants/Colors";
-import ReviewCard from "../components/ReviewCard";
+import { View, SafeAreaView } from "react-native";
+import { StreamChat } from "stream-chat";
+import { Chat, Channel, MessageList, MessageInput } from "stream-chat-expo";
+import { useSelector } from "react-redux";
 
-const MessageScreen = () => {
+import url from "../constants/url";
+
+const MessageScreen = ({ route }) => {
+  const chatClient = new StreamChat(url.apiKey);
+  const user = route.params.user;
+  const channel = route.params.channel;
+  const token = useSelector((state) => state.auth.streamToken);
+
+  chatClient.setUser(user, token);
+
   return (
-    <View>
-      <ReviewCard />
-    </View>
+    <SafeAreaView>
+      <Chat client={chatClient}>
+        <Channel client={chatClient} channel={channel}>
+          <View style={{ display: "flex", height: "100%" }}>
+            <MessageList />
+            <MessageInput />
+          </View>
+        </Channel>
+      </Chat>
+    </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: "column",
-    height: 130,
-    padding: 10,
-    margin: 10,
-    borderRadius: 10,
-    elevation: 5,
-    overflow:
-      Platform.OS === "android" && Platform.Version >= 21
-        ? "hidden"
-        : "visible",
-    borderWidth: 1,
-    borderColor: Colors.primaryOrange,
-    borderRadius: 10,
-  },
-  headerContainer: {
-    padding: 5,
-    width: "100%",
-    height: "40%",
-    flexDirection: "row",
-    backgroundColor: Colors.primaryOrange,
-    borderTopLeftRadius: 10,
-    borderTopRightRadius: 10,
-  },
-
-  titleContainer: {
-    marginLeft: 5,
-    flexDirection: "column",
-    justifyContent: "center",
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: "500",
-  },
-
-  reviewContainer: {
-    margin: 10,
-  },
-});
 
 export default MessageScreen;

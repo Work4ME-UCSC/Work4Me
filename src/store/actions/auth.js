@@ -1,6 +1,8 @@
 import AsyncStorage from "@react-native-community/async-storage";
+import { StreamChat } from "stream-chat";
 
 import workApi from "../../api/workApi";
+import url from "../../constants/url";
 
 export const AUTHENTICATE = "AUTHENTICATE";
 export const TRY_AUTO_LOGIN = "TRY_AUTO_LOGIN";
@@ -13,12 +15,30 @@ export const tryAutoLogin = () => {
   return { type: TRY_AUTO_LOGIN };
 };
 
-export const authenticate = (token, userID, firstName, lastName, userType) => {
+export const authenticate = (
+  token,
+  userID,
+  firstName,
+  lastName,
+  userType,
+  streamToken
+) => {
   return async (dispatch) => {
     try {
       const response = await workApi.get("/users/me", {
         headers: { Authorization: `Bearer ${token}` },
       });
+
+      const chatClient = new StreamChat(url.apiKey);
+
+      await chatClient.setUser(
+        {
+          id: userID,
+          name: `${firstName} ${lastName}`,
+          image: response.data.avatar,
+        },
+        streamToken
+      );
 
       dispatch({
         type: AUTHENTICATE,
@@ -31,6 +51,7 @@ export const authenticate = (token, userID, firstName, lastName, userType) => {
         profilePic: response.data.avatar,
         isEmailVerified: response.data.isVerified,
         rate: response.data.rate,
+        streamToken,
       });
     } catch (e) {
       if (e.response.status === 404) throw new Error("Netwrok problem");
@@ -53,7 +74,8 @@ export const signup = (data) => {
           response.data.user._id,
           response.data.user.firstName,
           response.data.user.lastName,
-          response.data.user.userType
+          response.data.user.userType,
+          response.data.streamToken
         )
       );
       saveDataStorage(
@@ -61,7 +83,8 @@ export const signup = (data) => {
         response.data.user._id,
         response.data.user.firstName,
         response.data.user.lastName,
-        response.data.user.userType
+        response.data.user.userType,
+        response.data.streamToken
       );
     } catch (e) {
       console.log(e);
@@ -80,7 +103,8 @@ export const login = ({ email, password }) => {
           response.data.user._id,
           response.data.user.firstName,
           response.data.user.lastName,
-          response.data.user.userType
+          response.data.user.userType,
+          response.data.streamToken
         )
       );
       saveDataStorage(
@@ -88,7 +112,8 @@ export const login = ({ email, password }) => {
         response.data.user._id,
         response.data.user.firstName,
         response.data.user.lastName,
-        response.data.user.userType
+        response.data.user.userType,
+        response.data.streamToken
       );
     } catch (e) {
       if (e.response.status === 400) {
@@ -202,7 +227,8 @@ export const saveDataStorage = (
   userID,
   firstName,
   lastName,
-  userType
+  userType,
+  streamToken
 ) => {
   AsyncStorage.setItem(
     "UserData",
@@ -212,6 +238,7 @@ export const saveDataStorage = (
       firstName,
       lastName,
       userType,
+      streamToken,
     })
   );
 };

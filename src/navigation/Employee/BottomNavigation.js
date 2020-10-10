@@ -9,6 +9,7 @@ import JobDescription from "../../screens/Employee/JobDescription";
 import PublicProfile from "../../screens/PublicProfile";
 import FavouriteScreen from "../../screens/Employee/FavouriteScreen";
 import MessageScreen from "../../screens/MessageScreen";
+import MessageListScreen from "../../screens/MessageListScreen";
 import JobTopNavigation from "./JobTopNavigation";
 import Colors from "../../constants/Colors";
 import HeaderButton from "../../components/HeaderButton";
@@ -64,6 +65,11 @@ const HomeStackScreen = () => {
           headerTintColor: "#fff",
         }}
       />
+      <HomeEmployeeStack.Screen
+        name="message"
+        component={MessageScreen}
+        options={{ headerTitle: "Message" }}
+      />
     </HomeEmployeeStack.Navigator>
   );
 };
@@ -98,9 +104,14 @@ const MessageScreenStack = () => {
   return (
     <MessageStack.Navigator screenOptions={defaultHeaderOptions}>
       <MessageStack.Screen
-        name="Message"
+        name="messageList"
+        component={MessageListScreen}
+        options={{ headerTitle: "Messages" }}
+      />
+      <MessageStack.Screen
+        name="messageScreen"
         component={MessageScreen}
-        options={screenOptions}
+        options={{ headerTitle: "Message" }}
       />
     </MessageStack.Navigator>
   );

@@ -16,10 +16,12 @@ import moment from "moment";
 import { Button } from "react-native-paper";
 import { DotsLoader } from "react-native-indicator";
 import { useDispatch, useSelector } from "react-redux";
+import { StreamChat } from "stream-chat";
 
 import Colors from "../constants/Colors";
 import { fetchReviews } from "../store/actions/reviews";
 import ReviewCard from "../components/ReviewCard";
+import url from "../constants/url";
 
 const MIN_HEIGHT = Platform.OS === "ios" ? 90 : 55;
 const MAX_HEIGHT = 300;
@@ -29,6 +31,12 @@ const PublicProfile = ({ route, navigation }) => {
   const userName = `${user.firstName} ${user.lastName}`;
   const navTitleView = useRef(null);
   const reviews = useSelector((state) => state.review.reviews);
+
+  const userID = useSelector((state) => state.auth.userID);
+  const firstName = useSelector((state) => state.auth.firstName);
+  const lastName = useSelector((state) => state.auth.lastName);
+  const avatar = useSelector((state) => state.auth.profilePic);
+  const streamToken = useSelector((state) => state.auth.streamToken);
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -56,6 +64,26 @@ const PublicProfile = ({ route, navigation }) => {
       </View>
     );
   }
+
+  const handleMessage = async () => {
+    //console.log(userID, user._id);
+
+    const chatClient = new StreamChat(url.apiKey);
+    const userObj = {
+      id: userID,
+      name: `${firstName} ${lastName}`,
+      image: avatar,
+    };
+    chatClient.setUser(userObj, streamToken);
+    const channel = chatClient.channel("messaging", {
+      members: [userID, user._id],
+    });
+    setIsLoading(true);
+    await channel.create();
+    setIsLoading(false);
+
+    navigation.navigate("message", { channel, user: userObj });
+  };
 
   return (
     <View style={{ flex: 1 }}>
@@ -117,7 +145,7 @@ const PublicProfile = ({ route, navigation }) => {
             mode="outlined"
             style={styles.button}
             color={Colors.green}
-            //onPress={navigation.navigate("Messages")}
+            onPress={handleMessage}
           >
             Message
           </Button>

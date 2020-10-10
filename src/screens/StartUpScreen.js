@@ -17,15 +17,36 @@ const StartUpScreen = () => {
         return;
       }
       const transformedData = JSON.parse(userData);
-      const { token, userID, firstName, lastName, userType } = transformedData;
+      const {
+        token,
+        userID,
+        firstName,
+        lastName,
+        userType,
+        streamToken,
+      } = transformedData;
 
-      if (!token || !userID || !firstName || !lastName || !userType) {
+      if (
+        !token ||
+        !userID ||
+        !firstName ||
+        !lastName ||
+        !userType ||
+        !streamToken
+      ) {
         dispatch(tryAutoLogin());
         return;
       }
       try {
         await dispatch(
-          authenticate(token, userID, firstName, lastName, userType)
+          authenticate(
+            token,
+            userID,
+            firstName,
+            lastName,
+            userType,
+            streamToken
+          )
         );
       } catch (e) {
         setError(e.message);
