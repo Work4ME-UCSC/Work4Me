@@ -33,8 +33,11 @@ export const authenticate = (token, userID, firstName, lastName, userType) => {
         rate: response.data.rate,
       });
     } catch (e) {
-      AsyncStorage.removeItem("UserData");
-      dispatch({ type: LOGOUT });
+      if (e.response.status === 404) throw new Error("Netwrok problem");
+      if (e.response.data.error === "Please authenticate") {
+        AsyncStorage.removeItem("UserData");
+        dispatch({ type: LOGOUT });
+      }
     }
   };
 };

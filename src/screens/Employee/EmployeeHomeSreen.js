@@ -52,9 +52,9 @@ const EmployeeHomeScreen = (props) => {
         id={item.jobID}
         name={item.jobTitle}
         img={item.jobImage}
-        date={item.jobDate}
+        category={item.jobCategory}
         location={item.jobLocation}
-        time={item.jobTime}
+        time={item.jobPostedDate}
         onSelect={() => {
           props.navigation.navigate("JobDescription", {
             jobID: item.jobID,
