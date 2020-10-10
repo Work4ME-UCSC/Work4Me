@@ -92,7 +92,7 @@ import React from 'react';
 import {Text, View, Button, StyleSheet} from 'react-native';
 
 import Colors from "../../constants/Colors";
-//import account.js from '../../store/reducers/account.js';
+import { EditAccountScreen } from "./EditAccountScreen";
 
 const AccountScreen = () => {
   return (
@@ -114,6 +114,14 @@ const AccountScreen = () => {
         <Button 
           title =  "Edit Details"
           color = {Colors.primaryOrange}
+          onPress = {EditAccountScreen}
+        />
+      </View>
+      <View style = {styles.button} >
+        <Button 
+          title =  "Delete Account"
+          color = {Colors.red}
+          onPress = {Delete1AccountScreen}
         />
       </View>
     </View>
