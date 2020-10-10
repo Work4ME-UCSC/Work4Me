@@ -19,6 +19,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import Colors from "../constants/Colors";
 import { fetchReviews } from "../store/actions/reviews";
+import ReviewCard from "../components/ReviewCard";
 
 const MIN_HEIGHT = Platform.OS === "ios" ? 90 : 55;
 const MAX_HEIGHT = 300;
@@ -124,6 +125,19 @@ const PublicProfile = ({ route, navigation }) => {
 
         <View style={styles.section}>
           <Text style={styles.title}>Reviews</Text>
+          {reviews.length !== 0 ? (
+            reviews.map((review) => (
+              <ReviewCard
+                key={review.id}
+                name={review.name}
+                avatar={review.avatar}
+                rate={review.rate}
+                review={review.review}
+              />
+            ))
+          ) : (
+            <Text style={styles.content}>No reviews yet</Text>
+          )}
         </View>
       </HeaderImageScrollView>
     </View>

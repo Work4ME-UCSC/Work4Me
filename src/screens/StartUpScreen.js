@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, ActivityIndicator, Alert } from "react-native";
+import { View, ActivityIndicator, Alert, BackHandler } from "react-native";
 import AsyncStorage from "@react-native-community/async-storage";
 import { useDispatch } from "react-redux";
 
@@ -37,7 +37,10 @@ const StartUpScreen = () => {
   }, []);
 
   useEffect(() => {
-    if (error) Alert.alert("Error", error, [{ text: "Okay" }]);
+    if (error)
+      Alert.alert("Error", error, [
+        { text: "Okay", onPress: () => BackHandler.exitApp() },
+      ]);
   }, [error]);
 
   return (
