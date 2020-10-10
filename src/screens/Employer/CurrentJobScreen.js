@@ -34,7 +34,7 @@ const CurrentJobScreen = ({ navigation }) => {
         employerID={item.employer._id}
         personName={`${item.owner.firstName} ${item.owner.lastName}`}
         personImage={item.owner.avatar}
-        date={item.jobPostedDate}
+        date={item.createdAt}
         current={true}
         onSelect={() => {
           navigation.navigate("detail", {

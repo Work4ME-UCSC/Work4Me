@@ -161,7 +161,7 @@ export const fetchSelectedJobs = (type) => {
             resData[key].jobDetails.JobImage,
             resData[key].owner,
             resData[key].jobStatus,
-            resData[key].createdAt,
+            resData[key].updatedAt,
             resData[key].jobDetails.JobCategory,
             resData[key].jobDetails.JobDescription,
             resData[key].jobDetails.JobSalary,
