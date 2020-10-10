@@ -15,6 +15,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useSelector, useDispatch } from "react-redux";
 import * as Permissions from "expo-permissions";
 import * as ImagePicker from "expo-image-picker";
+import { Rating } from "react-native-ratings";
 
 import Colors from "../constants/Colors";
 import {
@@ -25,9 +26,12 @@ import {
 const AccountScreen = ({ navigation }) => {
   const firstName = useSelector((state) => state.auth.firstName);
   const lastName = useSelector((state) => state.auth.lastName);
-  const userType = useSelector((state) => state.auth.userType);
+  const rate = useSelector((state) => state.auth.rate);
+  const rateCount = useSelector((state) => state.auth.rateCount);
+  const jobCompleted = useSelector((state) => state.auth.jobCompleted);
   const email = useSelector((state) => state.auth.email);
   const profilePic = useSelector((state) => state.auth.profilePic);
+  const userType = useSelector((state) => state.auth.userType);
 
   const dispatch = useDispatch();
 
@@ -145,7 +149,9 @@ const AccountScreen = ({ navigation }) => {
         onPress={removePicture}
         disabled={image ? false : true}
       >
-        <Text style={styles.panelButtonTitle}>Remove Profile Picture</Text>
+        <Text style={{ ...styles.panelButtonTitle, color: Colors.white }}>
+          Remove Profile Picture
+        </Text>
       </TouchableOpacity>
     </View>
   );
@@ -174,7 +180,10 @@ const AccountScreen = ({ navigation }) => {
   }
 
   return (
-    <ScrollView style={{ flex: 1 }} contentContainerStyle={{ flexGrow: 1 }}>
+    <ScrollView
+      style={{ flex: 1, backgroundColor: "white" }}
+      contentContainerStyle={{ flexGrow: 1 }}
+    >
       <BottomSheet
         ref={bs}
         snapPoints={[330, 0]}
@@ -199,61 +208,59 @@ const AccountScreen = ({ navigation }) => {
             size={140}
           />
         </TouchableOpacity>
+        <Text style={styles.name}>{`${firstName} ${lastName}`}</Text>
         <Divider />
-        <View style={styles.container}>
-          <View style={styles.infoContainer}>
-            <Text style={styles.label}>First name</Text>
-            <Text style={styles.info}>{firstName}</Text>
-          </View>
-
-          <View style={styles.infoContainer}>
-            <Text style={styles.label}>Last name</Text>
-            <Text style={styles.info}>{lastName}</Text>
-          </View>
-
-          <View style={styles.infoContainer}>
-            <Text style={styles.label}>User Type</Text>
-            <Text style={styles.info}>{userType.toUpperCase()}</Text>
-          </View>
-        </View>
 
         <View style={styles.editable}>
-          <TouchableOpacity
-            style={styles.editableContainer}
-            // onPress={() => navigation.navigate("ChangeEmail")}
-          >
+          <View style={styles.editableContainer}>
             <View style={styles.infoContainer}>
               <Text style={styles.editableLabel}>Email</Text>
               <Text style={styles.editableInfo}>{email}</Text>
             </View>
-            <MaterialCommunityIcons name="pencil" style={styles.icon} />
-          </TouchableOpacity>
+            <TouchableOpacity>
+              <MaterialCommunityIcons name="pencil" style={styles.icon} />
+            </TouchableOpacity>
+          </View>
 
-          <TouchableOpacity
-            style={styles.editableContainer}
-            //onPress={() => navigation.navigate("ChangePassword")}
-          >
+          <View style={styles.editableContainer}>
             <View style={styles.infoContainer}>
               <Text style={{ ...styles.editableLabel, marginBottom: 0 }}>
                 Password
               </Text>
               <Text style={styles.password}>.......</Text>
             </View>
-            <MaterialCommunityIcons name="pencil" style={styles.icon} />
-          </TouchableOpacity>
-
-          <Divider />
-
-          {/* <View style={styles.deleteContainer}>
-            <Text style={styles.editableLabel}>Advanced</Text>
-            <Text
-              style={styles.deleteText}
-              //onPress={() => navigation.navigate("Delete")}
-            >
-              Delete account
-            </Text>
-          </View> */}
+            <TouchableOpacity>
+              <MaterialCommunityIcons name="pencil" style={styles.icon} />
+            </TouchableOpacity>
+          </View>
         </View>
+        <Divider />
+
+        <View style={styles.unditable}>
+          <View style={{ ...styles.uneditContent, borderRightWidth: 1 }}>
+            <Text>Ratings</Text>
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <Rating
+                type="custom"
+                startingValue={rate}
+                imageSize={25}
+                readonly
+                ratingColor={Colors.primaryOrange}
+                showRating={false}
+                style={{ marginTop: 5, marginRight: 5 }}
+              />
+              <Text>({rateCount})</Text>
+            </View>
+          </View>
+
+          <View style={styles.uneditContent}>
+            <Text>
+              {userType === "employee" ? "Completed Jobs" : "Jobs Hired"}
+            </Text>
+            <Text style={{ marginTop: 5 }}>{jobCompleted}</Text>
+          </View>
+        </View>
+        <Divider />
       </Animated.View>
     </ScrollView>
   );
@@ -314,15 +321,6 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
 
-  deleteContainer: {
-    marginVertical: 20,
-  },
-
-  deleteText: {
-    color: Colors.red,
-    alignSelf: "flex-start",
-  },
-
   password: {
     fontSize: 22,
   },
@@ -372,7 +370,8 @@ const styles = StyleSheet.create({
   panelButton: {
     padding: 13,
     borderRadius: 10,
-    backgroundColor: Colors.red,
+    borderWidth: 1,
+    borderColor: Colors.primaryOrange,
     alignItems: "center",
     marginVertical: 7,
   },
@@ -380,13 +379,34 @@ const styles = StyleSheet.create({
   panelButtonTitle: {
     fontSize: 17,
     fontWeight: "bold",
-    color: "white",
+    color: Colors.primaryOrange,
   },
 
   centered: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+  },
+
+  name: {
+    fontSize: 20,
+    alignSelf: "center",
+    fontFamily: "Roboto",
+    marginBottom: 5,
+  },
+
+  unditable: {
+    padding: 15,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    borderColor: Colors.darkGrey,
+    marginHorizontal: 10,
+    marginTop: 10,
+  },
+
+  uneditContent: {
+    alignItems: "center",
+    flex: 1,
   },
 });
 

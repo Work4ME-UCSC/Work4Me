@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
   },
   DetailsContainer: {
     //width: "45%",
-    marginLeft: 10,
+    marginLeft: 5,
     justifyContent: "center",
   },
 

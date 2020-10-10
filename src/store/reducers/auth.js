@@ -17,6 +17,8 @@ const initialState = {
   tryAutoLogin: false,
   isEmailVerified: false,
   rate: 0,
+  rateCount: 0,
+  jobCompleted: 0,
   streamToken: null,
 };
 
@@ -34,6 +36,8 @@ export default (state = initialState, action) => {
         isEmailVerified: action.isEmailVerified,
         rate: action.rate,
         streamToken: action.streamToken,
+        rateCount: action.rateCount,
+        jobCompleted: action.jobCompleted,
       };
 
     case SET_PROFILE_PICTURE:

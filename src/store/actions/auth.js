@@ -52,6 +52,8 @@ export const authenticate = (
         isEmailVerified: response.data.isVerified,
         rate: response.data.rate,
         streamToken,
+        rateCount: response.data.reviewCount,
+        jobCompleted: response.data.jobCompleted,
       });
     } catch (e) {
       if (e.response.status === 404) throw new Error("Netwrok problem");

@@ -62,15 +62,14 @@ const DrawerContent = ({ children }) => {
             <View style={{ marginVertical: 20, justifyContent: "center" }}>
               <Divider />
               <DrawerItem
-                label="Log Out"
-                //onPress={logoutHandler}
-                icon={(props) => (
-                  <MaterialCommunityIcons
-                    name="logout"
-                    size={24}
-                    color={props.color}
-                  />
-                )}
+                label="Version 1.0"
+                // icon={(props) => (
+                //   <MaterialCommunityIcons
+                //     name="logout"
+                //     size={24}
+                //     color={props.color}
+                //   />
+                // )}
               />
               <Divider />
             </View>
