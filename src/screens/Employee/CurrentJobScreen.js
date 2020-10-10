@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, FlatList, Alert } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import Spinner from "react-native-loading-spinner-overlay";
 
-import CurrentJobCard from "../../components/Employee/CurrentJobCard";
+import CurrentPastJobCard from "../../components/Employee/CurrentPastJobCard";
 import Colors from "../../constants/Colors";
 import { fetchCurrentJobs, jobFinished } from "../../store/actions/employee";
 
@@ -20,7 +20,7 @@ const CurrentJobScreen = ({ navigation }) => {
     setIsLoading(true);
     try {
       await dispatch(jobFinished(id, employerID));
-      navigation.navigate("review", { isSkip: true, id });
+      navigation.navigate("review", { isSkip: true, id, user: "employee" });
     } catch (e) {
       setError(e.message);
     }
@@ -46,13 +46,16 @@ const CurrentJobScreen = ({ navigation }) => {
 
   const renderItem = ({ item }) => {
     return (
-      <CurrentJobCard
+      <CurrentPastJobCard
         title={item.jobTitle}
         time={item.createdAt}
         img={item.jobImage}
         id={item.id}
         employerID={item.employer._id}
         finishHandler={clickFinishHandler}
+        personName={`${item.employer.firstName} ${item.employer.lastName}`}
+        personImage={item.employer.avatar}
+        current={true}
         onSelect={() => {
           navigation.navigate("detail", {
             jobID: item.jobID,
@@ -90,7 +93,7 @@ const CurrentJobScreen = ({ navigation }) => {
   }
 
   return (
-    <View>
+    <View style={{ marginVertical: 20 }}>
       <FlatList data={currentJobs} renderItem={renderItem} />
     </View>
   );

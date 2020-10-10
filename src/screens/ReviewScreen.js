@@ -16,7 +16,8 @@ import { useSelector, useDispatch } from "react-redux";
 import Spinner from "react-native-loading-spinner-overlay";
 
 import Colors from "../constants/Colors";
-import { addReview } from "../store/actions/employee";
+import { addReview as employeeReview } from "../store/actions/employee";
+import { addReview as employerReview } from "../store/actions/employer";
 
 const ReviewScreen = ({ navigation, route }) => {
   const [rating, setRating] = useState(0);
@@ -25,19 +26,30 @@ const ReviewScreen = ({ navigation, route }) => {
   const [error, setError] = useState(false);
   const isSkip = route.params.isSkip;
   const id = route.params.id;
+  const user = route.params.user;
 
   const dispatch = useDispatch();
 
-  const job = useSelector((state) =>
-    state.employee.finishedJobs.find((job) => job.id === id)
-  );
+  const job =
+    user === "employee"
+      ? useSelector((state) =>
+          state.employee.finishedJobs.find((job) => job.id === id)
+        )
+      : useSelector((state) =>
+          state.employer.pastJobs.find((job) => job.id === id)
+        );
 
   const submitHandler = async () => {
     try {
       setIsLoading(true);
-      await dispatch(
-        addReview(job.employer._id, rating, review, job.jobID, id)
-      );
+      if (user === "employee")
+        await dispatch(
+          employeeReview(job.employer._id, rating, review, job.jobID, id)
+        );
+      else
+        await dispatch(
+          employerReview(job.owner._id, rating, review, job.jobID, id)
+        );
       navigation.pop();
     } catch (e) {
       console.log(e);

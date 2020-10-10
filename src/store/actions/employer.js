@@ -8,6 +8,7 @@ export const REJECT_REQUEST = "REJECT_REQUEST";
 export const ACCEPT_REQUEST = "ACCEPT_REQUEST";
 export const SET_CURRENT_JOBS = "SET_CURRENT_JOBS";
 export const SET_PAST_JOBS = "SET_PAST_JOBS";
+export const SET_REVIEW_EMPLOYER = "SET_REVIEW_EMPLOYER";
 
 export const fetchJobs = () => {
   return async (dispatch, getState) => {
@@ -177,6 +178,25 @@ export const fetchSelectedJobs = (type) => {
       else dispatch({ type: SET_PAST_JOBS, jobs: loadedJobs });
     } catch (e) {
       console.log(e);
+    }
+  };
+};
+
+export const addReview = (to, rate, review, jobID, id) => {
+  return async (dispatch, getState) => {
+    const token = getState().auth.token;
+    try {
+      await workApi.post(
+        "/review/add",
+        { to, rate, review, jobID },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      dispatch({ type: SET_REVIEW_EMPLOYER, id, rate });
+    } catch (e) {
+      console.log(e);
+      throw e;
     }
   };
 };

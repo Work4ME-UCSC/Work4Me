@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, FlatList, Alert } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import Spinner from "react-native-loading-spinner-overlay";
 
-import CurrentJobCard from "../../components/Employee/CurrentJobCard";
+import JobCard from "../../components/Employer/JobCard";
 import Colors from "../../constants/Colors";
 import { fetchSelectedJobs } from "../../store/actions/employer";
 
@@ -27,13 +27,15 @@ const CurrentJobScreen = ({ navigation }) => {
 
   const renderItem = ({ item }) => {
     return (
-      <CurrentJobCard
+      <JobCard
         title={item.jobTitle}
-        time={item.createdAt}
         img={item.jobImage}
         id={item.id}
         employerID={item.employer._id}
-        finishHandler={clickFinishHandler}
+        personName={`${item.owner.firstName} ${item.owner.lastName}`}
+        personImage={item.owner.avatar}
+        date={item.jobPostedDate}
+        current={true}
         onSelect={() => {
           navigation.navigate("detail", {
             jobID: item.jobID,
@@ -71,7 +73,7 @@ const CurrentJobScreen = ({ navigation }) => {
   }
 
   return (
-    <View>
+    <View style={{ marginVertical: 20 }}>
       <FlatList data={currentJobs} renderItem={renderItem} />
     </View>
   );

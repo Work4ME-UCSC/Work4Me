@@ -7,6 +7,7 @@ import {
   SET_CURRENT_JOBS,
   SET_PAST_JOBS,
   SET_REQUESTS,
+  SET_REVIEW_EMPLOYER,
 } from "../actions/employer";
 
 const initialState = {
@@ -84,6 +85,21 @@ export default (state = initialState, action) => {
       return {
         ...state,
         pastJobs: action.jobs,
+      };
+
+    case SET_REVIEW_EMPLOYER:
+      const updatedPastJobs = [...state.pastJobs];
+      const jobID = state.pastJobs.findIndex((job) => job.id === action.id);
+      const updateJob = state.pastJobs.find((job) => job.id === action.id);
+
+      updateJob.isEmployerReviewed = action.rate;
+
+      updatedPastJobs[jobID] = updateJob;
+      console.log(updatedPastJobs);
+
+      return {
+        ...state,
+        pastJobs: updatedPastJobs,
       };
 
     default:
