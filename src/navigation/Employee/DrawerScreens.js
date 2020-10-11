@@ -50,10 +50,15 @@ const AccountStackScreen = () => {
         component={PasswordConfirmScreen}
         options={{ headerTitle: "Confirm your Password" }}
       />
-      <AccountStack.Screen name="emailChange" component={EmailChangeScreen} />
+      <AccountStack.Screen
+        name="emailChange"
+        component={EmailChangeScreen}
+        options={{ headerTitle: "Change Email" }}
+      />
       <AccountStack.Screen
         name="passwordChange"
         component={PasswordChangeScreen}
+        options={{ headerTitle: "Change Password" }}
       />
     </AccountStack.Navigator>
   );

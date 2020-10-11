@@ -218,7 +218,9 @@ const AccountScreen = ({ navigation }) => {
               <Text style={styles.editableInfo}>{email}</Text>
             </View>
             <TouchableOpacity
-              onPress={() => navigation.navigate("passwordConfirm")}
+              onPress={() =>
+                navigation.navigate("passwordConfirm", { nav: "emailChange" })
+              }
             >
               <MaterialCommunityIcons name="pencil" style={styles.icon} />
             </TouchableOpacity>
@@ -232,7 +234,11 @@ const AccountScreen = ({ navigation }) => {
               <Text style={styles.password}>.......</Text>
             </View>
             <TouchableOpacity
-              onPress={() => navigation.navigate("passwordChange")}
+              onPress={() =>
+                navigation.navigate("passwordConfirm", {
+                  nav: "passwordChange",
+                })
+              }
             >
               <MaterialCommunityIcons name="pencil" style={styles.icon} />
             </TouchableOpacity>

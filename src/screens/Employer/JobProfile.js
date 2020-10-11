@@ -31,6 +31,7 @@ const JobProfile = ({ route, navigation }) => {
     try {
       setIsLoading(true);
       await dispatch(acceptRequest(jobId, userId, user));
+      setIsLoading(false);
       navigation.navigate("Home");
     } catch (e) {
       setIsLoading(false);
