@@ -10,6 +10,9 @@ import AccountScreen from "../../screens/AccountScreen";
 import SettingScreen from "../../screens/SettingScreen";
 import HelpScreen from "../../screens/HelpScreen";
 import DeleteAccountScreen from "../../screens/DeleteAccountScreen";
+import EmailChangeScreen from "../../screens/EmailChangeScreen";
+import PasswordChangeScreen from "../../screens/PasswordChangeScreen";
+import PasswordConfirmScreen from "../../screens/PasswordConfirmScreen";
 
 const defaultHeaderOptions = {
   headerStyle: {
@@ -41,6 +44,16 @@ const AccountStackScreen = () => {
         name="Account"
         component={AccountScreen}
         options={screenOptions}
+      />
+      <AccountStack.Screen
+        name="passwordConfirm"
+        component={PasswordConfirmScreen}
+        options={{ headerTitle: "Confirm your Password" }}
+      />
+      <AccountStack.Screen name="emailChange" component={EmailChangeScreen} />
+      <AccountStack.Screen
+        name="passwordChange"
+        component={PasswordChangeScreen}
       />
     </AccountStack.Navigator>
   );
