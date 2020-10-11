@@ -73,8 +73,16 @@ const HomeBottomTabNavigatorScreen = () => {
   const Stack = createStackNavigator();
   return (
     <Stack.Navigator screenOptions={defaultHeaderOptions}>
-      <Stack.Screen name="Home" component={Home} options={screenOptions} />
-      <Stack.Screen name="JobProfile" component={JobProfile} />
+      <Stack.Screen
+        name="Posted Jobs"
+        component={Home}
+        options={screenOptions}
+      />
+      <Stack.Screen
+        name="JobProfile"
+        component={JobProfile}
+        options={{ headerTitle: "Job Requests" }}
+      />
       <Stack.Screen
         name="PublicProfile"
         component={PublicProfile}

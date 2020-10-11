@@ -5,6 +5,7 @@ import {
   StyleSheet,
   FlatList,
   ActivityIndicator,
+  StatusBar,
 } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 
@@ -72,9 +73,9 @@ export default function Home({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
+      {/* <View style={styles.header}>
         <Text style={styles.headerText}>Posted Job List</Text>
-      </View>
+      </View> */}
       <View style={styles.card}>
         <FlatList
           refreshing={isRefreshing}

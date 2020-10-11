@@ -102,9 +102,9 @@ const JobProfile = ({ route, navigation }) => {
 
   return (
     <View>
-      <View style={styles.header}>
+      {/* <View style={styles.header}>
         <Text style={styles.headerText}>Job Requests</Text>
-      </View>
+      </View> */}
       <FlatList
         data={jobRequests.applicants}
         renderItem={renderItem}
