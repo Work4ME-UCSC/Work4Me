@@ -217,7 +217,9 @@ const AccountScreen = ({ navigation }) => {
               <Text style={styles.editableLabel}>Email</Text>
               <Text style={styles.editableInfo}>{email}</Text>
             </View>
-            <TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => navigation.navigate("passwordConfirm")}
+            >
               <MaterialCommunityIcons name="pencil" style={styles.icon} />
             </TouchableOpacity>
           </View>
@@ -229,7 +231,9 @@ const AccountScreen = ({ navigation }) => {
               </Text>
               <Text style={styles.password}>.......</Text>
             </View>
-            <TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => navigation.navigate("passwordChange")}
+            >
               <MaterialCommunityIcons name="pencil" style={styles.icon} />
             </TouchableOpacity>
           </View>
