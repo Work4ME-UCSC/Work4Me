@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, Alert } from "react-native";
 import Spinner from "react-native-loading-spinner-overlay";
+import { useSelector } from "react-redux";
 
 import FullTextInput from "../components/Authenticate/FullTextInput";
 import SubmitButton from "../components/SubmitButton";
 import epValidator from "../hooks/epValidator";
 import ErrorText from "../components/Authenticate/ErrorText";
 import Colors from "../constants/Colors";
+import workApi from "../api/workApi";
 
 const SetNewPassword = ({ navigation, route }) => {
   const [password, setPassword] = useState("");
@@ -18,11 +20,14 @@ const SetNewPassword = ({ navigation, route }) => {
   const [error, setError] = useState();
 
   const { checkPassword, passwordError } = epValidator();
+  const oldPassword = route.params.password;
 
   const checkRetype = (pass, retype) => {
     if (retype !== pass) return setReError("Password does not mismatch");
     return setReError("");
   };
+
+  const token = useSelector((state) => state.auth.token);
 
   const handleSubmit = async () => {
     if (passwordError || reError) {
@@ -36,11 +41,16 @@ const SetNewPassword = ({ navigation, route }) => {
     try {
       setIsLoading(true);
       setError(null);
-      //await resetPassword(email, password);
+      await workApi.patch(
+        "/users/updatePassword",
+        { oldPassword, newPassword: password },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
       setIsLoading(false);
       navigation.navigate("Account");
     } catch (e) {
-      setError(e);
+      console.log(e);
+      //setError(e);
       setIsLoading(false);
     }
   };
@@ -55,7 +65,7 @@ const SetNewPassword = ({ navigation, route }) => {
     return (
       <Spinner
         visible={isLoading}
-        //textContent={"Please wait..."}
+        textContent={"Please wait..."}
         color={Colors.primaryOrange}
         overlayColor="rgba(10, 0, 0, 0.25)"
       />
