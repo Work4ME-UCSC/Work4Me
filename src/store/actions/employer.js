@@ -9,6 +9,7 @@ export const ACCEPT_REQUEST = "ACCEPT_REQUEST";
 export const SET_CURRENT_JOBS = "SET_CURRENT_JOBS";
 export const SET_PAST_JOBS = "SET_PAST_JOBS";
 export const SET_REVIEW_EMPLOYER = "SET_REVIEW_EMPLOYER";
+export const DELETE_JOB = "DELETE_JOB";
 
 export const fetchJobs = () => {
   return async (dispatch, getState) => {
@@ -112,9 +113,30 @@ export const createJob = (
 export const acceptRequest = (jobID, userID, user) => {
   return async (dispatch, getState) => {
     const token = getState().auth.token;
-    const job = getState().employer.jobRequests.find(job => job.jobID === jobID)    
+    const job = getState().employer.jobRequests.find(
+      (job) => job.jobID === jobID
+    );
 
-    const newCurrentJob = new AppliedJobs(new Date().toString(), jobID, job.jobTitle, job.jobImage, user, "confirmed", new Date().toString(), job.jobCategory, job.jobDescription, job.jobSalary, job.jobDate, job.jobAddress, job.jobLocation, job.jobPostedDate, job.employer, job.sex, "", "")
+    const newCurrentJob = new AppliedJobs(
+      new Date().toString(),
+      jobID,
+      job.jobTitle,
+      job.jobImage,
+      user,
+      "confirmed",
+      new Date().toString(),
+      job.jobCategory,
+      job.jobDescription,
+      job.jobSalary,
+      job.jobDate,
+      job.jobAddress,
+      job.jobLocation,
+      job.jobPostedDate,
+      job.employer,
+      job.sex,
+      "",
+      ""
+    );
     try {
       await workApi.patch(
         `/jobs/confirm/${jobID}/${userID}`,
@@ -176,12 +198,28 @@ export const fetchSelectedJobs = (type) => {
           )
         );
       }
-     
+
       if (type === "confirmed")
         dispatch({ type: SET_CURRENT_JOBS, jobs: loadedJobs });
       else dispatch({ type: SET_PAST_JOBS, jobs: loadedJobs });
     } catch (e) {
       console.log(e);
+    }
+  };
+};
+
+export const deleteJob = (jobID) => {
+  return async (dispatch, getState) => {
+    const token = getState().auth.token;
+    try {
+      await workApi.delete(`/jobs/job/${jobID}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      dispatch({ type: DELETE_JOB, jobID });
+    } catch (e) {
+      console.log(e);
+      throw e;
     }
   };
 };

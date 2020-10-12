@@ -54,11 +54,14 @@ const DeleteAccountScreen = () => {
       <Spinner
         visible={isLoading}
         textContent={"Please wait..."}
-        textStyle={styles.spinnerTextStyle}
+        color={Colors.red}
       />
-      <Text>Confirm Your Password</Text>
+      <Text style={{ marginBottom: 20 }}>
+        Once you delete your account, there's no getting it back. Make sure you
+        want to do this.
+      </Text>
       <FullTextInput
-        placeholder="Enter your password"
+        placeholder="Confirm by typing your password"
         autoCapitalize="none"
         autoCorrect={false}
         secureTextEntry={true}
@@ -66,7 +69,7 @@ const DeleteAccountScreen = () => {
         onChangeText={passwordInput}
       />
       <Button
-        mode="outlined"
+        mode="contained"
         color={Colors.red}
         disabled={!isValid}
         style={styles.button}
@@ -82,11 +85,11 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
     paddingHorizontal: 20,
-    paddingVertical: 20,
+    paddingVertical: 40,
   },
 
   button: {
-    marginVertical: 20,
+    marginVertical: 30,
     borderRadius: 8,
     borderColor: Colors.red,
   },

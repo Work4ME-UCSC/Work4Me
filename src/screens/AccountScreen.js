@@ -259,7 +259,7 @@ const AccountScreen = ({ navigation }) => {
                 showRating={false}
                 style={{ marginTop: 5, marginRight: 5 }}
               />
-              <Text>({rateCount})</Text>
+              <Text style={{ fontWeight: "bold" }}>({rateCount})</Text>
             </View>
           </View>
 
@@ -267,7 +267,9 @@ const AccountScreen = ({ navigation }) => {
             <Text>
               {userType === "employee" ? "Completed Jobs" : "Jobs Hired"}
             </Text>
-            <Text style={{ marginTop: 5 }}>{jobCompleted}</Text>
+            <Text style={{ marginTop: 5, fontWeight: "bold" }}>
+              {jobCompleted}
+            </Text>
           </View>
         </View>
         <Divider />
@@ -406,17 +408,18 @@ const styles = StyleSheet.create({
   },
 
   unditable: {
-    padding: 15,
     flexDirection: "row",
     justifyContent: "space-between",
+    alignItems: "center",
     borderColor: Colors.darkGrey,
     marginHorizontal: 10,
-    marginTop: 10,
+    //marginTop: 10,
   },
 
   uneditContent: {
     alignItems: "center",
     flex: 1,
+    marginVertical: 25,
   },
 });
 

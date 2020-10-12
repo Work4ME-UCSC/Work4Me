@@ -76,14 +76,14 @@ const JobTopNavigation = () => {
       }}
     >
       <TopNavigator.Screen
-        name="CurrentJobs"
-        options={{ tabBarLabel: "Current Jobs" }}
-        component={currentJobsStack}
-      />
-      <TopNavigator.Screen
         name="Pending"
         options={{ tabBarLabel: "Pending" }}
         component={pendingJobsStack}
+      />
+      <TopNavigator.Screen
+        name="CurrentJobs"
+        options={{ tabBarLabel: "Current Jobs" }}
+        component={currentJobsStack}
       />
       <TopNavigator.Screen
         name="PastJobs"

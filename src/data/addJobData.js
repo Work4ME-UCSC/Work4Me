@@ -26,6 +26,7 @@ export const CATEGORIES = [
   { label: "Shop Works", value: "Shop Works" },
   { label: "Content creator", value: "Content creator" },
   { label: "Health care", value: "Health care" },
+  { label: "Other", value: "Other" },
 ];
 
 export const DAYS = [
