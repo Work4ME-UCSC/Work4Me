@@ -1,4 +1,4 @@
 export default {
-  baseUrl: "http://92d398f49224.ngrok.io",
+  baseUrl: "http://060570224551.ngrok.io",
   apiKey: "9pft65v3afm3",
 };

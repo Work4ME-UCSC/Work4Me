@@ -93,7 +93,7 @@ const EmployeeHomeScreen = (props) => {
     <>
       <SearchBar
         feather="search"
-        place_holder="Search"
+        place_holder="Search by title, category, location"
         value={search}
         onChangeText={setSearch}
       />
