@@ -15,7 +15,7 @@ const FavouriteScreen = ({ navigation }) => {
         img={item.jobImage}
         date={item.jobDate}
         location={item.jobLocation}
-        time={item.jobTime}
+        category={item.jobCategory}
         onSelect={() => {
           navigation.navigate("JobDescription", {
             jobID: item.jobID,

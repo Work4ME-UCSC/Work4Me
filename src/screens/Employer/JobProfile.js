@@ -2,10 +2,15 @@ import React, { useState, useEffect } from "react";
 import { View, Text, FlatList, Alert, StyleSheet } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import Spinner from "react-native-loading-spinner-overlay";
+import { Button, Divider } from "react-native-paper";
 
 import RequestProfileCard from "../../components/Employer/RequestProfileCard";
 import Colors from "../../constants/Colors";
-import { acceptRequest, rejectRequest } from "../../store/actions/employer";
+import {
+  acceptRequest,
+  rejectRequest,
+  deleteJob,
+} from "../../store/actions/employer";
 
 const JobProfile = ({ route, navigation }) => {
   const dispatch = useDispatch();
@@ -31,11 +36,29 @@ const JobProfile = ({ route, navigation }) => {
     try {
       setIsLoading(true);
       await dispatch(acceptRequest(jobId, userId, user));
-      navigation.navigate("Home");
+      navigation.goBack();
     } catch (e) {
-      setIsLoading(false);
       console.log(e);
+      setIsLoading(false);
     }
+  };
+
+  const handelJobDelete = async () => {
+    try {
+      setIsLoading(true);
+      await dispatch(deleteJob(jobID));
+      navigation.navigate("Posted Jobs");
+    } catch (e) {
+      setError("Something went wrong");
+      setIsLoading(false);
+    }
+  };
+
+  const confirmDelete = () => {
+    Alert.alert("Important", "Are you sure about deleting this job", [
+      { text: "YES", style: "destructive", onPress: handelJobDelete },
+      { text: "NO" },
+    ]);
   };
 
   const confirmAccept = (jobId, userId, user) => {
@@ -96,6 +119,9 @@ const JobProfile = ({ route, navigation }) => {
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
         <Text>Currently no one has applied for the job...</Text>
+        <Button color={Colors.red} onPress={confirmDelete}>
+          Delete this job
+        </Button>
       </View>
     );
   }
@@ -110,6 +136,17 @@ const JobProfile = ({ route, navigation }) => {
         renderItem={renderItem}
         keyExtractor={(item) => item._id}
       />
+      <View style={{ margin: 20 }}>
+        <Text>Advanced</Text>
+        <Divider />
+        <Button
+          color={Colors.red}
+          style={{ alignItems: "flex-start" }}
+          onPress={confirmDelete}
+        >
+          Delete this job
+        </Button>
+      </View>
     </View>
   );
 };

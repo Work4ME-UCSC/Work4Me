@@ -59,7 +59,7 @@ const CurrentJobScreen = ({ navigation }) => {
         visible={isLoading}
         textContent={"Please wait..."}
         color={Colors.red}
-        overlayColor="rgba(10, 0, 0, 0.25)"
+        //overlayColor="rgba(10, 0, 0, 0.25)"
       />
     );
   }

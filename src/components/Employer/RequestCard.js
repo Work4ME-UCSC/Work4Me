@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   Platform,
 } from "react-native";
-import { Text, Badge } from "react-native-paper";
+import { Text, Badge, Button } from "react-native-paper";
 // import { Badge } from 'native-base';
 import Colors from "../../constants/Colors";
 

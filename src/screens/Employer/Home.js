@@ -71,6 +71,15 @@ export default function Home({ navigation }) {
     );
   }
 
+  if (JOB_REQUESTS.length === 0) {
+    return (
+      <View style={styles.centered}>
+        <Text>Currently no jobs posted...</Text>
+        <Text>Keep adding new Jobs!!!</Text>
+      </View>
+    );
+  }
+
   return (
     <View style={styles.container}>
       {/* <View style={styles.header}>

@@ -15,10 +15,11 @@ import * as jobActions from "../../store/actions/employee";
 import Colors from "../../constants/Colors";
 
 const EmployeeHomeScreen = (props) => {
-  const jobs = useSelector((state) => state.employee.availableJobs);
   const [isLoading, setIsLoading] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [error, setError] = useState();
+  const [search, setSearch] = useState("");
+
   const dispatch = useDispatch();
 
   const loadJobs = useCallback(async () => {
@@ -32,6 +33,19 @@ const EmployeeHomeScreen = (props) => {
     }
     setIsRefreshing(false);
   }, [dispatch, setIsLoading, setError]);
+
+  const jobs = useSelector((state) => {
+    const allJobs = state.employee.availableJobs;
+    if (search)
+      return allJobs.filter(
+        (job) =>
+          job.jobTitle.toLowerCase().includes(search.toLowerCase()) ||
+          job.jobCategory.toLowerCase().includes(search.toLowerCase()) ||
+          job.jobLocation.toLowerCase().includes(search.toLowerCase())
+      );
+
+    return allJobs;
+  });
 
   useEffect(() => {
     if (error) {
@@ -77,7 +91,12 @@ const EmployeeHomeScreen = (props) => {
 
   return (
     <>
-      <SearchBar feather="search" place_holder="search" />
+      <SearchBar
+        feather="search"
+        place_holder="Search"
+        value={search}
+        onChangeText={setSearch}
+      />
 
       {jobs.length === 0 ? (
         <View style={styles.centered}>

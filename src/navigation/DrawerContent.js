@@ -40,7 +40,7 @@ const DrawerContent = ({ children }) => {
 
               <View>
                 <Text style={{ fontSize: 15, fontWeight: "bold" }}>
-                  {`${firstName} ${lastName}`}
+                  {`${firstName} `}
                 </Text>
                 <View style={{ flexDirection: "row" }}>
                   <Caption style={{ lineHeight: 14, marginRight: 3 }}>

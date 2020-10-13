@@ -3,6 +3,7 @@ import Job from "../../models/jobs";
 import {
   ACCEPT_REQUEST,
   CREATE_JOB,
+  DELETE_JOB,
   REJECT_REQUEST,
   SET_CURRENT_JOBS,
   SET_PAST_JOBS,
@@ -47,6 +48,14 @@ export default (state = initialState, action) => {
         jobRequests: state.jobRequests.concat(newJob),
       };
 
+    case DELETE_JOB:
+      return {
+        ...state,
+        jobRequests: state.jobRequests.filter(
+          (job) => job.jobID !== action.jobID
+        ),
+      };
+
     case ACCEPT_REQUEST:
       const updatedJobRequests = state.jobRequests.filter(
         (job) => job.jobID !== action.jobID
@@ -54,7 +63,7 @@ export default (state = initialState, action) => {
       return {
         ...state,
         jobRequests: updatedJobRequests,
-        currentJobs: state.currentJobs.concat(action.newCurrentJob)
+        currentJobs: state.currentJobs.concat(action.newCurrentJob),
       };
 
     case REJECT_REQUEST:

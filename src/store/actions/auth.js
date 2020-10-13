@@ -10,6 +10,7 @@ export const EMAIL_CHECK = "EMAIL_CHECK";
 export const LOGOUT = "LOGOUT";
 export const DELETE_ACCOUNT = "DELETE_ACCOUNT";
 export const SET_PROFILE_PICTURE = "SET_PROFILE_PICTURE";
+export const CHANGE_EMAIL = "CHANGE_EMAIL";
 
 export const tryAutoLogin = () => {
   return { type: TRY_AUTO_LOGIN };
@@ -221,6 +222,26 @@ export const deleteProfilePicture = () => {
     });
 
     dispatch({ type: SET_PROFILE_PICTURE, url: null });
+  };
+};
+
+export const changeEmail = (email, password) => {
+  return async (dispatch, getState) => {
+    const token = getState().auth.token;
+
+    try {
+      await workApi.patch(
+        "/users/updateEmail",
+        { email, password },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      dispatch({ type: CHANGE_EMAIL, email });
+    } catch (e) {
+      if (e.response.data.error)
+        throw new Error("Email address already in user by another user!");
+      else throw new Error("Something went wrong");
+    }
   };
 };
 

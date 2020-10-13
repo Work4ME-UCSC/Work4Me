@@ -1,5 +1,5 @@
 import "react-native-gesture-handler";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { createStore, combineReducers, applyMiddleware } from "redux";
 import { Provider } from "react-redux";
 import ReduxThunk from "redux-thunk";
@@ -14,6 +14,8 @@ import authReducer from "./src/store/reducers/auth";
 import employeeReducer from "./src/store/reducers/employee";
 import employerReducer from "./src/store/reducers/employer";
 import reviewReducer from "./src/store/reducers/reviews";
+
+console.disableYellowBox = true;
 
 const fetchFonts = () => {
   return Font.loadAsync({

@@ -45,6 +45,7 @@ const EmailInfo = ({ navigation }) => {
     setIsLoading(true);
     try {
       await dispatch(authActions.emailCheck({ email }));
+      setIsLoading(false);
       navigation.navigate("Password");
     } catch (e) {
       setValError(e.message);

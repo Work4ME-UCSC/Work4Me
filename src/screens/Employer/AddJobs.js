@@ -180,7 +180,7 @@ const AddJobs = ({ navigation }) => {
         )
       );
       setIsLoading(false);
-      navigation.navigate("Home");
+      navigation.navigate("Posted Jobs");
     } catch (e) {
       console.log(e);
       setError(e.message);

@@ -4,6 +4,7 @@ import {
   AUTHENTICATE,
   TRY_AUTO_LOGIN,
   SET_PROFILE_PICTURE,
+  CHANGE_EMAIL,
 } from "../actions/auth";
 
 const initialState = {
@@ -50,6 +51,12 @@ export default (state = initialState, action) => {
       return {
         ...state,
         tryAutoLogin: true,
+      };
+
+    case CHANGE_EMAIL:
+      return {
+        ...state,
+        email: action.email,
       };
 
     case LOGOUT:
