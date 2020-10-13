@@ -137,15 +137,17 @@ const JobDescription = (props) => {
               </View>
             </View>
 
-            <View>
-              <TouchableOpacity onPress={toggleFavouriteHandler}>
-                <Ionicons
-                  name={isFav ? "md-heart" : "md-heart-empty"}
-                  size={50}
-                  color="black"
-                />
-              </TouchableOpacity>
-            </View>
+            {!isCompleted && !isConfirmed && (
+              <View>
+                <TouchableOpacity onPress={toggleFavouriteHandler}>
+                  <Ionicons
+                    name={isFav ? "md-heart" : "md-heart-empty"}
+                    size={50}
+                    color="black"
+                  />
+                </TouchableOpacity>
+              </View>
+            )}
           </View>
         </TriggeringView>
 

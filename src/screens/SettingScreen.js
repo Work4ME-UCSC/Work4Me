@@ -75,7 +75,6 @@ const SettingScreen = ({ navigation }) => {
           <Text>{email}</Text>
         </View>
       </View>
-      <Divider />
 
       <TouchableCmp onPress={() => navigation.navigate("Delete")}>
         <View style={styles.user}>
@@ -85,27 +84,12 @@ const SettingScreen = ({ navigation }) => {
         </View>
       </TouchableCmp>
 
-      <Divider />
-
       <TouchableCmp onPress={logoutHandler}>
-        <View style={styles.user}>
+        <View style={{ ...styles.user, borderBottomWidth: 0 }}>
           <Text style={{ fontWeight: "bold" }}>Sign out</Text>
         </View>
       </TouchableCmp>
-
-      {/* <Divider /> */}
     </View>
-    // <View style={styles.screen}>
-    //   <Button color="#787878" title="Sign out" onPress={logoutHandler} />
-
-    //   <View style={{ marginTop: 20 }}>
-    //     <Button
-    //       color="#cc0e00"
-    //       title="Delete my account"
-    //       onPress={() => navigation.navigate("Delete")}
-    //     />
-    //   </View>
-    // </View>
   );
 };
 
@@ -122,6 +106,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     padding: 20,
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.lightGrey,
   },
 
   centered: {
