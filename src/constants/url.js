@@ -1,4 +1,4 @@
 export default {
-  baseUrl: "http://060570224551.ngrok.io",
+  baseUrl: "https://work4me-api.herokuapp.com",
   apiKey: "9pft65v3afm3",
 };
